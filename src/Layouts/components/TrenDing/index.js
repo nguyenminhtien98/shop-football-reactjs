@@ -40,6 +40,7 @@ function TrenDing({ title }) {
         cssEase: 'linear',
         slidesToShow: 5,
         slidesToScroll: 1,
+        initialSlide: 0,
         responsive: [
             {
                 breakpoint: 1024,
