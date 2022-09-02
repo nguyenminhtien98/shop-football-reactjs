@@ -76,6 +76,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
         speed: 500,
         slidesToScroll: 1,
         slidesToShow: 5,
+        initialSlide: 0,
         prevArrow: <SamplePrevArrow />,
         nextArrow: <SampleNextArrow />,
         responsive: [
@@ -91,7 +92,6 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1,
-                    initialSlide: 3,
                 },
             },
             {
@@ -99,7 +99,6 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     dots: false,
                     slidesToShow: 2,
-                    initialSlide: 2,
                 },
             },
             {
@@ -107,7 +106,6 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     dots: false,
                     slidesToShow: 1,
-                    initialSlide: 1,
                 },
             },
         ],

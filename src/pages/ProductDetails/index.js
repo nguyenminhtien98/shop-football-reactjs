@@ -47,6 +47,7 @@ function ProductDetails() {
         speed: 500,
         slidesToScroll: 1,
         slidesToShow: 3,
+        initialSlide: 0,
         prevArrow: <SamplePrevArrow />,
         nextArrow: <SampleNextArrow />,
         responsive: [
@@ -55,7 +56,6 @@ function ProductDetails() {
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1,
-                    initialSlide: 3,
                 },
             },
             {
@@ -63,7 +63,6 @@ function ProductDetails() {
                 settings: {
                     dots: false,
                     slidesToShow: 2,
-                    initialSlide: 2,
                 },
             },
         ],

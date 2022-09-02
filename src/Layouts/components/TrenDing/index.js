@@ -53,14 +53,13 @@ function TrenDing({ title }) {
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1,
-                    initialSlide: 3,
                 },
             },
             {
                 breakpoint: 576,
                 settings: {
-                    dots: false,
                     slidesToShow: 1,
+                    slidesToScroll: 1,
                 },
             },
         ],
