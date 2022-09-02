@@ -1,0 +1,168 @@
+@import '../GlobalStyles/mixins';
+
+.item {
+    position: relative;
+    height: 100%;
+    border: 1px solid transparent;
+
+    &:hover {
+        border: 1px solid var(--black);
+
+        @include mobile {
+            border: 1px solid transparent;
+        }
+    }
+}
+
+.mgl-4 {
+    margin-left: 2px;
+    margin-right: 3px;
+}
+
+.full {
+    width: 100%;
+}
+
+.custom_card {
+    margin-bottom: 30px;
+
+    .images_price {
+        max-height: 301px;
+    }
+}
+
+.images_price {
+    // height: 70%;
+    // max-height: 242px;
+    // min-height: 242px;
+    overflow: hidden;
+    position: relative;
+
+    // @include mobile {
+    //     max-height: 186px;
+    //     min-height: 186px;
+    // }
+
+    &:hover .avata-hover {
+        opacity: 1;
+    }
+
+    &:hover .price {
+        bottom: 5px;
+    }
+}
+
+.fullHeight {
+    height: 100% !important;
+
+    @include mobile {
+        height: 186px !important;
+    }
+}
+
+.avata,
+.avata-hover {
+    width: 100%;
+    height: 242px;
+    object-fit: cover;
+    transition: all 0.5s;
+
+    @include mobile {
+        height: 186px;
+        width: 100%;
+    }
+}
+
+.avata-hover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+.price {
+    position: absolute;
+    left: 5px;
+    bottom: 0;
+
+    p {
+        font-size: 1.4rem;
+        background-color: var(--white-color);
+        padding: 0 4px;
+        color: var(--text-highlight);
+
+        @include mobile {
+            font-size: 1.2rem;
+        }
+    }
+
+    span {
+        color: var(--text-hover);
+        text-decoration: line-through;
+        margin-right: 10px;
+    }
+}
+
+.details {
+    padding: 10px;
+}
+
+.title {
+    font-size: 1.4rem;
+    line-height: 20px;
+    min-height: 40px;
+    text-transform: uppercase;
+
+    @include mobile {
+        font-size: 1.2rem;
+    }
+}
+
+.category {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    color: var(--footer-link-color);
+}
+
+.asset {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    &:hover .fa-heart {
+        color: var(--text-highlight);
+    }
+}
+
+.wishlist {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.sale,
+.new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 2px 5px;
+    color: var(--white-color);
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 500;
+
+    @include mobile {
+        top: 8px;
+        left: 8px;
+        padding: 0px 4px;
+        font-size: 1rem;
+    }
+}
+
+.sale {
+    background-color: var(--text-highlight);
+}
+
+.new {
+    background-color: var(--black);
+}

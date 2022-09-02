@@ -1,0 +1,31 @@
+.filter {
+    border-top: 1px solid var(--border-color);
+
+    &:first-child {
+        border-top: none;
+    }
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 20px;
+    cursor: pointer;
+
+    &:first-child {
+        border-top: none;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

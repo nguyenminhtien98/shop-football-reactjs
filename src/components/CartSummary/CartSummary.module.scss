@@ -1,0 +1,45 @@
+.cart-summary {
+    padding: 25px 20px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.cart-summary-title {
+    margin-bottom: 10px;
+    font-size: 1.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cart-summary-total_item,
+.cart-summary-delivery,
+.cart-summary-total-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+
+    .cart-summary-label {
+        text-transform: uppercase;
+    }
+}
+
+.cart-summary-total-price {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.payment-method {
+    margin-bottom: 30px;
+
+    .payment-method-label {
+        padding-bottom: 15px;
+        font-size: 1.4rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+}
+
+.payment_method_off {
+    display: none;
+}

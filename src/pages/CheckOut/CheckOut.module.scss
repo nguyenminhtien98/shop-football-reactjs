@@ -1,0 +1,181 @@
+@import '../../components/GlobalStyles/mixins';
+
+.container {
+    height: 100%;
+    width: 90.5%;
+    margin: auto;
+}
+
+.header {
+    @include mobile {
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+}
+
+.content {
+    @include mobile {
+        padding-top: 35.5px;
+    }
+}
+
+.left {
+    padding: 30px 15px 30px 0;
+
+    @include tablet {
+        padding: 30px 0;
+    }
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    @include mobile {
+        flex-direction: column;
+
+        h2 {
+            margin-bottom: 10px;
+            font-size: var(--title-mobile);
+        }
+    }
+}
+
+.form {
+    margin-top: 20px;
+}
+
+.form,
+.location-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.input-item {
+    position: relative;
+    width: 48%;
+    margin-bottom: 25px;
+
+    @include tablet {
+        width: 100%;
+    }
+}
+
+.textarea {
+    width: 100%;
+    padding: 15px 20px 15px;
+    color: #808080;
+    font-size: 1.6rem;
+    border: 1px solid var(--footer-link-color);
+}
+
+.textarea {
+    height: 50px;
+    min-height: 50px;
+    max-height: 100px;
+    max-width: 374px;
+    outline: none;
+
+    @include tablet {
+        max-width: 100%;
+    }
+}
+
+.placeholder {
+    color: #808080;
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    letter-spacing: 1px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 14px;
+    padding: 5px;
+    background-color: white;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder,
+.textarea:focus ~ .placeholder,
+.textarea:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-25px) translateX(10px) scale(0.85);
+}
+
+.msg-error {
+    margin-left: 25px;
+    font-size: 1.4rem;
+    margin-top: 5px;
+    color: red;
+}
+
+.location-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .city,
+    .district,
+    .ward {
+        width: 48%;
+        margin-bottom: 25px;
+
+        @include tablet {
+            width: 100%;
+        }
+    }
+}
+
+.btn-checkout {
+    margin-top: 10px;
+
+    @include tablet {
+        display: none;
+    }
+
+    .checkout {
+        width: 48%;
+    }
+}
+
+.right {
+    padding-left: 15px;
+    margin-top: 30px;
+
+    @include tablet {
+        padding-left: 0px;
+    }
+}
+
+.login {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 33px;
+
+    @include tablet {
+        position: fixed;
+        bottom: -33px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 10px;
+
+        button {
+            width: 93%;
+            margin: auto;
+        }
+    }
+
+    @include mobile {
+        button {
+            width: 96%;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+@import '../../components/GlobalStyles/mixins';
+
+.related-products__header {
+    margin-bottom: 15px;
+    h4 {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        font-weight: 500;
+
+        @include mobile {
+            font-size: var(--title-mobile);
+        }
+    }
+}

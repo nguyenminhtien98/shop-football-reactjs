@@ -1,0 +1,67 @@
+@import '../GlobalStyles/mixins';
+
+.menu-sub-title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.menu-sub-item,
+.menu-sub-list_link {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+        align-items: center;
+        margin-bottom: 10px;
+    }
+}
+
+.menu-sub-item {
+    margin-right: 26px;
+    width: 37%;
+    flex: 1;
+
+    &:last-child {
+        margin-right: 0px;
+    }
+}
+
+.menu-sub-link {
+    font-size: 1.4rem;
+    line-height: 2.3rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.address,
+.about-Us,
+.policy,
+.help {
+    margin-right: 0;
+
+    .menu-sub-title {
+        color: var(--footer-title-color);
+        &:hover {
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+    }
+    .menu-sub-link {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .menu-sub-list_link,
+    .menu-sub-link {
+        color: var(--footer-link-color);
+    }
+}

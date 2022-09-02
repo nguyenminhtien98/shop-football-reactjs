@@ -1,0 +1,49 @@
+@import '../../components/GlobalStyles/mixins';
+
+.login-page {
+    .container {
+        height: 100%;
+        width: 90.5%;
+        margin: auto;
+    }
+}
+
+@include tablet {
+    .login {
+        margin: 15px 0 0;
+    }
+
+    .register {
+        margin: 0 0 15px;
+    }
+}
+
+.login,
+.register {
+    margin: 20px 0;
+}
+
+.title {
+    margin: 15px 0;
+    h2 {
+        font-size: 3.4rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+}
+
+.benefit {
+    margin: 15px;
+
+    @include tablet {
+        margin: 15px 0;
+    }
+}
+
+.benefit-item {
+    margin-bottom: 8px;
+
+    span {
+        margin-right: 15px;
+    }
+}

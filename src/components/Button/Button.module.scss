@@ -1,0 +1,109 @@
+@import '../GlobalStyles/mixins';
+
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    padding: 10px 16px;
+    font-family: var(--font-family);
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: var(--white-color);
+    border: 1px solid transparent;
+    user-select: none;
+    transition: all 0.4s ease-in-out;
+
+    + .wrapper {
+        margin-left: 8px;
+    }
+
+    @include mobile {
+        font-size: 1.2rem;
+    }
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+.icon {
+    display: inline-block;
+    width: 24px;
+    text-align: center;
+}
+
+// button types
+
+.rounded {
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+    border-color: rgb(22, 24, 35, 0.12);
+
+    &:hover {
+        border-color: rgb(22, 24, 35, 0.2);
+        background-color: rgb(22, 24, 35, 0.03);
+    }
+}
+
+.primary {
+    color: var(--white-color);
+    background-color: var(--black);
+    border-color: var(--black);
+
+    &:hover {
+        color: var(--black);
+        border-color: var(--black);
+        background: var(--white-color);
+    }
+}
+
+.white {
+    // min-width: 88%;
+    color: var(--black);
+    background-color: var(--white-color);
+    border-color: var(--white-color);
+
+    &:hover {
+        color: #767677;
+    }
+}
+
+.outline {
+    color: var(--primary);
+    border-color: var(--black);
+
+    &:hover {
+        color: var(--text-hover);
+    }
+}
+
+.text {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// button sizes
+.small {
+    min-width: 60px;
+    padding: 4px 16px;
+}
+
+.large {
+    min-width: 140px;
+    padding: 14px 16px;
+
+    @include mobile {
+        min-width: 110px;
+        padding: 10px 5px;
+    }
+}
+
+.big {
+    width: 82%;
+    padding: 14px 16px;
+}

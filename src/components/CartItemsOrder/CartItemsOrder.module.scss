@@ -1,0 +1,28 @@
+.cart-item {
+    display: flex;
+}
+
+.product-image {
+    width: 25%;
+    padding-bottom: 15px;
+}
+
+.product-info {
+    width: 75%;
+    width: 75%;
+    padding: 5px 5px 5px 15px;
+    font-size: 1.3rem;
+}
+
+.product-name {
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+
+.product-size {
+    span {
+        text-transform: uppercase;
+    }
+}

@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+
+    .item {
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: var(--white-color);
+        font-weight: 700;
+        padding: 7px;
+    }
+}

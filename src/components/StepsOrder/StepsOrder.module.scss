@@ -1,0 +1,48 @@
+@import '../GlobalStyles/mixins';
+
+.steps {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    padding: 11px 10px 10px;
+    margin-bottom: -1px;
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid transparent;
+
+    @include mobile {
+        padding: 10px 9px 10px;
+        font-size: 1rem;
+    }
+
+    span {
+        margin-right: 5px;
+        padding: 3px 6px;
+        font-size: 1rem;
+        line-height: 1.1rem;
+        color: var(--white-color);
+        background-color: var(--black);
+        border-radius: 50%;
+
+        @include mobile {
+            padding: 2px 5px;
+            line-height: 1rem;
+        }
+    }
+}
+
+.active {
+    border-bottom: 1px solid var(--black);
+}
+
+.disable {
+    color: var(--footer-link-color);
+
+    span {
+        background-color: var(--footer-link-color);
+    }
+}

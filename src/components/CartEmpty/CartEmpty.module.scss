@@ -1,0 +1,32 @@
+@import '../../components/GlobalStyles/mixins';
+
+.cart-empty {
+    margin-top: var(--margin-top);
+
+    @include mobile {
+        padding-top: 65px;
+        margin-top: 0;
+    }
+
+    .cart-title {
+        h1 {
+            font-size: 3.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+
+            @include tablet {
+                font-size: var(--title-mobile);
+
+                p {
+                    font-size: 1.4rem;
+                }
+            }
+        }
+    }
+
+    .btn {
+        margin-top: 25px;
+        margin-bottom: var(--margin-bottom);
+    }
+}

@@ -1,0 +1,124 @@
+@import '../../components/GlobalStyles/mixins';
+
+.container {
+    height: 100%;
+    width: 90.5%;
+    margin: auto;
+}
+
+.top-title-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.top-title {
+    h4 {
+        font-size: 4rem;
+        font-weight: 400;
+        text-transform: uppercase;
+
+        @include mobile {
+            font-size: 3rem;
+        }
+
+        span {
+            font-size: 1.5rem;
+            color: var(--text-hover);
+        }
+    }
+}
+
+.filter {
+    padding: 10px;
+    text-transform: none;
+}
+
+.btn-filter_mobile {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+
+    .icon-filter {
+        font-size: 1.8rem;
+    }
+}
+
+.filter-item {
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
+
+    &:first-child {
+        border-top: none;
+    }
+
+    .title {
+        padding: 15px 20px;
+        border-left: 2px solid var(--black);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .info {
+        margin: 0 15px 10px;
+    }
+
+    .info-flex {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.main {
+    margin-top: 20px;
+}
+
+.products-list {
+    img {
+        height: 100% !important;
+    }
+}
+
+.modal-filter {
+    display: none;
+}
+
+// product pagination
+.pagination-btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--margin-bottom);
+
+    .pagination-btns,
+    .previous-btn,
+    .next-btn,
+    .page-btn {
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+        border-right: none;
+
+        a {
+            display: block;
+            padding: 3px 10px;
+        }
+    }
+
+    .next-btn {
+        border-right: 1px solid var(--border-color);
+    }
+
+    .disabled {
+        cursor: no-drop;
+    }
+
+    .active {
+        background-color: var(--text-color);
+
+        a {
+            color: var(--white-color);
+        }
+    }
+}

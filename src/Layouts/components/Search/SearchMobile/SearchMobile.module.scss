@@ -1,0 +1,53 @@
+// search
+
+.search-mobile {
+    position: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    right: -100%;
+    background-color: var(--white-color);
+    z-index: 99999;
+    transition: 0.5s;
+}
+
+.active {
+    right: 0px;
+}
+
+.input {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--border-color);
+    padding: 0 20px;
+}
+
+.search-input {
+    flex: 1;
+    margin-left: 20px;
+    line-height: 4.5rem;
+    font-size: 1.7rem;
+}
+
+.search-result {
+    padding: 20px;
+}
+
+.search-title {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.6rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 10px;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-item {
+    margin-bottom: 10px;
+}

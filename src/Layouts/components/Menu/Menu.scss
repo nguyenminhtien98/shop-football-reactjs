@@ -1,0 +1,21 @@
+.dropdown {
+    position: absolute;
+    top: 58px;
+    left: 40%;
+    transform: translateX(-51%);
+    z-index: 9999;
+    background-color: #fff;
+    display: none;
+    transition: all 0ms 400ms ease-out;
+}
+
+.dropdown.show {
+    display: block;
+    transition: all 0ms 400ms ease-out;
+}
+
+.dropdown.dropdown ~ submenu {
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}

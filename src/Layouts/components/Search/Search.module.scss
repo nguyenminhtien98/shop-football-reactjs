@@ -1,0 +1,128 @@
+.search {
+    position: relative;
+
+    .search-input {
+        transition: border ease 1s;
+        border: 1px solid var(--border-color);
+        padding-left: 10px;
+        padding-right: 39px;
+        background-color: var(--white-color);
+        text-overflow: ellipsis;
+        line-height: 3.2rem;
+
+        &:hover {
+            border-color: var(--black);
+        }
+        &:hover ~ .search-btn {
+            border-left: 1px solid var(--black);
+        }
+
+        &:not(:placeholder-shown) ~ .search-btn {
+            color: var(--black);
+        }
+    }
+}
+
+.clear,
+.loading {
+    position: absolute;
+    right: 40px;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.loading {
+    width: 9.38px;
+    animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.search-btn {
+    width: 40px;
+    padding: 9px 12px;
+    position: absolute;
+    right: 0px;
+    color: var(--text-hover);
+    background-color: transparent;
+    font-size: 1.4rem;
+    cursor: pointer;
+    border-left: 1px solid var(--border-color);
+    transition: border ease 1s;
+}
+
+.search-result {
+    width: 300px;
+    padding: 10px;
+    margin-top: -3px;
+    background-color: var(--white-color) !important;
+    box-shadow: 0 12px 24px rgb(0 0 0 / 10%);
+
+    .search-title {
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 1.6rem;
+        letter-spacing: 1.2px;
+        margin-bottom: 10px;
+    }
+
+    .product-list {
+        .product-item {
+            margin-bottom: 10px;
+
+            &:hover .product-name {
+                text-decoration: underline;
+            }
+
+            a {
+                display: flex;
+            }
+        }
+
+        .avatar-product {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+        }
+
+        .info-product {
+            flex: 1;
+            padding-left: 10px;
+
+            .product-name {
+                font-size: 1.3rem;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                line-height: 1.7rem;
+                margin-bottom: 10px;
+            }
+
+            .product-price {
+                font-size: 1.2rem;
+                line-height: 1.6rem;
+                display: block;
+            }
+        }
+    }
+
+    .all-search-result {
+        display: block;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        span {
+            text-transform: uppercase;
+        }
+    }
+}

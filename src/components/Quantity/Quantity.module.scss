@@ -1,0 +1,40 @@
+@import '../GlobalStyles/mixins';
+
+.quantity__btn,
+.quantity__input {
+    padding: 5px 15px;
+    border: 1px solid var(--text-hover);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+    text-align: center;
+}
+
+.quantity__input {
+    width: 43.25px;
+}
+
+.quantity__btn {
+    cursor: pointer;
+    &:first-child {
+        border-right: none;
+    }
+    &:last-child {
+        border-left: none;
+    }
+
+    .icon-btn {
+        background-color: transparent;
+    }
+}
+
+.small {
+    .quantity__btn,
+    .quantity__input {
+        padding: 3px 10px;
+
+        @include mobile {
+            padding: 0px 5px;
+        }
+    }
+}

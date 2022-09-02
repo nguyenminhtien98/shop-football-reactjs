@@ -1,0 +1,66 @@
+@import '../GlobalStyles/mixins';
+
+.banner {
+    margin: 35px 0;
+
+    @include mobile {
+        margin: 0;
+    }
+}
+
+.container {
+    position: relative;
+    height: 100%;
+    width: 90.5%;
+    margin: auto;
+}
+
+.image {
+    img {
+        width: 100%;
+        height: 430px;
+
+        @include mobile {
+            height: 180px;
+        }
+    }
+}
+
+.info {
+    position: absolute;
+    top: 30%;
+    left: 55px;
+    max-width: 370px;
+
+    @include mobile {
+        top: 0;
+        left: 15px;
+        max-width: 230px;
+        bottom: 10px;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+}
+
+.title {
+    color: var(--black);
+    font-size: 4.2rem;
+    line-height: 4.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    @include mobile {
+        font-size: 2rem;
+        line-height: 2.8rem;
+    }
+}
+
+.banner-btn {
+    margin-top: 20px;
+
+    @include mobile {
+        margin-top: 10px;
+    }
+}

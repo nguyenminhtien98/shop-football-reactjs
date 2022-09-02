@@ -1,0 +1,92 @@
+@import '../GlobalStyles/mixins';
+
+.container {
+    height: 100%;
+    width: 90.5%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.width-full {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.header {
+    .title {
+        text-align: center;
+        margin-bottom: 5px;
+
+        h4 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+    }
+}
+
+.scroll-category {
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+        width: 0px;
+        height: 0;
+    }
+}
+
+.border-none {
+    border-top: none;
+    border-bottom: none;
+}
+
+.category-list {
+    width: 100%;
+    text-align: center;
+    display: -webkit-box;
+
+    @include mobile {
+        margin-right: -12px;
+    }
+}
+
+.category-item {
+    padding: 0 20px;
+
+    @include tablet {
+        padding: 0 15px;
+    }
+
+    @include mobile-low {
+        padding: 0 11px;
+    }
+}
+
+.category-link {
+    line-height: 4.5rem;
+
+    @include mobile {
+        line-height: 3rem;
+    }
+}
+
+.active-default,
+.active {
+    .category-link {
+        text-decoration: underline;
+    }
+}
+
+.main {
+    overflow: hidden;
+    padding: 20px 0;
+    margin-left: -1px;
+    margin-right: -1px;
+    position: relative;
+
+    @include mobile {
+        padding: 25px 0;
+    }
+}
