@@ -23,7 +23,7 @@ function HomeSlider() {
         autoplay: true,
         autoplaySpeed: 5000,
         cssEase: 'linear',
-        initialSlide: 1,
+        initialSlide: 0,
         slidesToShow: 1,
         slidesToScroll: 1,
     };
