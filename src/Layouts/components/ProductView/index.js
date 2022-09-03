@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowLeft, faLongArrowRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -13,13 +13,21 @@ import SideBar from './SideBar';
 import useWindowSize from '~/hooks/useWindowSize';
 
 import styles from './ProductView.module.scss';
+import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function ProductView({ product, category, children }) {
+    const { slug } = useParams();
+
     const thisProduct = product;
     const thisCategory = category;
     const [seeMoreImage, setSeeMoreImage] = useState(false);
+
+    // set lại seeMoreImage khi param thay đổi
+    useEffect(() => {
+        setSeeMoreImage(false);
+    }, [slug]);
 
     const isTables = 1025;
     const isMobile = 670;
@@ -63,13 +71,8 @@ function ProductView({ product, category, children }) {
                     <div className="row sm-gutter">
                         {thisProduct.images.map((image, index) => {
                             return (
-                                <div className={cx('gallery-view__item', 'col', 'l-6', 'm-6')} key={index}>
-                                    <img
-                                        src={`../../images/images-product/${image}`}
-                                        alt={thisProduct.title}
-                                        width="100%"
-                                        height="100%"
-                                    />
+                                <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')} key={index}>
+                                    <img src={`../../images/images-product/${image}`} alt={thisProduct.title} />
                                 </div>
                             );
                         })}
@@ -121,7 +124,7 @@ function ProductView({ product, category, children }) {
                         // hiển thị images product trên tablet, laptop
                         <div className={cx('gallery-view')}>
                             <div className="row sm-gutter">
-                                <div className={cx('gallery-view__item', 'col', 'l-6', 'm-6')}>
+                                <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                     <img
                                         src={`../../images/images-product/${thisProduct.avata}`}
                                         alt={thisProduct.title}
@@ -129,7 +132,7 @@ function ProductView({ product, category, children }) {
                                     {thisProduct.new === 1 && <div className={cx('badge', 'new')}>New</div>}
                                     {thisProduct.sale === 1 && <div className={cx('badge', 'sale')}>Sale</div>}
                                 </div>
-                                <div className={cx('gallery-view__item', 'col', 'l-6', 'm-6')}>
+                                <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                     <img
                                         src={`../../images/images-product/${thisProduct.avata_hover}`}
                                         alt={thisProduct.title}

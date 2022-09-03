@@ -19,6 +19,7 @@ function CartModal({ product, size, quantity }) {
     // chuyển đến trang cart
     const navigate = useNavigate();
     const goToCart = () => {
+        document.body.style.overflow = '';
         navigate('/cart');
     };
 

@@ -40,8 +40,9 @@
     position: relative;
 }
 
-.gallery-view {
-    .gallery-view__item {
+.gallery-view,
+.gallery-view-see-more {
+    .gallery-view-item {
         margin-bottom: 1px;
         min-height: 525px;
         position: relative;
