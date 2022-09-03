@@ -64,7 +64,12 @@ function ProductView({ product, category, children }) {
                         {thisProduct.images.map((image, index) => {
                             return (
                                 <div className={cx('gallery-view__item', 'col', 'l-6', 'm-6')} key={index}>
-                                    <img src={`../../images/images-product/${image}`} alt={thisProduct.title} />
+                                    <img
+                                        src={`../../images/images-product/${image}`}
+                                        alt={thisProduct.title}
+                                        width="100%"
+                                        height="100%"
+                                    />
                                 </div>
                             );
                         })}
