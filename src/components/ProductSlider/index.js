@@ -85,6 +85,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     slidesToShow: 4,
                     slidesToScroll: 1,
+                    initialSlide: 0,
                 },
             },
             {
@@ -92,6 +93,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1,
+                    initialSlide: 0,
                 },
             },
             {
@@ -99,6 +101,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     dots: false,
                     slidesToShow: 2,
+                    initialSlide: 0,
                 },
             },
             {
@@ -106,13 +109,14 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 settings: {
                     dots: false,
                     slidesToShow: 1,
+                    initialSlide: 0,
                 },
             },
         ],
     };
 
     return (
-        <div className="products-slider">
+        <div className={cx('products-slider', className)}>
             <div className={cx(widthFull ? 'width-full' : 'container')}>
                 <header className={cx('header')}>
                     <div className={cx('title')}>

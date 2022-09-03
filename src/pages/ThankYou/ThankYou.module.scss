@@ -1,151 +1,153 @@
 @import '../../components/GlobalStyles/mixins';
 
-.container {
-    height: 100%;
-    width: 90.5%;
-    margin: auto;
-}
-
-@include mobile {
-    .header {
-        position: absolute;
-        left: 0;
-        right: 0;
-        background-color: var(--white-color);
-    }
-}
-
-.summary-order {
-    padding: 50px 0 30px;
-}
-
-.summary-order__item {
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.title {
-    h2 {
-        font-size: 3rem;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 4px;
-    }
-}
-
-.sub-title {
-    p {
-        font-size: 2.2rem;
-        font-weight: 400;
+.thank-you_page {
+    .container {
+        height: 100%;
+        width: 90.5%;
+        margin: auto;
     }
 
-    span {
-        font-weight: 600;
+    @include mobile {
+        .header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background-color: var(--white-color);
+        }
     }
-}
 
-.confirm {
-    p {
+    .summary-order {
+        padding: 50px 0 30px;
+    }
+
+    .summary-order__item {
+        margin-bottom: 15px;
         text-align: center;
-        font-size: 1.8rem;
-    }
-}
-
-.time-placed {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.7rem;
-
-    .time-placed-icon {
-        color: #0071ae;
     }
 
-    .highlight {
-        margin: 0 5px;
-        font-weight: 500;
-    }
-}
-
-.content {
-    margin-bottom: 30px;
-}
-
-.order-detail {
-    width: 70%;
-
-    @include tablet {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    @include mobile {
-        margin-bottom: 0;
-    }
-}
-
-.order-detail-item {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 25px;
-    border: 1px solid var(--border-color);
-
-    @include mobile {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    &:nth-child(2),
-    &:last-child {
-        border-left: none;
-        @include mobile {
-            border: 1px solid var(--border-color);
-        }
-    }
-
-    .order-detail-icon {
-        color: #0071ae;
-        font-size: 3rem;
-    }
-
-    .order-detail-item_title {
-        margin-top: 5px;
-
-        h4 {
-            font-size: 1.7rem;
-            font-weight: 600;
+    .title {
+        h2 {
+            font-size: 3rem;
             text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 4px;
         }
     }
 
-    .order-detail-item_info {
-        margin-top: 20px;
+    .sub-title {
+        p {
+            font-size: 2.2rem;
+            font-weight: 400;
+        }
 
-        .item-info-name {
+        span {
             font-weight: 600;
         }
+    }
 
-        .item-info-name,
-        .item-info-address {
-            text-transform: capitalize;
-            margin-bottom: 5px;
-        }
-
-        .item-info-phone,
-        .item-info-email,
-        .item-info-note {
-            margin-bottom: 5px;
+    .confirm {
+        p {
+            text-align: center;
+            font-size: 1.8rem;
         }
     }
-}
 
-.detail-product-order {
-    flex: 1;
-    margin-left: 20px;
+    .time-placed {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.7rem;
 
-    @include tablet {
-        margin-left: 0;
+        .time-placed-icon {
+            color: #0071ae;
+        }
+
+        .highlight {
+            margin: 0 5px;
+            font-weight: 500;
+        }
+    }
+
+    .content {
+        margin-bottom: 30px;
+    }
+
+    .order-detail {
+        width: 70%;
+
+        @include tablet {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        @include mobile {
+            margin-bottom: 0;
+        }
+    }
+
+    .order-detail-item {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px;
+        border: 1px solid var(--border-color);
+
+        @include mobile {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        &:nth-child(2),
+        &:last-child {
+            border-left: none;
+            @include mobile {
+                border: 1px solid var(--border-color);
+            }
+        }
+
+        .order-detail-icon {
+            color: #0071ae;
+            font-size: 3rem;
+        }
+
+        .order-detail-item_title {
+            margin-top: 5px;
+
+            h4 {
+                font-size: 1.7rem;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+        }
+
+        .order-detail-item_info {
+            margin-top: 20px;
+
+            .item-info-name {
+                font-weight: 600;
+            }
+
+            .item-info-name,
+            .item-info-address {
+                text-transform: capitalize;
+                margin-bottom: 5px;
+            }
+
+            .item-info-phone,
+            .item-info-email,
+            .item-info-note {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    .detail-product-order {
+        flex: 1;
+        margin-left: 20px;
+
+        @include tablet {
+            margin-left: 0;
+        }
     }
 }

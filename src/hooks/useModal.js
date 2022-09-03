@@ -5,7 +5,8 @@ const useModal = () => {
 
     if (isShowing === true) {
         document.body.style.overflow = 'hidden';
-    } else {
+    }
+    if (isShowing === false) {
         document.body.style = '';
     }
 

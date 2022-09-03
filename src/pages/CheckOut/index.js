@@ -153,205 +153,207 @@ function CheckOut() {
 
     return (
         <Helmet title="Thanh Toán">
-            <div className={cx('container')}>
-                <div className={cx('header')}>
-                    <StepsOrder>
-                        <StepItem number={'1'} title={'Giỏ Hàng'} />
-                        <StepItem number={'2'} title={'Thanh Toán'} className={'active'} />
-                        <StepItem number={'3'} title={'Hoàn Thành Đơn Hàng'} className={'disable'} />
-                    </StepsOrder>
-                </div>
-                {cartItems.length === 0 ? (
-                    <CartEmpty />
-                ) : (
-                    <div className={cx('content')}>
-                        <div className="row no-gutters">
-                            <div className={cx('left', 'l-8', 'c-12')}>
-                                <div className={cx('title')}>
-                                    <h2>Thông Tin Giao Hàng</h2>
-                                    <Button
-                                        className={cx('checkout')}
-                                        large
-                                        primary
-                                        rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
-                                        onClick={goToLogin}
-                                    >
-                                        Đăng Nhập
-                                    </Button>
-                                </div>
-                                <div className={cx('form', 'row', 'sm-gutter')}>
-                                    <Input
-                                        label={'Tên *'}
-                                        type={'text'}
-                                        value={orders.firstname}
-                                        name={'firstname'}
-                                        error={formErrors.firstname}
-                                        handleChange={handleChange}
-                                    />
-                                    <Input
-                                        label={'Họ *'}
-                                        type={'text'}
-                                        value={orders.lastname}
-                                        name={'lastname'}
-                                        error={formErrors.lastname}
-                                        handleChange={handleChange}
-                                    />
-                                    <Input
-                                        label={'Số Điện Thoại *'}
-                                        type={'text'}
-                                        value={orders.phone}
-                                        name={'phone'}
-                                        error={formErrors.phone}
-                                        handleChange={handleChange}
-                                    />
-                                    <Input
-                                        label={'Email *'}
-                                        type={'text'}
-                                        value={orders.email}
-                                        name={'email'}
-                                        error={formErrors.email}
-                                        handleChange={handleChange}
-                                    />
-                                    <Input
-                                        label={'Địa Chỉ *'}
-                                        type={'text'}
-                                        value={orders.address}
-                                        name={'address'}
-                                        error={formErrors.address}
-                                        handleChange={handleChange}
-                                    />
+            <div className={cx('check-out_page')}>
+                <div className={cx('container')}>
+                    <div className={cx('header')}>
+                        <StepsOrder>
+                            <StepItem number={'1'} title={'Giỏ Hàng'} />
+                            <StepItem number={'2'} title={'Thanh Toán'} className={'active'} />
+                            <StepItem number={'3'} title={'Hoàn Thành Đơn Hàng'} className={'disable'} />
+                        </StepsOrder>
+                    </div>
+                    {cartItems.length === 0 ? (
+                        <CartEmpty />
+                    ) : (
+                        <div className={cx('content')}>
+                            <div className="row no-gutters">
+                                <div className={cx('left', 'l-8', 'c-12')}>
+                                    <div className={cx('title')}>
+                                        <h2>Thông Tin Giao Hàng</h2>
+                                        <Button
+                                            className={cx('checkout')}
+                                            large
+                                            primary
+                                            rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
+                                            onClick={goToLogin}
+                                        >
+                                            Đăng Nhập
+                                        </Button>
+                                    </div>
+                                    <div className={cx('form', 'row', 'sm-gutter')}>
+                                        <Input
+                                            label={'Tên *'}
+                                            type={'text'}
+                                            value={orders.firstname}
+                                            name={'firstname'}
+                                            error={formErrors.firstname}
+                                            handleChange={handleChange}
+                                        />
+                                        <Input
+                                            label={'Họ *'}
+                                            type={'text'}
+                                            value={orders.lastname}
+                                            name={'lastname'}
+                                            error={formErrors.lastname}
+                                            handleChange={handleChange}
+                                        />
+                                        <Input
+                                            label={'Số Điện Thoại *'}
+                                            type={'text'}
+                                            value={orders.phone}
+                                            name={'phone'}
+                                            error={formErrors.phone}
+                                            handleChange={handleChange}
+                                        />
+                                        <Input
+                                            label={'Email *'}
+                                            type={'text'}
+                                            value={orders.email}
+                                            name={'email'}
+                                            error={formErrors.email}
+                                            handleChange={handleChange}
+                                        />
+                                        <Input
+                                            label={'Địa Chỉ *'}
+                                            type={'text'}
+                                            value={orders.address}
+                                            name={'address'}
+                                            error={formErrors.address}
+                                            handleChange={handleChange}
+                                        />
 
-                                    <div className={cx('location-form')}>
-                                        <div className={cx('city')}>
-                                            <Select
-                                                name="city"
-                                                key={`cityId_${selectedCity?.value}`}
-                                                isDisabled={cityOptions.length === 0}
-                                                options={cityOptions}
-                                                onChange={(option) => onCitySelect(option)}
-                                                placeholder="Tỉnh/Thành"
-                                                defaultValue={selectedCity}
-                                            />
-                                            <p className={cx('msg-error')}>{formErrors.city}</p>
+                                        <div className={cx('location-form')}>
+                                            <div className={cx('city')}>
+                                                <Select
+                                                    name="city"
+                                                    key={`cityId_${selectedCity?.value}`}
+                                                    isDisabled={cityOptions.length === 0}
+                                                    options={cityOptions}
+                                                    onChange={(option) => onCitySelect(option)}
+                                                    placeholder="Tỉnh/Thành"
+                                                    defaultValue={selectedCity}
+                                                />
+                                                <p className={cx('msg-error')}>{formErrors.city}</p>
+                                            </div>
+
+                                            <div className={cx('district')}>
+                                                <Select
+                                                    name="district"
+                                                    key={`districtId_${selectedDistrict?.value}`}
+                                                    isDisabled={districtOptions.length === 0}
+                                                    options={districtOptions}
+                                                    onChange={(option) => onDistrictSelect(option)}
+                                                    placeholder="Quận/Huyện"
+                                                    defaultValue={selectedDistrict}
+                                                />
+
+                                                <p className={cx('msg-error')}>{formErrors.district}</p>
+                                            </div>
+
+                                            <div className={cx('ward')}>
+                                                <Select
+                                                    name="ward"
+                                                    key={`wardId_${selectedWard?.value}`}
+                                                    isDisabled={wardOptions.length === 0}
+                                                    options={wardOptions}
+                                                    placeholder="Phường/Xã"
+                                                    onChange={(option) => onWardSelect(option)}
+                                                    defaultValue={selectedWard}
+                                                />
+                                                <p className={cx('msg-error')}>{formErrors.ward}</p>
+                                            </div>
+                                            <div className={cx('input-item')}>
+                                                <textarea
+                                                    name="note"
+                                                    className={cx('textarea')}
+                                                    placeholder=" "
+                                                    value={orders.note}
+                                                    onChange={handleChange}
+                                                />
+
+                                                <label htmlFor="ghi-chu" className={cx('placeholder')}>
+                                                    Ghi Chú
+                                                </label>
+                                            </div>
                                         </div>
-
-                                        <div className={cx('district')}>
-                                            <Select
-                                                name="district"
-                                                key={`districtId_${selectedDistrict?.value}`}
-                                                isDisabled={districtOptions.length === 0}
-                                                options={districtOptions}
-                                                onChange={(option) => onDistrictSelect(option)}
-                                                placeholder="Quận/Huyện"
-                                                defaultValue={selectedDistrict}
-                                            />
-
-                                            <p className={cx('msg-error')}>{formErrors.district}</p>
+                                    </div>
+                                    <div className={cx('delivery-method')}>
+                                        <div className={cx('title')}>
+                                            <h2>Phương Thức Giao Hàng</h2>
                                         </div>
-
-                                        <div className={cx('ward')}>
-                                            <Select
-                                                name="ward"
-                                                key={`wardId_${selectedWard?.value}`}
-                                                isDisabled={wardOptions.length === 0}
-                                                options={wardOptions}
-                                                placeholder="Phường/Xã"
-                                                onChange={(option) => onWardSelect(option)}
-                                                defaultValue={selectedWard}
+                                        <div className="wrapper">
+                                            <input
+                                                type="radio"
+                                                name="select"
+                                                id="option-1"
+                                                value="Chuyển Khoản"
+                                                onChange={handleRadioChange}
+                                                checked={deliveryMethod === 'Chuyển Khoản'}
                                             />
-                                            <p className={cx('msg-error')}>{formErrors.ward}</p>
-                                        </div>
-                                        <div className={cx('input-item')}>
-                                            <textarea
-                                                name="note"
-                                                className={cx('textarea')}
-                                                placeholder=" "
-                                                value={orders.note}
-                                                onChange={handleChange}
+                                            <input
+                                                type="radio"
+                                                name="select"
+                                                id="option-2"
+                                                value="Thanh Toán Khi Giao Hàng (COD)"
+                                                onChange={handleRadioChange}
+                                                checked={deliveryMethod === 'Thanh Toán Khi Giao Hàng (COD)'}
                                             />
-
-                                            <label htmlFor="ghi-chu" className={cx('placeholder')}>
-                                                Ghi Chú
+                                            <label htmlFor="option-1" className="option option-1">
+                                                <div className="dot"></div>
+                                                <span>Chuyển Khoản</span>
+                                            </label>
+                                            <label htmlFor="option-2" className="option option-2">
+                                                <div className="dot"></div>
+                                                <span>Thanh Toán Khi Giao Hàng (COD)</span>
                                             </label>
                                         </div>
                                     </div>
-                                </div>
-                                <div className={cx('delivery-method')}>
-                                    <div className={cx('title')}>
-                                        <h2>Phương Thức Giao Hàng</h2>
-                                    </div>
-                                    <div className="wrapper">
-                                        <input
-                                            type="radio"
-                                            name="select"
-                                            id="option-1"
-                                            value="Chuyển Khoản"
-                                            onChange={handleRadioChange}
-                                            checked={deliveryMethod === 'Chuyển Khoản'}
-                                        />
-                                        <input
-                                            type="radio"
-                                            name="select"
-                                            id="option-2"
-                                            value="Thanh Toán Khi Giao Hàng (COD)"
-                                            onChange={handleRadioChange}
-                                            checked={deliveryMethod === 'Thanh Toán Khi Giao Hàng (COD)'}
-                                        />
-                                        <label htmlFor="option-1" className="option option-1">
-                                            <div className="dot"></div>
-                                            <span>Chuyển Khoản</span>
-                                        </label>
-                                        <label htmlFor="option-2" className="option option-2">
-                                            <div className="dot"></div>
-                                            <span>Thanh Toán Khi Giao Hàng (COD)</span>
-                                        </label>
+                                    <div className={cx('btn-checkout')}>
+                                        <Button
+                                            className={cx('checkout')}
+                                            big
+                                            primary
+                                            rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
+                                            onClick={handleSubmit}
+                                        >
+                                            Thanh Toán
+                                        </Button>
                                     </div>
                                 </div>
-                                <div className={cx('btn-checkout')}>
-                                    <Button
-                                        className={cx('checkout')}
-                                        big
-                                        primary
-                                        rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
-                                        onClick={handleSubmit}
-                                    >
-                                        Thanh Toán
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className={cx('right', 'l-4', 'c-12')}>
-                                <div className={cx('login')}>
-                                    <Button
-                                        big
-                                        primary
-                                        rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
-                                        onClick={handleSubmit}
-                                    >
-                                        Thanh Toán
-                                    </Button>
-                                </div>
-                                <CartSummary totalPrice={totalPrice} quantity={cartItems.length}>
-                                    <div className={cx('cart-detail')}>
-                                        <Accordion title={'Chi Tiết Sản Phẩm'} primary>
-                                            {cartProducts.map((item) => {
-                                                return (
-                                                    <CartItemsOrder
-                                                        key={item.id}
-                                                        avata={item.product.avata}
-                                                        name={item.product.name}
-                                                        size={item.size}
-                                                        quantity={item.quantity}
-                                                        price={item.product.price}
-                                                    />
-                                                );
-                                            })}
-                                        </Accordion>
+                                <div className={cx('right', 'l-4', 'c-12')}>
+                                    <div className={cx('login')}>
+                                        <Button
+                                            big
+                                            primary
+                                            rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
+                                            onClick={handleSubmit}
+                                        >
+                                            Thanh Toán
+                                        </Button>
                                     </div>
-                                </CartSummary>
+                                    <CartSummary totalPrice={totalPrice} quantity={cartItems.length}>
+                                        <div className={cx('cart-detail')}>
+                                            <Accordion title={'Chi Tiết Sản Phẩm'} primary>
+                                                {cartProducts.map((item) => {
+                                                    return (
+                                                        <CartItemsOrder
+                                                            key={item.id}
+                                                            avata={item.product.avata}
+                                                            name={item.product.name}
+                                                            size={item.size}
+                                                            quantity={item.quantity}
+                                                            price={item.product.price}
+                                                        />
+                                                    );
+                                                })}
+                                            </Accordion>
+                                        </div>
+                                    </CartSummary>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </Helmet>
     );

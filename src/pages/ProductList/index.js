@@ -97,7 +97,7 @@ const ProductList = () => {
 
     return (
         <Helmet title={thisCategory.title || thisCategory.parent}>
-            <div className="products-list">
+            <div className={cx('products-list_page')}>
                 <div className={cx('container')}>
                     <div className={cx('top')}>
                         <Breadcrumbs title={thisCategory.title || thisCategory.parent} />
@@ -124,12 +124,7 @@ const ProductList = () => {
                                     </Button>
                                 )}
 
-                                <Modal
-                                    isShowing={isShowing}
-                                    hide={toggle}
-                                    fullWidth="full-width"
-                                    title={'Lọc Sản Phẩm'}
-                                >
+                                <Modal isShowing={isShowing} hide={toggle} title={'Lọc Sản Phẩm'} className="right">
                                     <ProductFilters
                                         data={productList}
                                         setProducts={setProducts}

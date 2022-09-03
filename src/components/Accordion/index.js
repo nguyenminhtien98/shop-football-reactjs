@@ -8,8 +8,8 @@ import styles from './Accordion.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Accordion({ title, children, className, primary, outline, icon_none = false }) {
-    const [isActive, setIsActive] = useState(false);
+function Accordion({ title, children, className, primary, outline, icon_none = false, active = false }) {
+    const [isActive, setIsActive] = useState(active);
 
     const classes = cx('content', {
         [className]: className,

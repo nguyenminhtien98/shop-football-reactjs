@@ -117,7 +117,7 @@ function MenuMobile({ handleClose, isOpen, setIsOpen }) {
                     </Link>
                     {currentUser ? (
                         <>
-                            <p className={cx('menu-item')}>{currentUser.email}</p>
+                            <p className={cx('menu-item', 'logged')}>{currentUser.email}</p>
                             <p onClick={handleLogOut} className={cx('menu-item')}>
                                 đăng xuất
                             </p>

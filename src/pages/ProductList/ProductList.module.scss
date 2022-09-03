@@ -1,31 +1,35 @@
 @import '../../components/GlobalStyles/mixins';
 
-.container {
-    height: 100%;
-    width: 90.5%;
-    margin: auto;
-}
+.products-list_page {
+    .container {
+        height: 100%;
+        width: 90.5%;
+        margin: auto;
+    }
 
-.top-title-filter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.top-title {
-    h4 {
-        font-size: 4rem;
-        font-weight: 400;
-        text-transform: uppercase;
-
-        @include mobile {
-            font-size: 3rem;
+    .top {
+        .top-title-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        span {
-            font-size: 1.5rem;
-            color: var(--text-hover);
+        .top-title {
+            h4 {
+                font-size: 4rem;
+                font-weight: 400;
+                text-transform: uppercase;
+
+                @include mobile {
+                    font-size: 3rem;
+                }
+
+                span {
+                    font-size: 1.5rem;
+                    color: var(--text-hover);
+                }
+            }
         }
     }
 }
@@ -35,13 +39,15 @@
     text-transform: none;
 }
 
-.btn-filter_mobile {
-    display: flex;
-    align-items: center;
-    margin-left: 15px;
+.top-filter {
+    .btn-filter_mobile {
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
 
-    .icon-filter {
-        font-size: 1.8rem;
+        .icon-filter {
+            font-size: 1.8rem;
+        }
     }
 }
 

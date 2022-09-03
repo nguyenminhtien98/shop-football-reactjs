@@ -104,7 +104,7 @@ function ProductDetails() {
 
     return (
         <Helmet title={thisProduct.name}>
-            <div className={cx('detail-product')}>
+            <div className={cx('detail-product-page')}>
                 <ProductView product={thisProduct} category={thisCategory} children={renderRelatedProducts()} />
             </div>
         </Helmet>

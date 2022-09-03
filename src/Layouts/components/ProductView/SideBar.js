@@ -61,7 +61,7 @@ function SideBar({ category, product }) {
     };
     const handleCloseSizeChart = () => {
         setSizeChart(false);
-        document.body.style = '';
+        document.body.style.overflow = '';
     };
 
     // add cart

@@ -7,8 +7,10 @@
     transform: translateX(-100%);
     background-color: var(--white-color);
     z-index: 99999;
-    transition: transform 500ms;
-    // transition: transform 0.5s ease-out;
+    -webkit-transition: transform 500ms ease-out;
+    -moz-transition: transform 500ms ease-out;
+    -o-transition: transform 500ms ease-out;
+    transition: transform 500ms ease-out;
 }
 
 .open {
@@ -45,7 +47,7 @@
 
 .logo {
     position: absolute;
-    background: url(../../../../assets/images/logo.png);
+    background: url(../../../../assets/images/logo192.png);
     left: 0;
     right: 0;
     margin: auto;
@@ -75,7 +77,6 @@
 .content {
     max-height: 100vh;
     min-height: 100vh;
-    overflow-y: scroll;
 }
 
 .menu-item {
@@ -88,6 +89,10 @@
     &:not(:last-child) {
         margin-bottom: 10px;
     }
+}
+
+.logged {
+    text-transform: none;
 }
 
 .bottom {

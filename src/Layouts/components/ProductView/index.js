@@ -87,7 +87,7 @@ function ProductView({ product, category, children }) {
     };
 
     return (
-        <div className={cx('product-info')}>
+        <div className={cx('product-view')}>
             <div className="row no-gutters">
                 <div className={cx('content', 'l-7', 'c-12')}>
                     {/* hiển thị slide images product trên mobile */}
@@ -143,7 +143,7 @@ function ProductView({ product, category, children }) {
                     {windowSize.width > isTables && renderMoreImages()}
 
                     <div className={cx('container')}>
-                        <Accordion title={'thông tin chi tiết'} primary children={thisProduct.info} />
+                        <Accordion active="true" title={'thông tin chi tiết'} primary children={thisProduct.info} />
                         <Accordion title={'Chăm Sóc'} primary children={thisProduct.info} />
                         {children}
                     </div>
