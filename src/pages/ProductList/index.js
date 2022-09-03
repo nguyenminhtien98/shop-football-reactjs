@@ -124,7 +124,13 @@ const ProductList = () => {
                                     </Button>
                                 )}
 
-                                <Modal isShowing={isShowing} hide={toggle} title={'Lọc Sản Phẩm'} className="right">
+                                <Modal
+                                    isShowing={isShowing}
+                                    hide={toggle}
+                                    title={'Lọc Sản Phẩm'}
+                                    className="right"
+                                    fullWidth="full-width"
+                                >
                                     <ProductFilters
                                         data={productList}
                                         setProducts={setProducts}
