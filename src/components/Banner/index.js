@@ -24,7 +24,7 @@ function Banner({ data }) {
                                     <Button
                                         primary
                                         large
-                                        to={item.slug}
+                                        to={`product-details/${item.slug}`}
                                         rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
                                     >
                                         Mua ngay

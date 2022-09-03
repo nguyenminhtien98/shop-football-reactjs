@@ -1,9 +1,9 @@
 export const bannerData = [
     {
         id: 1,
-        title: 'nike soccer progress pack',
+        title: 'nike phantom gt-2 elite fg',
         image: 'images/images-banner/banner-nike-football.png',
-        slug: 'nike-soccer-progress-pack',
+        slug: 'nike-phantom-gt2-elite-fg',
         status: 1,
     },
     {
