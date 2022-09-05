@@ -1,8 +1,10 @@
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { helpDataTop } from '~/assets/FakeData/help_data';
 import Accordion from '~/components/Accordion';
+import fire from '~/FireBase/fire';
 import styles from './Help.module.scss';
 
 const cx = classNames.bind(styles);
@@ -13,6 +15,15 @@ function Help() {
     const handleToLogin = () => {
         navigate('/account-login');
     };
+
+    //lấy email nếu người ngưf dờui fu ndgdax đăng nhập
+    const [currentUser, setCurrentUser] = useState();
+
+    useEffect(() => {
+        fire.auth().onAuthStateChanged((user) => {
+            setCurrentUser(user);
+        });
+    }, []);
 
     return (
         <div className={cx('help-page')}>
@@ -43,10 +54,11 @@ function Help() {
                                         trạng thái giao hàng hoặc sắp xếp việc đổi hoặc trả hàng.
                                     </p>
                                 </div>
-
-                                <button className={cx('teaser-btn')} onClick={handleToLogin}>
-                                    <p>Đăng Nhập</p>
-                                </button>
+                                {!currentUser && (
+                                    <button className={cx('teaser-btn')} onClick={handleToLogin}>
+                                        <p>Đăng Nhập</p>
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className={cx('col', 'l-6', 'm-12', 'c-12')}>

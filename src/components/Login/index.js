@@ -19,6 +19,7 @@ function Login(props) {
         emailError,
         passwordError,
     } = props;
+
     return (
         <section className={cx(hasAccount ? 'form-register' : 'form-login')}>
             <Input

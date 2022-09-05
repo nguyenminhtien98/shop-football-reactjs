@@ -8,7 +8,6 @@ import ProductList from '~/pages/ProductList';
 import ProductDetails from '~/pages/ProductDetails';
 import Help from '~/pages/Help';
 import ThankYou from '~/pages/ThankYou';
-import AccountRegister from '~/pages/AccountRegister';
 import AccountLogin from '~/pages/AccountLogin';
 import Search from '~/pages/Search';
 import ComingSoon from '~/components/ComingSoon';
@@ -22,8 +21,7 @@ const publicRoutes = [
     { path: config.routes.productDetails, component: ProductDetails },
     { path: config.routes.about, component: About },
     { path: config.routes.help, component: Help },
-    { path: config.routes.accountRegister, component: AccountRegister },
-    { path: config.routes.accountLogin, component: AccountLogin },
+    { path: config.routes.account, component: AccountLogin },
     { path: config.routes.search, component: Search },
     { path: config.routes.orderTracker, component: ComingSoon },
     { path: config.routes.sizeChart, component: ComingSoon },

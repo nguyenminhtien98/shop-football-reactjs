@@ -19,6 +19,7 @@ import CartSummary from '~/components/CartSummary';
 import Accordion from '~/components/Accordion';
 
 import styles from './CheckOut.module.scss';
+import fire from '~/FireBase/fire';
 
 const cx = classNames.bind(styles);
 
@@ -151,6 +152,15 @@ function CheckOut() {
         navigate('/account-login');
     };
 
+    //lấy email nếu người ngưf dờui fu ndgdax đăng nhập
+    const [currentUser, setCurrentUser] = useState();
+
+    useEffect(() => {
+        fire.auth().onAuthStateChanged((user) => {
+            setCurrentUser(user);
+        });
+    }, []);
+
     return (
         <Helmet title="Thanh Toán">
             <div className={cx('check-out_page')}>
@@ -170,15 +180,18 @@ function CheckOut() {
                                 <div className={cx('left', 'l-8', 'c-12')}>
                                     <div className={cx('title')}>
                                         <h2>Thông Tin Giao Hàng</h2>
-                                        <Button
-                                            className={cx('checkout')}
-                                            large
-                                            primary
-                                            rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
-                                            onClick={goToLogin}
-                                        >
-                                            Đăng Nhập
-                                        </Button>
+
+                                        {!currentUser && (
+                                            <Button
+                                                className={cx('checkout')}
+                                                large
+                                                primary
+                                                rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
+                                                onClick={goToLogin}
+                                            >
+                                                Đăng Nhập
+                                            </Button>
+                                        )}
                                     </div>
                                     <div className={cx('form', 'row', 'sm-gutter')}>
                                         <Input
@@ -188,6 +201,7 @@ function CheckOut() {
                                             name={'firstname'}
                                             error={formErrors.firstname}
                                             handleChange={handleChange}
+                                            autoFocus
                                         />
                                         <Input
                                             label={'Họ *'}
@@ -208,7 +222,7 @@ function CheckOut() {
                                         <Input
                                             label={'Email *'}
                                             type={'text'}
-                                            value={orders.email}
+                                            value={currentUser ? currentUser.email : orders.email}
                                             name={'email'}
                                             error={formErrors.email}
                                             handleChange={handleChange}

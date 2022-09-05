@@ -65,10 +65,10 @@ function Header() {
                             </>
                         ) : (
                             <>
-                                <Link to="/account-login" className={cx('action-item')}>
+                                <Link to="/account" className={cx('action-item')}>
                                     đăng ký
                                 </Link>
-                                <Link to="/account-login" className={cx('action-item')}>
+                                <Link to="/account" className={cx('action-item')}>
                                     đăng nhập
                                 </Link>
                             </>
