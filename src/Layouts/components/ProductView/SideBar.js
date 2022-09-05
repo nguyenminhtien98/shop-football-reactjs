@@ -15,6 +15,7 @@ import numberWithCommas from '~/utils/numberWithCommas';
 import styles from './ProductView.module.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { WishlistsIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -97,13 +98,13 @@ function SideBar({ category, product }) {
         if (Math.ceil(Math.log10(product.sale_price + 1) !== 0)) {
             return (
                 <p className={cx('sale_price')}>
-                    <span>{numberWithCommas(product.price + 'đ')}</span>
-                    {numberWithCommas(product.sale_price + 'đ')}
+                    <span>{numberWithCommas(product.price + '₫')}</span>
+                    {numberWithCommas(product.sale_price + '₫')}
                 </p>
             );
         }
         if (Math.ceil(Math.log10(product.price + 1) !== 0)) {
-            return <p>{numberWithCommas(product.price + 'đ')}</p>;
+            return <p>{numberWithCommas(product.price + '₫')}</p>;
         }
     };
 
@@ -220,7 +221,8 @@ function SideBar({ category, product }) {
                                     Thêm Vào Giỏ Hàng
                                 </Button>
                                 <Button outline small className="t-1">
-                                    <FontAwesomeIcon icon={faHeart} />
+                                    {/* <FontAwesomeIcon icon={faHeart} /> */}
+                                    <WishlistsIcon className={cx('icon-wishlist')} />
                                 </Button>
                             </div>
                         </div>

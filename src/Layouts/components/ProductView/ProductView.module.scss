@@ -223,6 +223,8 @@
 
     .product-quantity__input {
         width: 43.25px;
+        display: flex;
+        justify-content: center;
     }
 
     .product-quantity__btn {
@@ -237,6 +239,14 @@
         .icon-btn {
             background-color: transparent;
         }
+    }
+}
+
+.icon-wishlist {
+    display: flex;
+
+    &:hover {
+        color: var(--text-highlight);
     }
 }
 

@@ -31,13 +31,13 @@ function ProductCardItem({
         if (Math.ceil(Math.log10(sale_price + 1) !== 0)) {
             return (
                 <p>
-                    <span>{numberWithCommas(price + 'đ')}</span>
-                    {numberWithCommas(sale_price + 'đ')}
+                    <span>{numberWithCommas(price + '₫')}</span>
+                    {numberWithCommas(sale_price + '₫')}
                 </p>
             );
         }
         if (Math.ceil(Math.log10(price + 1) !== 0)) {
-            return <p>{numberWithCommas(price + 'đ')}</p>;
+            return <p>{numberWithCommas(price + '₫')}</p>;
         }
     };
 
@@ -70,7 +70,6 @@ function ProductCardItem({
             <div className={cx('asset')}>
                 <button className={cx('wishlist')}>
                     <WishlistsIcon className={cx('fa-heart')} />
-                    {/* <FontAwesomeIcon className={cx('fa-heart')} icon={faHeart} /> */}
                 </button>
             </div>
             {sale === 1 && (

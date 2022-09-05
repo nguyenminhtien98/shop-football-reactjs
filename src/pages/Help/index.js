@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
 
 import { helpDataTop } from '~/assets/FakeData/help_data';
 import Accordion from '~/components/Accordion';
@@ -7,6 +8,12 @@ import styles from './Help.module.scss';
 const cx = classNames.bind(styles);
 
 function Help() {
+    const navigate = useNavigate();
+
+    const handleToLogin = () => {
+        navigate('/account-login');
+    };
+
     return (
         <div className={cx('help-page')}>
             <div className={cx('container')}>
@@ -37,7 +44,7 @@ function Help() {
                                     </p>
                                 </div>
 
-                                <button className={cx('teaser-btn')}>
+                                <button className={cx('teaser-btn')} onClick={handleToLogin}>
                                     <p>Đăng Nhập</p>
                                 </button>
                             </div>

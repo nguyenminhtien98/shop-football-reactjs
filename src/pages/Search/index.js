@@ -71,66 +71,64 @@ function Search() {
     };
 
     return (
-        <div className={cx('search-page')}>
-            <Helmet title={params.slug}>
-                <div className="products-list">
-                    <div className={cx('container')}>
-                        <div className={cx('top')}>
-                            <Breadcrumbs title={'Search'} />
-                            <div className={cx('top-title-filter')}>
-                                <div className={cx('top-title')}>
-                                    <h4>
-                                        Search | {params.slug} <span>[{products.length}]</span>
-                                    </h4>
-                                </div>
-                                <div className={cx('top-filter')} id="filter">
-                                    {windowSize.width < isTables ? (
-                                        <button className={cx('btn-filter_mobile')} onClick={toggle}>
-                                            <FontAwesomeIcon icon={faSlidersH} className={cx('icon-filter')} />
-                                        </button>
-                                    ) : (
-                                        <Button
-                                            className={cx('filter')}
-                                            outline
-                                            large
-                                            rightIcon={<FontAwesomeIcon icon={faSlidersH} />}
-                                            onClick={toggle}
-                                        >
-                                            Lọc Sản Phẩm
-                                        </Button>
-                                    )}
-
-                                    <Modal isShowing={isShowing} hide={toggle} title={'Lọc Sản Phẩm'}>
-                                        <ProductFilters
-                                            data={productList}
-                                            setProducts={setProducts}
-                                            categoryTitle={'search'}
-                                        />
-                                    </Modal>
-                                </div>
+        <Helmet title={params.slug}>
+            <div className={cx('search-page')}>
+                <div className={cx('container')}>
+                    <div className={cx('top')}>
+                        <Breadcrumbs title={'Search'} />
+                        <div className={cx('top-title-filter')}>
+                            <div className={cx('top-title')}>
+                                <h4>
+                                    Search | {params.slug} <span>[{products.length}]</span>
+                                </h4>
                             </div>
-                        </div>
-                        <div className={cx('main')}>
-                            <div className="row no-gutters">
-                                {renderProducts}
-                                <ReactPaginate
-                                    previousLabel={'Previous'}
-                                    nextLabel={'Next'}
-                                    pageCount={pageCount}
-                                    onPageChange={handleChangePage}
-                                    containerClassName={cx('pagination-btns')}
-                                    previousClassName={cx('previous-btn')}
-                                    nextClassName={cx('next-btn')}
-                                    pageClassName={cx('page-btn')}
-                                    disabledClassName={cx('disabled')}
-                                    activeClassName={cx('active')}
-                                />
+                            <div className={cx('top-filter')} id="filter">
+                                {windowSize.width < isTables ? (
+                                    <button className={cx('btn-filter_mobile')} onClick={toggle}>
+                                        <FontAwesomeIcon icon={faSlidersH} className={cx('icon-filter')} />
+                                    </button>
+                                ) : (
+                                    <Button
+                                        className={cx('filter')}
+                                        outline
+                                        large
+                                        rightIcon={<FontAwesomeIcon icon={faSlidersH} />}
+                                        onClick={toggle}
+                                    >
+                                        Lọc Sản Phẩm
+                                    </Button>
+                                )}
+
+                                <Modal isShowing={isShowing} hide={toggle} title={'Lọc Sản Phẩm'}>
+                                    <ProductFilters
+                                        data={productList}
+                                        setProducts={setProducts}
+                                        categoryTitle={'search'}
+                                    />
+                                </Modal>
                             </div>
                         </div>
                     </div>
+                    <div className={cx('main')}>
+                        <div className="row no-gutters">
+                            {renderProducts}
+                            <ReactPaginate
+                                previousLabel={'Previous'}
+                                nextLabel={'Next'}
+                                pageCount={pageCount}
+                                onPageChange={handleChangePage}
+                                containerClassName={cx('pagination-btns')}
+                                previousClassName={cx('previous-btn')}
+                                nextClassName={cx('next-btn')}
+                                pageClassName={cx('page-btn')}
+                                disabledClassName={cx('disabled')}
+                                activeClassName={cx('active')}
+                            />
+                        </div>
+                    </div>
                 </div>
-            </Helmet>
-        </div>
+            </div>
+        </Helmet>
     );
 }
 

@@ -63,7 +63,7 @@ function CartItem(props) {
                             </div>
                             <FontAwesomeIcon className={cx('action-item')} icon={faHeart} />
                             <FontAwesomeIcon
-                                className={cx('action-item')}
+                                className={cx('action-item', 'delete')}
                                 icon={faTrashAlt}
                                 onClick={() => removeCartItem()}
                             />

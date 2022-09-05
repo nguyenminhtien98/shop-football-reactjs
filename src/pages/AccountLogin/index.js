@@ -11,6 +11,10 @@ import styles from './Login.module.scss';
 const cx = classNames.bind(styles);
 
 function AccountLogin() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const navigate = useNavigate();
 
     const [user, setUser] = useState('');
@@ -35,6 +39,7 @@ function AccountLogin() {
         fire.auth()
             .signInWithEmailAndPassword(email, password)
             .catch((err) => {
+                // eslint-disable-next-line default-case
                 switch (err.code) {
                     case 'auth/invalid-email':
                     case 'auth/user-disabled':
@@ -53,6 +58,7 @@ function AccountLogin() {
         fire.auth()
             .createUserWithEmailAndPassword(email, password)
             .catch((err) => {
+                // eslint-disable-next-line default-case
                 switch (err.code) {
                     case 'auth/email-already-in-use':
                     case 'auth/invalid-email':

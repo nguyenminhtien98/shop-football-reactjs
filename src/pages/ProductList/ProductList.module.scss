@@ -1,6 +1,7 @@
 @import '../../components/GlobalStyles/mixins';
 
-.products-list_page {
+.products-list_page,
+.search-page {
     .container {
         height: 100%;
         width: 90.5%;

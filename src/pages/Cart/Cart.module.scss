@@ -150,6 +150,10 @@
                     padding-left: 0;
                 }
             }
+
+            .delete:hover {
+                color: var(--text-highlight);
+            }
         }
 
         .item_price {
