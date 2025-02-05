@@ -1,54 +1,23 @@
 /* eslint-disable array-callback-return */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowLeft, faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
-
 import ProductCardItem from '../ProductCard/ProductCardItem';
 import Buttons from './Buttons';
-import { productData } from '~/assets/FakeData/productData';
 import styles from './ProductSlider.module.scss';
 import { Link } from 'react-router-dom';
-
 import LazyLoad from 'react-lazy-load';
+import * as ProductSevice from '../../services/ProductService';
+import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
 function ProductSlider({ title, thisCategory, className, widthFull, hiddenScrollCategory }) {
-    const [itemProduct, setItemProduct] = useState(productData);
-
-    const menuItems = [
-        ...new Set(
-            productData.map((Val) => {
-                if (Val.category === thisCategory) {
-                    return Val.parent;
-                }
-            }),
-        ),
-    ];
-
-    const filterItem = (curcat) => {
-        const newItem = productData.filter((newVal) => {
-            return newVal.parent === curcat;
-        });
-        setItemProduct(newItem);
-    };
-
-    // renderScrollCategory
-    const renderScrollCategory = () => {
-        if (thisCategory) {
-            return (
-                <div className={cx('scroll-category')}>
-                    <ul className={cx('category-list')}>
-                        <Buttons filterItem={filterItem} setItem={setItemProduct} menuItems={menuItems} />
-                    </ul>
-                </div>
-            );
-        }
-    };
+    const [itemProduct, setItemProduct] = useState([]);
 
     // custom btn next, prev
     const SampleNextArrow = (props) => {
@@ -115,6 +84,50 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
         ],
     };
 
+    const fetchProduct = async () => {
+        const res = await ProductSevice.getAllProduct();
+        return res;
+    };
+    const { data: product } = useQuery({ queryKey: ['product'], queryFn: fetchProduct, retry: 3, retryDelay: 1000 });
+    const menuItems = [
+        ...new Set(
+            product?.data.map((Val) => {
+                if (Val.category === thisCategory) {
+                    return Val.parent;
+                }
+            }),
+        ),
+    ];
+
+    const filterItem = (curcat) => {
+        const newItem = product?.data.filter((newVal) => {
+            return newVal.parent === curcat;
+        });
+        if (curcat === 'all') {
+            setItemProduct(product?.data);
+        } else {
+            setItemProduct(newItem);
+        }
+    };
+
+    // renderScrollCategory
+    const renderScrollCategory = () => {
+        if (thisCategory) {
+            return (
+                <div className={cx('scroll-category')}>
+                    <ul className={cx('category-list')}>
+                        <Buttons filterItem={filterItem} menuItems={menuItems} />
+                    </ul>
+                </div>
+            );
+        }
+    };
+
+    useEffect(() => {
+        fetchProduct();
+        setItemProduct(product?.data);
+    }, [product?.data]);
+
     return (
         <div className={cx('products-slider', className)}>
             <div className={cx(widthFull ? 'width-full' : 'container')}>
@@ -128,19 +141,18 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 </header>
                 <div className={cx('main')}>
                     <Slider {...settings}>
-                        {itemProduct.map((item) => {
+                        {itemProduct?.map((item) => {
                             if (thisCategory ? item.category === thisCategory || item.parent === thisCategory : '') {
                                 return (
                                     <LazyLoad key={item.id}>
                                         <ProductCardItem
+                                            key={item.id}
                                             className="mgl-4"
                                             to={`/product-details/${item.slug}`}
-                                            avata={item.avata}
-                                            avataHover={item.avata_hover}
+                                            avata={item?.image}
                                             title={item.name}
-                                            category={item.giai_bong_da}
+                                            category={item.category}
                                             price={item.price}
-                                            sale_price={item.sale_price}
                                             sale={item.sale}
                                             New={item.new}
                                         />

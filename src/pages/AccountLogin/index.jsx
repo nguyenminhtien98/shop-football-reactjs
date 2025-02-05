@@ -1,12 +1,11 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-
-import fire from '~/FireBase/fire';
 import Login from '~/components/Login';
 import styles from './Login.module.scss';
+import { ToastContainer } from 'react-toastify';
+import SignUp from '~/components/SignUp';
 
 const cx = classNames.bind(styles);
 
@@ -15,13 +14,10 @@ function AccountLogin() {
         window.scrollTo(0, 0);
     }, []);
 
-    const navigate = useNavigate();
-
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
     const [hasAccount, setHasAccount] = useState(false);
 
     const clearInputs = () => {
@@ -31,90 +27,53 @@ function AccountLogin() {
 
     const clearErrors = () => {
         setEmailError('');
-        setPasswordError('');
     };
-
-    const handleLogin = () => {
-        clearErrors();
-        fire.auth()
-            .signInWithEmailAndPassword(email, password)
-            .catch((err) => {
-                // eslint-disable-next-line default-case
-                switch (err.code) {
-                    case 'auth/invalid-email':
-                    case 'auth/user-disabled':
-                    case 'auth/user-not-found':
-                        setEmailError(err.message);
-                        break;
-                    case 'auth/wrong-password':
-                        setPasswordError(err.message);
-                        break;
-                }
-            });
-    };
-
-    const handleSigup = () => {
-        clearErrors();
-        fire.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .catch((err) => {
-                // eslint-disable-next-line default-case
-                switch (err.code) {
-                    case 'auth/email-already-in-use':
-                    case 'auth/invalid-email':
-                        setEmailError(err.message);
-                        break;
-                    case 'auth/weak-password':
-                        setPasswordError(err.message);
-                        break;
-                }
-            });
-    };
-
-    const authListener = () => {
-        fire.auth().onAuthStateChanged((user) => {
-            if (user) {
-                clearInputs();
-                setUser(user);
-                navigate('/');
-            } else {
-                setUser('');
-            }
-        });
-    };
-
-    useEffect(() => {
-        authListener();
-    }, []);
 
     return (
         <div className={cx('login-page')}>
             <div className={cx('container')}>
                 <div className="row">
                     <div className={cx('l-6', 'c-12', 'login')}>
-                        <div className={cx('title')}>
-                            <h2>{hasAccount ? 'Đăng Ký' : 'Đăng Nhập'}</h2>
-                        </div>
-                        <Login
-                            email={email}
-                            setEmail={setEmail}
-                            password={password}
-                            setPassword={setPassword}
-                            handleLogin={handleLogin}
-                            handleSigup={handleSigup}
-                            hasAccount={hasAccount}
-                            setHasAccount={setHasAccount}
-                            emailError={emailError}
-                            passwordError={passwordError}
-                        />
+                        {!hasAccount ? (
+                            <div>
+                                <div className={cx('title')}>
+                                    <h2>Đăng Nhập</h2>
+                                </div>
+                                <Login
+                                    email={email}
+                                    setEmail={setEmail}
+                                    password={password}
+                                    setPassword={setPassword}
+                                    hasAccount={hasAccount}
+                                    setHasAccount={setHasAccount}
+                                    clearErrors={clearErrors}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <div className={cx('title')}>
+                                    <h2>Đăng Ký</h2>
+                                </div>
+                                <SignUp
+                                    email={email}
+                                    setEmail={setEmail}
+                                    password={password}
+                                    setPassword={setPassword}
+                                    hasAccount={hasAccount}
+                                    setHasAccount={setHasAccount}
+                                    clearInputs={clearInputs}
+                                    clearErrors={clearErrors}
+                                />
+                            </div>
+                        )}
                     </div>
                     <div className={cx('l-6', 'c-12', 'register')}>
                         <div className={cx('title')}>
-                            <h2>Tạo Một Tài Khoản</h2>
+                            <h2> Tạo Một Tài Khoản </h2>
                         </div>
                         <div className={cx('sub-title')}>
                             <p>
-                                Thật dễ dàng tạo một tài khoản. Hãy nhập địa chỉ email của bạn và điền vào biểu mẫu bên
+                                Thật dễ dàng tạo một tài khoản.Hãy nhập địa chỉ email của bạn và điền vào biểu mẫu bên
                                 và tận hưởng những lợi ích của việc sở hữu một tài khoản
                             </p>
                         </div>
@@ -159,6 +118,7 @@ function AccountLogin() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

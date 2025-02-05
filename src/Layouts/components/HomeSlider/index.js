@@ -5,13 +5,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
-
-// data
-import { featuredSliderData } from '~/assets/FakeData/featuredSliderData';
-import { best_new_products_data } from '~/assets/FakeData/bestNewProducts';
-
 import Button from '~/components/Button';
 import styles from './HomeSlider.module.scss';
+import * as FeaturedService from '../../../services/FeaturedService';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -28,14 +26,30 @@ function HomeSlider() {
         slidesToScroll: 1,
     };
 
+    // call api FeaturedHome
+    const fetchFeaturedHome = async () => {
+        const res = await FeaturedService.getFeaturedHome();
+        return res;
+    };
+    const { data: FeaturedHomeData } = useQuery({
+        queryKey: ['FeaturedHome'],
+        queryFn: fetchFeaturedHome,
+        retry: 3,
+        retryDelay: 1000,
+    });
+
+    useEffect(() => {
+        fetchFeaturedHome();
+    }, []);
+
     // render slider item
     const renderSliderItem = () => {
         // eslint-disable-next-line array-callback-return
-        return featuredSliderData.map((slideData) => {
+        return FeaturedHomeData?.data.map((slideData) => {
             // eslint-disable-next-line eqeqeq
-            const isStatus = slideData.status == 1;
+            const isSlide = slideData.slide;
             const isLogo = !!slideData.logo;
-            if (isStatus) {
+            if (isSlide) {
                 return (
                     <div className={cx('slider-item')} key={slideData.id}>
                         <img className={cx('slider-image')} src={slideData.image} alt={slideData.title} />
@@ -72,19 +86,15 @@ function HomeSlider() {
     // render best selling và new products
     const renderBestNewProductsItem = () => {
         // eslint-disable-next-line array-callback-return
-        return best_new_products_data.map((items) => {
-            // eslint-disable-next-line eqeqeq
-            const isBest = items.best_selling_products == 1;
-            // eslint-disable-next-line eqeqeq
-            const isNew = items.new_products == 1;
-            if (isBest || isNew) {
+        return FeaturedHomeData?.data.map((items) => {
+            if (!items.slide) {
                 return (
                     <div className={cx(items.code)} key={items.id}>
                         <Link to={`/product-list/${items.slug}`}>
                             <img className={cx('slider-image')} src={items.image} alt={items.title} />
                             <div className={cx('slider-content')}>
                                 <div className={cx('slider-title')}>
-                                    <h4>{items.title}</h4>
+                                    <h4>{items.name}</h4>
                                 </div>
                             </div>
                         </Link>

@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-
 import { WishlistsIcon, BagShoppingIcon } from '~/components/Icons';
 import useScrollingUp from '~/hooks/useScrollingUp';
 import Menu from '../../Menu';
@@ -18,14 +16,7 @@ function Header() {
     const cartItems = useSelector((state) => state.cartItems.value);
 
     // lấy thông tin user khi đã đăng nhập
-
-    const [currentUser, setCurrentUser] = useState();
-
-    useEffect(() => {
-        fire.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
-    }, []);
+    const user = useSelector((state) => state.user);
 
     // đăng xuất
     const handleLogOut = () => {
@@ -56,9 +47,9 @@ function Header() {
                         <Link to="/order-tracker" className={cx('action-item')}>
                             theo dõi đơn hàng
                         </Link>
-                        {currentUser ? (
+                        {user?.name ? (
                             <>
-                                <p className={cx('action-item')}>{currentUser.email}</p>
+                                <p className={cx('action-item')}>{user?.name}</p>
                                 <p onClick={handleLogOut} className={cx('action-item')}>
                                     đăng xuất
                                 </p>

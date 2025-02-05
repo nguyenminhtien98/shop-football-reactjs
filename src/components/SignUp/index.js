@@ -6,47 +6,42 @@ import { useMutationHooks } from '~/hooks/useMutationHooks';
 import * as UserSevice from '../../services/UserService';
 import { ToastContext } from '~/contexts/ToastProvider';
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '~/redux/User/userSlide';
 
 const cx = classNames.bind(styles);
 
-function Login(props) {
-    const { email, setEmail, password, setPassword, hasAccount, setHasAccount, clearErrors } = props;
+function SignUp(props) {
+    const {
+        email,
+        setEmail,
+        password,
+        setPassword,
+        hasAccount,
+        setHasAccount,
+        passwordError,
+        clearErrors,
+        clearInputs,
+    } = props;
 
-    const navigate = useNavigate();
     const { toast } = useContext(ToastContext);
-    const dispatch = useDispatch();
-
-    // call api login
-    const mutation = useMutationHooks((data) => UserSevice.loginUser(data));
+    // call api sign up
+    const mutation = useMutationHooks((data) => UserSevice.signupUser(data));
     const { data, isSuccess } = mutation;
 
-    const handleLogin = () => {
-        mutation.mutate({ email, password });
+    const handleSigup = () => {
+        mutation.mutate({
+            email,
+            password,
+        });
     };
 
     useEffect(() => {
         if (isSuccess && data?.status === 'OK') {
-            toast.success('Đăng nhập thành công');
+            toast.success('Đăng ký tài khoản thành công');
+            setHasAccount(false);
             clearErrors();
-            navigate('/');
-            localStorage.setItem('access_token', JSON.stringify(data?.access_token));
-            if (data?.access_token) {
-                const decoded = jwtDecode(data?.access_token);
-                if (decoded?.id) {
-                    handleGetDetailUser(decoded?.id, data?.access_token);
-                }
-            }
+            clearInputs();
         }
     }, [isSuccess]);
-
-    const handleGetDetailUser = async (id, token) => {
-        const res = await UserSevice.getDetailsUser(id, token);
-        dispatch(updateUser({ ...res?.data, access_token: token }));
-    };
 
     return (
         <section className={cx(hasAccount ? 'form-register' : 'form-login')}>
@@ -66,18 +61,19 @@ function Login(props) {
                 type={'password'}
                 value={password}
                 name={'password'}
+                error={passwordError}
                 handleChange={(e) => setPassword(e.target.value)}
             />
             <div className={cx(hasAccount ? 'register-btn' : 'form-btn')}>
-                <Button primary large onClick={handleLogin}>
-                    Đăng Nhập
+                <Button primary large onClick={handleSigup}>
+                    Đăng Ký
                 </Button>
                 <p>
-                    Bạn chưa có tài khoản ? <span onClick={() => setHasAccount(!hasAccount)}> Đăng Ký </span>
+                    Bạn đã có tài khoản ? <span onClick={() => setHasAccount(!hasAccount)}> Đăng Nhập </span>
                 </p>
             </div>
         </section>
     );
 }
 
-export default Login;
+export default SignUp;

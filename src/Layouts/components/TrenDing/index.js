@@ -4,11 +4,12 @@ import classNames from 'classnames/bind';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-import { productData } from '~/assets/FakeData/productData';
 import styles from './TrenDing.module.scss';
 import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
+import * as ProductSevice from '../../../services/ProductService';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -66,6 +67,21 @@ function TrenDing({ title }) {
         ],
     };
 
+    const fetchProductTrending = async () => {
+        const res = await ProductSevice.getProductTrending('trending');
+        return res;
+    };
+    const { data: product } = useQuery({
+        queryKey: ['productTrending'],
+        queryFn: fetchProductTrending,
+        retry: 3,
+        retryDelay: 1000,
+    });
+
+    useEffect(() => {
+        fetchProductTrending();
+    }, []);
+
     return (
         <div className={cx('trending')}>
             <div className={cx('container')}>
@@ -75,28 +91,26 @@ function TrenDing({ title }) {
                 <div className={cx('main')}>
                     <Slider {...settings}>
                         {/* eslint-disable-next-line array-callback-return */}
-                        {productData.map((item) => {
-                            if (item.trending === 1) {
-                                return (
-                                    <LazyLoad key={item.id}>
-                                        <div className={cx('item')}>
-                                            <Link to={`product-details/${item.slug}`}>
-                                                <div className={cx('media')}>
-                                                    <video autoPlay="autoPlay" loop="loop" muted id={item.id}>
-                                                        <source src={`../../storys/${item.story}`} type="video/mp4" />
-                                                    </video>
-                                                </div>
-                                                <div className={cx('name')}>
-                                                    <h4>{item.name}</h4>
-                                                </div>
-                                                <div className={cx('summary')}>
-                                                    <p>{item.summary}</p>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </LazyLoad>
-                                );
-                            }
+                        {product?.data.map((item) => {
+                            return (
+                                <LazyLoad key={item.id}>
+                                    <div className={cx('item')}>
+                                        <Link to={`product-details/${item.slug}`}>
+                                            <div className={cx('media')}>
+                                                <video autoPlay="autoPlay" loop="loop" muted id={item.id}>
+                                                    <source src={`../../storys/${item.story}`} type="video/mp4" />
+                                                </video>
+                                            </div>
+                                            <div className={cx('name')}>
+                                                <h4>{item.name}</h4>
+                                            </div>
+                                            <div className={cx('summary')}>
+                                                <p>{item.description_story}</p>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </LazyLoad>
+                            );
                         })}
                     </Slider>
                 </div>

@@ -1,4 +1,4 @@
-export const featuredSliderData = [
+export const FeaturedHomeData = [
     {
         id: 1,
         title: 'Man utd 22/23 home kit',

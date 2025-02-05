@@ -1,0 +1,25 @@
+@import '../../components/GlobalStyles/mixins';
+
+.custom-form {
+    width: 80%;
+    margin-bottom: 35px;
+
+    @include mobile {
+        width: 100%;
+    }
+}
+
+@include mobile {
+}
+
+.register-btn,
+.form-btn {
+    p {
+        margin: 15px 0;
+
+        span {
+            color: var(--text-highlight);
+            cursor: pointer;
+        }
+    }
+}

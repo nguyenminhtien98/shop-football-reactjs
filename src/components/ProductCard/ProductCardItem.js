@@ -1,38 +1,24 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-
 import numberWithCommas from '~/utils/numberWithCommas';
 import styles from './ProductCard.module.scss';
 import { WishlistsIcon } from '../Icons';
 
 const cx = classNames.bind(styles);
 
-function ProductCardItem({
-    className,
-    fullHeight,
-    to,
-    avata,
-    avataHover,
-    title,
-    category,
-    price,
-    sale_price,
-    sale,
-    New,
-    custom_card,
-}) {
+function ProductCardItem({ className, fullHeight, to, avata, title, price, sale, New, custom_card, key }) {
     const classes = cx('item', {
         custom_card,
         [className]: className,
     });
 
     const renderPrice = () => {
-        if (Math.ceil(Math.log10(sale_price + 1) !== 0)) {
+        if (sale !== 0) {
             return (
                 <p>
                     <span>{numberWithCommas(price + '₫')}</span>
-                    {numberWithCommas(sale_price + '₫')}
+                    {numberWithCommas(price * (sale / 100) + '₫')}
                 </p>
             );
         }
@@ -42,21 +28,21 @@ function ProductCardItem({
     };
 
     return (
-        <div className={classes}>
+        <div className={classes} key={key}>
             <div className={cx('images_price')}>
                 <Link to={to}>
                     <img
                         className={cx('avata', { fullHeight })}
-                        src={`../../images/images-product/${avata}`}
+                        src={`../../images/images-product/${avata ? avata[0] : ''}`}
                         alt={title}
+                        key={key}
                     />
-                    {avataHover.length > 0 && (
-                        <img
-                            className={cx('avata-hover', { fullHeight })}
-                            src={`../../images/images-product/${avataHover}`}
-                            alt={title}
-                        />
-                    )}
+                    <img
+                        className={cx('avata-hover', { fullHeight })}
+                        src={`../../images/images-product/${avata ? avata[1] : ''}`}
+                        alt={title}
+                        key={key}
+                    />
                     <div className={cx('price')}>{renderPrice()}</div>
                 </Link>
             </div>
@@ -64,7 +50,6 @@ function ProductCardItem({
             <Link to={to}>
                 <div className={cx('details')}>
                     <p className={cx('title')}>{title}</p>
-                    <p className={cx('category')}>{category}</p>
                 </div>
             </Link>
             <div className={cx('asset')}>
@@ -72,7 +57,7 @@ function ProductCardItem({
                     <WishlistsIcon className={cx('fa-heart')} />
                 </button>
             </div>
-            {sale === 1 && (
+            {sale > 0 && (
                 <div className={cx('sale')}>
                     <span>Sale</span>
                 </div>
@@ -90,9 +75,7 @@ ProductCardItem.prototype = {
     className: PropTypes.string,
     to: PropTypes.string.isRequired,
     avata: PropTypes.string.isRequired,
-    avataHover: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
 };
 

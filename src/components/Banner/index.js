@@ -1,40 +1,49 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
-
 import styles from './Banner.module.scss';
 import Button from '../Button';
+import * as BannerSevice from '../../services/BannerService';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function Banner({ data }) {
+function Banner() {
+    const fetchBanner = async () => {
+        const res = await BannerSevice.getBannerByLocation('home');
+        return res;
+    };
+    const { data: banner } = useQuery({ queryKey: ['banner'], queryFn: fetchBanner, retry: 3, retryDelay: 1000 });
+    console.log('banner', banner?.data);
+
+    useEffect(() => {
+        fetchBanner();
+    }, [banner?.data]);
+
     return (
         <div className={cx('banner')}>
             {/* eslint-disable-next-line array-callback-return */}
-            {data.map((item) => {
-                if (item.status === 1) {
-                    return (
-                        <div className={cx('container')} key={item.id}>
-                            <div className={cx('image')}>
-                                <img src={item.image} alt={item.title} />
-                            </div>
-                            <div className={cx('info')}>
-                                <div className={cx('title')}>{item.title}</div>
-                                <div className={cx('banner-btn')}>
-                                    <Button
-                                        primary
-                                        large
-                                        to={`product-details/${item.slug}`}
-                                        rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
-                                    >
-                                        Mua ngay
-                                    </Button>
-                                </div>
-                            </div>
+            {banner?.data.status && (
+                <div className={cx('container')} key={banner?.data.id}>
+                    <div className={cx('image')}>
+                        <img src={banner?.data.image} alt={banner?.data.title} />
+                    </div>
+                    <div className={cx('info')}>
+                        <div className={cx('title')}>{banner?.data.title}</div>
+                        <div className={cx('banner-btn')}>
+                            <Button
+                                primary
+                                large
+                                to={`product-details/${banner?.data.slug}`}
+                                rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
+                            >
+                                Mua ngay
+                            </Button>
                         </div>
-                    );
-                }
-            })}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

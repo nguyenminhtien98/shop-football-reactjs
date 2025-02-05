@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-
-import { productData } from '~/assets/FakeData/productData';
 import styles from './ProductSlider.module.scss';
-
 const cx = classNames.bind(styles);
-
-function Buttons({ filterItem, setItem, menuItems }) {
+function Buttons({ filterItem, menuItems }) {
     const [activeCategory, setActiveCategory] = useState('active-default');
 
     return (
@@ -15,7 +11,7 @@ function Buttons({ filterItem, setItem, menuItems }) {
                 <button
                     className={cx('category-link')}
                     onClick={() => {
-                        setItem(productData);
+                        filterItem('all');
                         setActiveCategory('active-default');
                     }}
                 >
