@@ -37,7 +37,7 @@ const MenuItems = ({ items, depthLevel }) => {
 
     return (
         <li className={cx('menu-items')} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            {items.submenu ? (
+            {items.subMenu ? (
                 <>
                     <Link
                         className={cx('menu-link')}
@@ -46,25 +46,24 @@ const MenuItems = ({ items, depthLevel }) => {
                         aria-expanded={dropdown ? 'true' : 'false'}
                         onClick={() => setDropdown((prev) => !prev)}
                     >
-                        {items.title}{' '}
+                        {items.name}
                     </Link>
-
                     <Dropdown
                         depthLevel={depthLevel}
-                        submenus={items.submenu}
+                        submenus={items.subMenu}
                         setDropdown={setDropdown}
                         dropdown={dropdown}
                         parent_slug={items.slug}
-                        parent_title={items.title}
+                        parent_title={items.name}
                     />
                 </>
-            ) : items.id === 6 ? (
+            ) : items.slug === "about" ? (
                 <Link to={`/${items.slug}`} className={cx('menu-link')}>
-                    {items.title}
+                    {items.name}
                 </Link>
             ) : (
-                <Link to={`/product-list/${items.slug}`} className={cx('menu-link', items.id === 5 && 'highlight')}>
-                    {items.title}
+                <Link to={`/product-list/${items.slug}`} className={cx('menu-link', items.slug === "sale" && 'highlight')}>
+                    {items.name}
                 </Link>
             )}
         </li>
