@@ -3,7 +3,6 @@ import { faCheck, faExchange, faHeart, faLongArrowRight, faMinus, faPlus } from 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { addItem } from '~/redux/shoppingCart/cartItemsSlide';
 import CartModal from '~/components/CartModal';
 import Button from '~/components/Button';
@@ -11,7 +10,6 @@ import Modal from '~/components/Modal';
 import useModal from '~/hooks/useModal';
 import useWindowSize from '~/hooks/useWindowSize';
 import numberWithCommas from '~/utils/numberWithCommas';
-
 import styles from './ProductView.module.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -73,7 +71,7 @@ function SideBar({ category, product }) {
                     slug: product.slug,
                     size: size,
                     quantity: quantity,
-                    price: product.price,
+                    price: product.sale > 0 ? product?.price * (product?.sale / 100) : product.price,
                 }),
             );
             toggle();
@@ -95,16 +93,16 @@ function SideBar({ category, product }) {
 
     //render price
     const renderPrice = () => {
-        if (Math.ceil(Math.log10(product.sale_price + 1) !== 0)) {
+        if (product?.sale !== 0) {
             return (
                 <p className={cx('sale_price')}>
-                    <span>{numberWithCommas(product.price + '₫')}</span>
-                    {numberWithCommas(product.sale_price + '₫')}
+                    <span>{numberWithCommas(product?.price + '₫')}</span>
+                    {numberWithCommas(product?.price * (product?.sale / 100) + '₫')}
                 </p>
             );
         }
-        if (Math.ceil(Math.log10(product.price + 1) !== 0)) {
-            return <p>{numberWithCommas(product.price + '₫')}</p>;
+        if (Math.ceil(Math.log10(product?.price + 1) !== 0)) {
+            return <p>{numberWithCommas(product?.price + '₫')}</p>;
         }
     };
 
@@ -114,7 +112,7 @@ function SideBar({ category, product }) {
                 <div className={cx('product-info__mobile')}>
                     <div className={cx('product-info__header')}>
                         <div className={cx('product-info__name')}>
-                            <h4>{product.name}</h4>
+                            <h4>{product?.name}</h4>
                         </div>
                         <div className={cx('product-info__price')}>{renderPrice()}</div>
                     </div>
@@ -137,7 +135,7 @@ function SideBar({ category, product }) {
                                     </button>
                                 </div>
                                 <div className={cx('size-list')}>
-                                    {product.size.map((item, index) => {
+                                    {product?.size.map((item, index) => {
                                         return (
                                             <div
                                                 className={cx('size-option', size === item ? 'active' : '')}
@@ -159,10 +157,10 @@ function SideBar({ category, product }) {
             ) : (
                 <div className={cx('product-info__desktop')}>
                     <div className={cx('category')}>
-                        <p>{category.title}</p>
+                        <p>{category}</p>
                     </div>
                     <div className={cx('product-name')}>
-                        <h1>{product.name}</h1>
+                        <h1>{product?.name}</h1>
                     </div>
                     <div className={cx('product-price')}>{renderPrice()}</div>
                     <div className={cx('product-size')}>
@@ -175,7 +173,7 @@ function SideBar({ category, product }) {
                                 <div className={cx('size-chart__modal')}>
                                     <div className={cx('overlay')} onClick={handleCloseSizeChart}></div>
                                     <div className={cx('size-chart-modal__main')}>
-                                        {product.category === 'giay' ? (
+                                        {product?.category === 'giay' ? (
                                             <img src="../../images/size-giay.png" alt="size-chart" />
                                         ) : (
                                             <img src="../../images/size-chart.png" alt="size-chart" />
@@ -185,7 +183,7 @@ function SideBar({ category, product }) {
                             )}
                         </div>
                         <div className="row sm-gutter">
-                            {product.size.map((item, index) => {
+                            {product?.size.map((item, index) => {
                                 return (
                                     <div
                                         className={cx('size-item', size === item ? 'size-active' : '')}

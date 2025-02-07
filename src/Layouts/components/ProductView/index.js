@@ -11,18 +11,17 @@ import Button from '~/components/Button';
 import Accordion from '~/components/Accordion';
 import SideBar from './SideBar';
 import useWindowSize from '~/hooks/useWindowSize';
-
 import styles from './ProductView.module.scss';
 import { useParams } from 'react-router-dom';
-
 const cx = classNames.bind(styles);
 
 function ProductView({ product, category, children }) {
     const { slug } = useParams();
-
     const thisProduct = product;
     const thisCategory = category;
     const [seeMoreImage, setSeeMoreImage] = useState(false);
+
+    console.log("thisCategory", thisCategory)
 
     // set lại seeMoreImage khi param thay đổi
     useEffect(() => {
@@ -69,16 +68,19 @@ function ProductView({ product, category, children }) {
             <>
                 <div className={cx('gallery-view-see-more', seeMoreImage ? 'active' : '')}>
                     <div className="row sm-gutter">
-                        {thisProduct.images.map((image, index) => {
-                            return (
-                                <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')} key={index}>
-                                    <img src={`../../images/images-product/${image}`} alt={thisProduct.title} />
-                                </div>
-                            );
-                        })}
+                        {thisProduct &&
+                            thisProduct?.image.map((image, index) => {
+                                if (index > 1) {
+                                    return (
+                                        <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')} key={index}>
+                                            <img src={`../../images/images-product/${image}`} alt={thisProduct.name} />
+                                        </div>
+                                    );
+                                }
+                            })}
                     </div>
                 </div>
-                {thisProduct.images.length > 0 && (
+                {thisProduct?.image.length > 0 && (
                     <div className={cx('gallery-btn')}>
                         <Button
                             primary
@@ -102,23 +104,32 @@ function ProductView({ product, category, children }) {
                     {windowSize.width < isMobile ? (
                         <div className={cx('images-slider')}>
                             <Slider {...settings}>
-                                <img src={`../../images/images-product/${thisProduct.avata}`} alt={thisProduct.title} />
                                 <img
-                                    src={`../../images/images-product/${thisProduct.avata_hover}`}
-                                    alt={thisProduct.title}
+                                    src={`../../images/images-product/${thisProduct && thisProduct?.image[0]}`}
+                                    alt={thisProduct && thisProduct?._id}
+                                    key={thisProduct && thisProduct?._id}
                                 />
-                                {thisProduct.images.map((image, index) => {
-                                    return (
-                                        <img
-                                            src={`../../images/images-product/${image}`}
-                                            alt={thisProduct.title}
-                                            key={index}
-                                        />
-                                    );
-                                })}
+                                <img
+                                    src={`../../images/images-product/${thisProduct && thisProduct?.image[1]}`}
+                                    alt=""
+                                    width="100"
+                                    height="50"
+                                />
+                                {thisProduct &&
+                                    thisProduct.image.map((image, index) => {
+                                        return (
+                                            <img
+                                                src={`../../images/images-product/${image}`}
+                                                alt={thisProduct.name}
+                                                key={index}
+                                            />
+                                        );
+                                    })}
                             </Slider>
-                            {thisProduct.new === 1 && <div className={cx('badge', 'new')}>New</div>}
-                            {thisProduct.sale === 1 && <div className={cx('badge', 'sale')}>Sale</div>}
+                            {thisProduct && thisProduct.productNew === true && (
+                                <div className={cx('badge', 'new')}>New</div>
+                            )}
+                            {thisProduct && thisProduct.sale !== 0 && <div className={cx('badge', 'sale')}>Sale</div>}
                         </div>
                     ) : (
                         // hiển thị images product trên tablet, laptop
@@ -126,16 +137,20 @@ function ProductView({ product, category, children }) {
                             <div className="row sm-gutter">
                                 <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                     <img
-                                        src={`../../images/images-product/${thisProduct.avata}`}
-                                        alt={thisProduct.title}
+                                        src={`../../images/images-product/${thisProduct && thisProduct?.image[0]}`}
+                                        alt={thisProduct && thisProduct?.name}
                                     />
-                                    {thisProduct.new === 1 && <div className={cx('badge', 'new')}>New</div>}
-                                    {thisProduct.sale === 1 && <div className={cx('badge', 'sale')}>Sale</div>}
+                                    {thisProduct && thisProduct.productNew && (
+                                        <div className={cx('badge', 'new')}>New</div>
+                                    )}
+                                    {thisProduct && thisProduct.sale !== 0 && (
+                                        <div className={cx('badge', 'sale')}>Sale</div>
+                                    )}
                                 </div>
                                 <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                     <img
-                                        src={`../../images/images-product/${thisProduct.avata_hover}`}
-                                        alt={thisProduct.title}
+                                        src={`../../images/images-product/${thisProduct && thisProduct?.image[1]}`}
+                                        alt={thisProduct && thisProduct.name}
                                     />
                                 </div>
                             </div>
@@ -144,15 +159,20 @@ function ProductView({ product, category, children }) {
 
                     {windowSize.width < isTables && (
                         <div className={cx('sidebar', 'l-5', 'm-12', 'c-12')}>
-                            <SideBar product={thisProduct} category={thisCategory} />
+                            <SideBar product={thisProduct && thisProduct} category={thisCategory} />
                         </div>
                     )}
 
                     {windowSize.width > isTables && renderMoreImages()}
 
                     <div className={cx('container')}>
-                        <Accordion active="true" title={'thông tin chi tiết'} primary children={thisProduct.info} />
-                        <Accordion title={'Chăm Sóc'} primary children={thisProduct.info} />
+                        <Accordion
+                            active="true"
+                            title={'thông tin chi tiết'}
+                            primary
+                            children={thisProduct && thisProduct?.description}
+                        />
+                        <Accordion title={'Chăm Sóc'} primary children={thisProduct && thisProduct.description} />
                         {children}
                     </div>
                 </div>
@@ -160,7 +180,7 @@ function ProductView({ product, category, children }) {
                 {windowSize.width > isTables && (
                     <div className={cx('sidebar', 'l-5')}>
                         <StickyBox offsetTop={50} offsetBottom={20}>
-                            <SideBar product={thisProduct} category={thisCategory} />
+                            <SideBar product={thisProduct && thisProduct} category={thisCategory} />
                         </StickyBox>
                     </div>
                 )}

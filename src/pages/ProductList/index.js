@@ -4,7 +4,6 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import ReactPaginate from 'react-paginate';
-
 import Helmet from '~/components/Helmet';
 import ProductCardItem from '~/components/ProductCard/ProductCardItem';
 import useModal from '~/hooks/useModal';
@@ -38,7 +37,7 @@ const ProductList = () => {
         return res;
     };
     const { data: category } = useQuery({ queryKey: ['category'], queryFn: fetchCategory, retry: 3, retryDelay: 1000 });
-    const [nameCategory, setNameCategory] = useState("")
+    const [nameCategory, setNameCategory] = useState('');
 
     useEffect(() => {
         ProductSevice.getProductBy(params?.slug)
@@ -48,30 +47,29 @@ const ProductList = () => {
             .catch((err) => {
                 console.log(err);
             });
-            if(params.slug === "ao-bong-da" || "giay" || "phu-kien") {
-                category?.data.find((item) => {
-                    if(item.slug === params.slug) {
-                        setNameCategory(item.name)
-                    }
-                })
-            }
-            if (params.slug !== "ao-bong-da" || "giay" || "phu-kien") {
-                products.find((item) => {
-                    if(item.parent_slug === params.slug) {
-                        setNameCategory(item.parent)
-                    }
-                })
-            }
+        if (params.slug === 'ao-bong-da' || 'giay' || 'phu-kien') {
+            category?.data.find((item) => {
+                if (item.slug === params.slug) {
+                    setNameCategory(item.name);
+                }
+            });
+        }
+        if (params.slug !== 'ao-bong-da' || 'giay' || 'phu-kien') {
+            products.find((item) => {
+                if (item.parent_slug === params.slug) {
+                    setNameCategory(item.parent);
+                }
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params?.slug]);
-
     const renderProducts = products?.slice(pagesVisited, pagesVisited + productsPerPage).map((item) => {
         return (
             <ProductCardItem
                 className="l-3 m-4 c-6"
                 custom_card
                 key={item.id}
-                to={`/product-details/${item.slug}`}
+                to={`/product-details/${item.slug}-${item._id}`}
                 fullHeight
                 avata={item.image}
                 title={item.name}

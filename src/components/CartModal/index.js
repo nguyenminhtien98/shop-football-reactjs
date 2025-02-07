@@ -3,10 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import Button from '../Button';
 import numberWithCommas from '~/utils/numberWithCommas';
-
 import styles from './CartModal.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,7 +13,6 @@ function CartModal({ product, size, quantity }) {
     // cart items
     const cartItems = useSelector((state) => state.cartItems.value);
     const totalPrice = cartItems.reduce((total, item) => total + Number(item.quantity) * Number(item.price), 0);
-
     // chuyển đến trang cart
     const navigate = useNavigate();
     const goToCart = () => {
@@ -32,7 +29,12 @@ function CartModal({ product, size, quantity }) {
                         <h3>{product.name}</h3>
                     </div>
                     <div className={cx('cart-item-price')}>
-                        <p>{numberWithCommas(product.price)}₫</p>
+                        <p>
+                            {product?.sale !== 0
+                                ? numberWithCommas(product?.price * (product?.sale / 100))
+                                : numberWithCommas(product.price)}
+                            ₫
+                        </p>
                     </div>
                     <div className={cx('cart-item-size')}>
                         <p>

@@ -4,24 +4,17 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowLeft, faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Slider from 'react-slick';
-
 import Helmet from '~/components/Helmet';
 import ProductView from '~/Layouts/components/ProductView';
 import ProductCardItem from '~/components/ProductCard/ProductCardItem';
-import { productData } from '~/assets/FakeData/productData';
-import { menuData } from '~/assets/FakeData/menuData';
 import styles from './ProductDetails.module.scss';
+import * as ProductSevice from '../../services/ProductService';
+import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
 function ProductDetails() {
-    const { slug } = useParams();
-    const thisProduct = productData.find((item) => item.slug === slug);
-    const thisCategory = menuData.find((item) => item.slug === thisProduct.category);
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [thisProduct]);
+    const params = useParams();
 
     const SampleNextArrow = (props) => {
         const { onClick } = props;
@@ -68,6 +61,24 @@ function ProductDetails() {
         ],
     };
 
+    // call api category
+    const fetchProduct = async () => {
+        const res = await ProductSevice.getProductDetail(params.slug, params.id);
+        return res;
+    };
+    const { data: Product } = useQuery({ queryKey: ['Product'], queryFn: fetchProduct, retry: 3, retryDelay: 1000 });
+
+    const fetchProductRelated = async () => {
+        const res = await ProductSevice.getProductBy(Product?.data.parent_slug);
+        return res;
+    };
+    const { data: productRelated } = useQuery({
+        queryKey: ['productRelated'],
+        queryFn: fetchProductRelated,
+        retry: 3,
+        retryDelay: 1000,
+    });
+
     const renderRelatedProducts = () => {
         return (
             <div className={cx('related-products')}>
@@ -77,19 +88,17 @@ function ProductDetails() {
                 <div className={cx('related-products__slider')}>
                     <Slider {...settings}>
                         {/* eslint-disable-next-line array-callback-return */}
-                        {productData.map((item) => {
-                            if (thisProduct.parent === item.parent && thisProduct.id !== item.id) {
+                        {productRelated?.data.map((item) => {
+                            if (Product?.data._id !== item._id) {
                                 return (
                                     <ProductCardItem
                                         key={item.id}
                                         className="l-12"
                                         to={`/product-details/${item.slug}`}
-                                        avata={item.avata}
-                                        avataHover={item.avata_hover}
+                                        avata={item.image}
                                         title={item.name}
                                         category={item.giai_bong_da}
                                         price={item.price}
-                                        sale_price={item.sale_price}
                                         sale={item.sale}
                                         New={item.new}
                                     />
@@ -102,10 +111,19 @@ function ProductDetails() {
         );
     };
 
+    useEffect(() => {
+        fetchProduct();
+        fetchProductRelated();
+    }, [params.id]);
+
     return (
-        <Helmet title={thisProduct.name}>
+        <Helmet title={Product?.data.name}>
             <div className={cx('detail-product-page')}>
-                <ProductView product={thisProduct} category={thisCategory} children={renderRelatedProducts()} />
+                <ProductView
+                    product={Product?.data}
+                    category={Product?.data.parent}
+                    children={renderRelatedProducts()}
+                />
             </div>
         </Helmet>
     );
