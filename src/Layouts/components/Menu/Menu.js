@@ -1,6 +1,5 @@
 // import PropTypes from 'prop-types';
 import MenuItems from './MenuItem';
-import { menuData } from '~/assets/FakeData/menuData';
 import * as CategorySevice from '../../../services/CategoryService';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -17,8 +16,6 @@ function Menu() {
     useEffect(() => {
         fetchCategory();
     }, [category?.data]);
-
-    console.log("category", category?.data)
 
     return (
         <nav>

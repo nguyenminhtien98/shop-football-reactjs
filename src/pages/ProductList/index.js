@@ -13,62 +13,59 @@ import useWindowSize from '~/hooks/useWindowSize';
 import Breadcrumbs from '~/components/Breadcrumbs';
 import Button from '~/components/Button';
 import ProductFilters from './ProductFilters';
-// import ProductsPagination from '~/components/ProductsPagination';
-import {
-    getProductBySlugCategory,
-    getProductByBestSelling,
-    getProductByNew,
-    getProductBySale,
-    productData,
-} from '~/assets/FakeData/productData';
-import { menuData } from '~/assets/FakeData/menuData';
-import { best_new_products_data } from '~/assets/FakeData/bestNewProducts';
 import styles from './ProductList.module.scss';
+import * as ProductSevice from '../../services/ProductService';
+import * as CategorySevice from '../../services/CategoryService';
+import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
 const ProductList = () => {
     const params = useParams();
-
     // window resize
     const isTables = 880;
     const windowSize = useWindowSize();
-
-    // modal
     const { isShowing, toggle } = useModal();
-
-    const thisCategory =
-        menuData.find((item) => item.slug === params.slug) ||
-        productData.find((item) => item.parent_slug === params.slug) ||
-        best_new_products_data.find((item) => item.slug === params.slug);
-
-    const paramItems = () => {
-        if (params.slug === 'new-arrvals') {
-            return getProductByNew();
-        } else if (params.slug === 'sale') {
-            return getProductBySale();
-        } else if (params.slug === 'best-selling') {
-            return getProductByBestSelling();
-        } else {
-            return getProductBySlugCategory(params.slug);
-        }
-    };
-
-    useEffect(() => {
-        getProductBySlugCategory();
-        setProducts(productList);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params]);
-
-    const productList = paramItems();
-    const [products, setProducts] = useState(productList);
-
-    // productPagination
+    const [products, setProducts] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const productsPerPage = 12;
     const pagesVisited = pageNumber * productsPerPage;
+    const pageCount = Math.ceil(products.length / productsPerPage);
 
-    const renderProducts = products.slice(pagesVisited, pagesVisited + productsPerPage).map((item) => {
+    // call api category
+    const fetchCategory = async () => {
+        const res = await CategorySevice.getCategory();
+        return res;
+    };
+    const { data: category } = useQuery({ queryKey: ['category'], queryFn: fetchCategory, retry: 3, retryDelay: 1000 });
+    const [nameCategory, setNameCategory] = useState("")
+
+    useEffect(() => {
+        ProductSevice.getProductBy(params?.slug)
+            .then((res) => {
+                setProducts(res?.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            if(params.slug === "ao-bong-da" || "giay" || "phu-kien") {
+                category?.data.find((item) => {
+                    if(item.slug === params.slug) {
+                        setNameCategory(item.name)
+                    }
+                })
+            }
+            if (params.slug !== "ao-bong-da" || "giay" || "phu-kien") {
+                products.find((item) => {
+                    if(item.parent_slug === params.slug) {
+                        setNameCategory(item.parent)
+                    }
+                })
+            }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params?.slug]);
+
+    const renderProducts = products?.slice(pagesVisited, pagesVisited + productsPerPage).map((item) => {
         return (
             <ProductCardItem
                 className="l-3 m-4 c-6"
@@ -76,19 +73,14 @@ const ProductList = () => {
                 key={item.id}
                 to={`/product-details/${item.slug}`}
                 fullHeight
-                avata={item.avata}
-                avataHover={item.avata_hover}
+                avata={item.image}
                 title={item.name}
-                category={item.giai_bong_da}
                 price={item.price}
-                sale_price={item.sale_price}
                 sale={item.sale}
                 New={item.new}
             />
         );
     });
-
-    const pageCount = Math.ceil(products.length / productsPerPage);
 
     const handleChangePage = ({ selected }) => {
         setPageNumber(selected);
@@ -96,15 +88,15 @@ const ProductList = () => {
     };
 
     return (
-        <Helmet title={thisCategory.title || thisCategory.parent}>
+        <Helmet title={nameCategory}>
             <div className={cx('products-list_page')}>
                 <div className={cx('container')}>
                     <div className={cx('top')}>
-                        <Breadcrumbs title={thisCategory.title || thisCategory.parent} />
+                        <Breadcrumbs title={nameCategory} />
                         <div className={cx('top-title-filter')}>
                             <div className={cx('top-title')}>
                                 <h4>
-                                    {thisCategory.title || thisCategory.parent} <span>[{products.length}]</span>
+                                    {nameCategory} <span>[{products.length}]</span>
                                 </h4>
                             </div>
                             <div className={cx('top-filter')} id="filter">
@@ -132,9 +124,9 @@ const ProductList = () => {
                                     fullWidth="full-width"
                                 >
                                     <ProductFilters
-                                        data={productList}
+                                        data={products}
                                         setProducts={setProducts}
-                                        categoryTitle={thisCategory.title || thisCategory.parent}
+                                        categoryTitle={nameCategory}
                                     />
                                 </Modal>
                             </div>

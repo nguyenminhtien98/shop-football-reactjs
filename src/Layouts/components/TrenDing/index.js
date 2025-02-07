@@ -68,7 +68,7 @@ function TrenDing({ title }) {
     };
 
     const fetchProductTrending = async () => {
-        const res = await ProductSevice.getProductTrending('trending');
+        const res = await ProductSevice.getProductBy('trending');
         return res;
     };
     const { data: product } = useQuery({

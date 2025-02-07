@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getProductBy = async(category) => {
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-product-by/${category}`)
+export const getProductBy = async(value) => {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-product-by/${value}`)
     return res.data;
 };
 
