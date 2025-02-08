@@ -2,7 +2,7 @@ const routes = {
     home: '/',
     cart: '/cart',
     checkout: '/checkout',
-    thankyou: '/thank-you',
+    thankyou: '/thank-you/:orderCode',
     productList: '/product-list/:slug',
     productDetails: '/product-details/:slug-:id',
     about: '/about',

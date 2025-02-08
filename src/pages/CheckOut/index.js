@@ -5,7 +5,6 @@ import { faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
-
 import Helmet from '~/components/Helmet';
 import CartItemsOrder from '~/components/CartItemsOrder';
 import { getCartItemsDetail } from '~/assets/FakeData/productData';
@@ -20,6 +19,8 @@ import Accordion from '~/components/Accordion';
 
 import styles from './CheckOut.module.scss';
 import fire from '~/FireBase/fire';
+import { useMutationHooks } from '~/hooks/useMutationHooks';
+import * as OrderSevice from '../../services/OrderService';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +33,10 @@ function CheckOut() {
     const cartItems = useSelector((state) => state.cartItems.value);
     const [cartProducts, setcartProducts] = useState(getCartItemsDetail(cartItems));
     const [totalPrice, settotalPrice] = useState(0);
+
+    //call api creat Order
+    const mutation = useMutationHooks((data) => OrderSevice.creatOrder(data));
+    const { isSuccess } = mutation;
 
     useEffect(() => {
         setcartProducts(getCartItemsDetail(cartItems));
@@ -88,33 +93,40 @@ function CheckOut() {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        setFormErrors(validate(orders));
         setIsSubmit(true);
         orders.payment_methods = deliveryMethod;
         if (Object.keys(formErrors).length === 0 && isSubmit) {
+            setFormErrors(validate(orders));
             localStorage.removeItem('cartItems');
-            navigate('/thank-you');
+            navigate(`/thank-you/${ma_don_hang}`);
         }
     };
 
+    const fullName = `${orders.lastname} ${orders.firstname}`;
+    const Address = `${orders.address}, ${orders.ward && orders.ward.label}, ${
+        orders.district && orders.district.label
+    }, ${orders.city && orders.city.label}`;
+
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            let data = localStorage.getItem('order');
-            let orderData = data ? JSON.parse(data) : [];
-            if (orderData.length > 0) {
-                orderData.push(orders);
-                localStorage.setItem('order', JSON.stringify(orderData));
-            } else {
-                localStorage.setItem('order', JSON.stringify(orders));
-                localStorage.setItem('product-order', JSON.stringify(cartProducts));
-            }
+            mutation.mutate({
+                orderCode: ma_don_hang,
+                orderItems: cartProducts,
+                name: fullName,
+                phone: orders.phone,
+                shippingAddress: Address,
+                paymentMethod: deliveryMethod,
+                totalPrice: totalPrice,
+                orderDate: date_time,
+                note: orders.note,
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formErrors]);
 
+    // validate from
     const validate = (values) => {
         const errors = {};
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
         const regex_number = /((09|03|07|08|05)+([0-9]{8})\b)/g;
         if (!values.firstname) {
             errors.firstname = 'Vui lòng điền tên của bạn';
@@ -126,11 +138,6 @@ function CheckOut() {
             errors.phone = 'Vui lòng điền số điện thoại của bạn';
         } else if (!regex_number.test(values.phone)) {
             errors.phone = 'Số điện thoại không tồn tại';
-        }
-        if (!values.email) {
-            errors.email = 'Vui lòng điền email của bạn';
-        } else if (!regex.test(values.email)) {
-            errors.email = 'Email không tồn tại';
         }
         if (!values.address) {
             errors.address = 'Vui lòng điền địa chỉ của bạn';
@@ -213,18 +220,10 @@ function CheckOut() {
                                         />
                                         <Input
                                             label={'Số Điện Thoại *'}
-                                            type={'text'}
+                                            type={'number'}
                                             value={orders.phone}
                                             name={'phone'}
                                             error={formErrors.phone}
-                                            handleChange={handleChange}
-                                        />
-                                        <Input
-                                            label={'Email *'}
-                                            type={'text'}
-                                            value={currentUser ? currentUser.email : orders.email}
-                                            name={'email'}
-                                            error={formErrors.email}
                                             handleChange={handleChange}
                                         />
                                         <Input
