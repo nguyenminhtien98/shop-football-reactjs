@@ -16,6 +16,7 @@ const publicRoutes = [
     { path: config.routes.home, component: Home },
     { path: config.routes.cart, component: Cart, layout: HeaderOnly },
     { path: config.routes.checkout, component: CheckOut },
+    { path: config.routes.thankYou, component: ThankYou },
     { path: config.routes.thankyou, component: ThankYou },
     { path: config.routes.productList, component: ProductList },
     { path: config.routes.productDetails, component: ProductDetails },

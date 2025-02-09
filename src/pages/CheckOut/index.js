@@ -25,15 +25,28 @@ import * as OrderSevice from '../../services/OrderService';
 const cx = classNames.bind(styles);
 
 function CheckOut() {
-    //LocationForm
-    const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
-    const { cityOptions, districtOptions, wardOptions, selectedCity, selectedDistrict, selectedWard } = state;
 
+    const navigate = useNavigate();
     // cartitem
     const cartItems = useSelector((state) => state.cartItems.value);
     const [cartProducts, setcartProducts] = useState(getCartItemsDetail(cartItems));
     const [totalPrice, settotalPrice] = useState(0);
-
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+    // delivery method
+    const [deliveryMethod, setDeliveryMethod] = useState('Thanh Toán Khi Giao Hàng (COD)');
+    //LocationForm
+    const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
+    const { cityOptions, districtOptions, wardOptions, selectedCity, selectedDistrict, selectedWard } = state;
+    // lấy ngày giờ hiện tại
+    const today = new Date();
+    const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    const date_time = date + '  ' + time;
+    // tạo mã đơn hàng
+    const random_number = Math.floor(Math.random() * (555555 - 10000)) + 10000;
+    // eslint-disable-next-line no-useless-concat
+    const ma_don_hang = random_number;
     //call api creat Order
     const mutation = useMutationHooks((data) => OrderSevice.creatOrder(data));
     const { isSuccess } = mutation;
@@ -43,25 +56,10 @@ function CheckOut() {
         settotalPrice(cartItems.reduce((total, item) => total + Number(item.quantity) * Number(item.price), 0));
     }, [cartItems]);
 
-    // delivery method
-    const [deliveryMethod, setDeliveryMethod] = useState('Thanh Toán Khi Giao Hàng (COD)');
-
     // validate form
     const handleRadioChange = (e) => {
         setDeliveryMethod(e.target.value);
     };
-
-    // lấy ngày giờ hiện tại
-    const today = new Date();
-    const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-    const date_time = date + '  ' + time;
-
-    // tạo mã đơn hàng
-    const random_number = Math.floor(Math.random() * (555555 - 10000)) + 10000;
-    // eslint-disable-next-line no-useless-concat
-    const ma_don_hang = '#' + '' + random_number;
-
     const initialValues = {
         ma_don_hang: ma_don_hang,
         firstname: '',
@@ -76,11 +74,7 @@ function CheckOut() {
         note: '',
         booking_date: date_time,
     };
-
     const [orders, setOrders] = useState(initialValues);
-    const [formErrors, setFormErrors] = useState({});
-    const [isSubmit, setIsSubmit] = useState(false);
-
     orders.city = selectedCity;
     orders.district = selectedDistrict;
     orders.ward = selectedWard;
@@ -90,15 +84,15 @@ function CheckOut() {
         setOrders({ ...orders, [name]: value });
     };
 
-    const navigate = useNavigate();
-
     const handleSubmit = (e) => {
         setIsSubmit(true);
-        orders.payment_methods = deliveryMethod;
+        setFormErrors(validate(orders));
+        if (orders.payment_methods !== deliveryMethod) {
+            alert('Phương thức Thanh toán chuyển khoản chưa hoạt động. Vui lòng chọn Thanh toán khi giao hàng (COD)!');
+        }
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            setFormErrors(validate(orders));
             localStorage.removeItem('cartItems');
-            navigate(`/thank-you/${ma_don_hang}`);
+            navigate(`/thank-you/${orders.ma_don_hang}`)
         }
     };
 
@@ -110,7 +104,7 @@ function CheckOut() {
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             mutation.mutate({
-                orderCode: ma_don_hang,
+                orderCode: orders.ma_don_hang,
                 orderItems: cartProducts,
                 name: fullName,
                 phone: orders.phone,

@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faCreditCard } from '@fortawesome/free-regular-svg-icons';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-
 import Helmet from '~/components/Helmet';
 import CartEmpty from '~/components/CartEmpty';
 import CartSummary from '~/components/CartSummary';
@@ -12,18 +11,25 @@ import Accordion from '~/components/Accordion';
 import StepsOrder from '~/components/StepsOrder';
 import StepItem from '~/components/StepsOrder/StepItem';
 import styles from './ThankYou.module.scss';
+import { useParams } from 'react-router-dom';
+import * as orderSevice from '../../services/OrderService';
+import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
 function ThankYou() {
-    const orderItems = localStorage.getItem('order') != null ? JSON.parse(localStorage.getItem('order')) : [];
-    const productOrder =
-        localStorage.getItem('product-order') != null ? JSON.parse(localStorage.getItem('product-order')) : [];
 
-    // tính tổng tiền và số lượng product order
-    const [totalPrice, settotalPrice] = useState(0);
+    const param = useParams();
+
+    // call api category
+    const fetchOrder = async () => {
+        const res = await orderSevice.getDetailOrder(param.orderCode);
+        return res;
+    };
+    const { data: order } = useQuery({ queryKey: ['order'], queryFn: fetchOrder, retry: 3, retryDelay: 1000 });
+
     useEffect(() => {
-        settotalPrice(productOrder.reduce((total, item) => total + Number(item.quantity) * Number(item.price), 0));
+        fetchOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -38,9 +44,7 @@ function ThankYou() {
                             <StepItem number={'3'} title={'Hoàn Thành Đơn Hàng'} className={'active'} />
                         </StepsOrder>
                     </div>
-                    {orderItems.length === 0 ? (
-                        <CartEmpty />
-                    ) : (
+                    {order && order?.message === 'SUCCESS' ? (
                         <>
                             <div className={cx('summary-order')}>
                                 <div className={cx('summary-order__item', 'title')}>
@@ -48,7 +52,7 @@ function ThankYou() {
                                 </div>
                                 <div className={cx('summary-order__item', 'sub-title')}>
                                     <p>
-                                        Đơn hàng <span>{orderItems.ma_don_hang}</span> của bạn đã đặt thành công!
+                                        Đơn hàng <span># {order?.data.orderCode}</span> của bạn đã đặt thành công!
                                     </p>
                                 </div>
                                 <div className={cx('summary-order__item', 'confirm')}>
@@ -59,7 +63,7 @@ function ThankYou() {
                                 <div className={cx('summary-order__item', 'time-placed')}>
                                     <FontAwesomeIcon className={cx('time-placed-icon')} icon={faClock} />
                                     <span className={cx('highlight')}>Thời gian đặt:</span>
-                                    <span>{orderItems.booking_date}</span>
+                                    <span>{order?.data.orderDate}</span>
                                 </div>
                             </div>
                             <div className={cx('content')}>
@@ -77,12 +81,8 @@ function ThankYou() {
                                                     <h4>Địa Chỉ</h4>
                                                 </div>
                                                 <div className={cx('order-detail-item_info')}>
-                                                    <h4 className={cx('item-info-name')}>
-                                                        {orderItems.lastname} {orderItems.firstname}
-                                                    </h4>
                                                     <p className={cx('item-info-address')}>
-                                                        {orderItems.address}, {orderItems.ward.label},{' '}
-                                                        {orderItems.district.label}, {orderItems.city.label}
+                                                        {order?.data.shippingAddress}
                                                     </p>
                                                 </div>
                                             </div>
@@ -97,21 +97,23 @@ function ThankYou() {
                                                     <h4>Chi Tiết Đơn Hàng</h4>
                                                 </div>
                                                 <div className={cx('order-detail-item_info')}>
-                                                    <h4 className={cx('item-info-name')}>
-                                                        {orderItems.lastname} {orderItems.firstname}
-                                                    </h4>
-                                                    <p className={cx('item-info-address')}>
-                                                        {orderItems.address}, {orderItems.ward.label},{' '}
-                                                        {orderItems.district.label}, {orderItems.city.label}
+                                                    <p className={cx('item-info-name')}>
+                                                        Họ và tên: <span>{order?.data.name}</span>
                                                     </p>
-                                                    <p className={cx('item-info-phone')}>{orderItems.phone}</p>
-                                                    <p className={cx('item-info-email')}>{orderItems.email}</p>
-                                                    {orderItems.note.length > 0 ? (
-                                                        <p className={cx('item-info-note')}>{orderItems.note}</p>
+                                                    <p className={cx('item-info-address')}>
+                                                        Địa chỉ: {order?.data.shippingAddress}
+                                                    </p>
+                                                    <p className={cx('item-info-phone')}>
+                                                        Số điện thoại: 0{order?.data.phone}
+                                                    </p>
+                                                    {order?.data.note.length > 0 ? (
+                                                        <p className={cx('item-info-note')}>
+                                                            Ghi chú: {order?.data.note}
+                                                        </p>
                                                     ) : (
                                                         ''
                                                     )}
-                                                    <p>{orderItems.payment_methods}</p>
+                                                    <p>Phương thức: {order?.data.paymentMethod}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,15 +121,15 @@ function ThankYou() {
                                     <div className={cx('detail-product-order')}>
                                         <CartSummary
                                             className={'payment_method_off'}
-                                            totalPrice={totalPrice}
-                                            quantity={productOrder.length}
+                                            totalPrice={order?.data.totalPrice}
+                                            quantity={order?.data.orderItems.length}
                                         />
                                         <Accordion title={'Chi Tiết Sản Phẩm'} primary>
-                                            {productOrder.map((item) => {
+                                            {order?.data.orderItems.map((item) => {
                                                 return (
                                                     <CartItemsOrder
                                                         key={item.id}
-                                                        avata={item.product.avata}
+                                                        avata={item.product.image[0]}
                                                         name={item.product.name}
                                                         size={item.size}
                                                         quantity={item.quantity}
@@ -140,6 +142,8 @@ function ThankYou() {
                                 </div>
                             </div>
                         </>
+                    ) : (
+                        <CartEmpty />
                     )}
                 </div>
             </div>
