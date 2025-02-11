@@ -51,20 +51,20 @@ function HomeSlider() {
             const isLogo = !!slideData.logo;
             if (isSlide) {
                 return (
-                    <div className={cx('slider-item')} key={slideData.id}>
-                        <img className={cx('slider-image')} src={slideData.image} alt={slideData.title} />
+                    <div className={cx('slider-item')} key={slideData._id}>
+                        <img className={cx('slider-image')} src={slideData.image} alt={slideData.name} />
                         <div className={cx('slider-content')}>
                             {(() => {
                                 if (isLogo) {
                                     return (
                                         <div className={cx('slider-logo')}>
-                                            <img src={slideData.logo} alt={slideData.title} />
+                                            <img src={slideData.logo} alt={slideData.name} />
                                         </div>
                                     );
                                 }
                             })()}
                             <div className={cx('slider-title')}>
-                                <h4>{slideData.title}</h4>
+                                <h4>{slideData.name}</h4>
                             </div>
                             <div className={cx('slider-btn')}>
                                 <Button
@@ -89,9 +89,9 @@ function HomeSlider() {
         return FeaturedHomeData?.data.map((items) => {
             if (!items.slide) {
                 return (
-                    <div className={cx(items.code)} key={items.id}>
+                    <div className={cx(items.code)} key={items._id}>
                         <Link to={`/product-list/${items.slug}`}>
-                            <img className={cx('slider-image')} src={items.image} alt={items.title} />
+                            <img className={cx('slider-image')} src={items.image} alt={items.name} />
                             <div className={cx('slider-content')}>
                                 <div className={cx('slider-title')}>
                                     <h4>{items.name}</h4>

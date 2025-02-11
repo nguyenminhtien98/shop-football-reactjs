@@ -6,10 +6,10 @@ import styles from './MenuSubList.module.scss';
 
 const cx = classNames.bind(styles);
 
-function MenuSubLink({ to, title, onClick }) {
+function MenuSubLink({ to, title, key, onClick }) {
     if (!!to) {
         return (
-            <Link className={cx('menu-sub-link')} to={to} onClick={onClick}>
+            <Link className={cx('menu-sub-link')} to={to} onClick={onClick} key={key}>
                 {title}
             </Link>
         );

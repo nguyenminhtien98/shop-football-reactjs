@@ -37,31 +37,37 @@ const ProductList = () => {
         return res;
     };
     const { data: category } = useQuery({ queryKey: ['category'], queryFn: fetchCategory, retry: 3, retryDelay: 1000 });
-    const [nameCategory, setNameCategory] = useState('');
+
+    const filterCategory = category?.data.filter((a) => a.slug === params.slug).map((a) => ({ name: a.name }));
+    const filterSubcategory = products.filter((a) => a.parent_slug === params.slug).map((a) => ({ name: a.parent }));
+
+    // call api product
+    const fetchProductType = async (value) => {
+        const res = await ProductSevice.getProductBy(value);
+        if (res?.status === 'OK') {
+            setProducts(res?.data);
+        } else {
+        }
+    };
+
+    const thisCategory = () => {
+        if (params?.slug === 'ao-bong-da' || params?.slug === 'giay' || params?.slug === 'phu-kien') {
+            return filterCategory && filterCategory[0]?.name;
+        } else if (params?.slug === 'new-arrvals') {
+            return 'New In';
+        } else if (params?.slug === 'best-selling') {
+            return 'Best Selling Products';
+        } else if (params?.slug === 'sale') {
+            return 'Sale';
+        } else {
+            return filterSubcategory && filterSubcategory[0]?.name;
+        }
+    };
 
     useEffect(() => {
-        ProductSevice.getProductBy(params?.slug)
-            .then((res) => {
-                setProducts(res?.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        if (params.slug === 'ao-bong-da' || 'giay' || 'phu-kien') {
-            category?.data.find((item) => {
-                if (item.slug === params.slug) {
-                    setNameCategory(item.name);
-                }
-            });
+        if (params?.slug) {
+            fetchProductType(params?.slug);
         }
-        if (params.slug !== 'ao-bong-da' || 'giay' || 'phu-kien') {
-            products.find((item) => {
-                if (item.parent_slug === params.slug) {
-                    setNameCategory(item.parent);
-                }
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params?.slug]);
     const renderProducts = products?.slice(pagesVisited, pagesVisited + productsPerPage).map((item) => {
         return (
@@ -86,15 +92,16 @@ const ProductList = () => {
     };
 
     return (
-        <Helmet title={nameCategory}>
+        <Helmet title={thisCategory()}>
             <div className={cx('products-list_page')}>
                 <div className={cx('container')}>
                     <div className={cx('top')}>
-                        <Breadcrumbs title={nameCategory} />
+                        <Breadcrumbs title={thisCategory()} />
                         <div className={cx('top-title-filter')}>
                             <div className={cx('top-title')}>
                                 <h4>
-                                    {nameCategory} <span>[{products.length}]</span>
+                                    {thisCategory()}
+                                    <span>[{products.length}]</span>
                                 </h4>
                             </div>
                             <div className={cx('top-filter')} id="filter">
@@ -124,7 +131,7 @@ const ProductList = () => {
                                     <ProductFilters
                                         data={products}
                                         setProducts={setProducts}
-                                        categoryTitle={nameCategory}
+                                        categoryTitle={thisCategory()}
                                     />
                                 </Modal>
                             </div>

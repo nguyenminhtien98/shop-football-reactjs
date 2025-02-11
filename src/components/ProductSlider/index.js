@@ -144,11 +144,11 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                         {itemProduct?.map((item) => {
                             if (thisCategory ? item.category === thisCategory || item.parent === thisCategory : '') {
                                 return (
-                                    <LazyLoad key={item.id}>
+                                    <LazyLoad key={item._id}>
                                         <ProductCardItem
-                                            key={item.id}
+                                            key={item._id}
                                             className="mgl-4"
-                                            to={`/product-details/${item.slug}`}
+                                            to={`/product-details/${item.slug}-${item._id}`}
                                             avata={item?.image}
                                             title={item.name}
                                             category={item.category}

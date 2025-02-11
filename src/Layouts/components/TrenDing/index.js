@@ -93,11 +93,11 @@ function TrenDing({ title }) {
                         {/* eslint-disable-next-line array-callback-return */}
                         {product?.data.map((item) => {
                             return (
-                                <LazyLoad key={item.id}>
+                                <LazyLoad key={item._id}>
                                     <div className={cx('item')}>
-                                        <Link to={`product-details/${item.slug}`}>
+                                        <Link to={`product-details/${item.slug}-${item._id}`}>
                                             <div className={cx('media')}>
-                                                <video autoPlay="autoPlay" loop="loop" muted id={item.id}>
+                                                <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
                                                     <source src={`../../storys/${item.story}`} type="video/mp4" />
                                                 </video>
                                             </div>

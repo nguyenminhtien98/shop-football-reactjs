@@ -29,7 +29,7 @@ function Category() {
                 {category?.data.map((item) => {
                     if (item.slug === 'ao-bong-da' || item.slug === 'giay' || item.slug === 'phu-kien') {
                         return (
-                            <Link to={`product-list/${item.slug}`} className={cx('item')} key={item.id}>
+                            <Link to={`product-list/${item.slug}`} className={cx('item')} key={item._id}>
                                 <div className={cx('image')}>
                                     <img src={`../../images/images-category/${item.image}`} alt={item.name} />
                                 </div>

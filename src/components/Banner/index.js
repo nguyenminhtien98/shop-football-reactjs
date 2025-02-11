@@ -15,7 +15,6 @@ function Banner() {
         return res;
     };
     const { data: banner } = useQuery({ queryKey: ['banner'], queryFn: fetchBanner, retry: 3, retryDelay: 1000 });
-    console.log('banner', banner?.data);
 
     useEffect(() => {
         fetchBanner();
@@ -25,12 +24,12 @@ function Banner() {
         <div className={cx('banner')}>
             {/* eslint-disable-next-line array-callback-return */}
             {banner?.data.status && (
-                <div className={cx('container')} key={banner?.data.id}>
+                <div className={cx('container')} key={banner?.data._id}>
                     <div className={cx('image')}>
-                        <img src={banner?.data.image} alt={banner?.data.title} />
+                        <img src={banner?.data.image} alt={banner?.data.name} />
                     </div>
                     <div className={cx('info')}>
-                        <div className={cx('title')}>{banner?.data.title}</div>
+                        <div className={cx('title')}>{banner?.data.name}</div>
                         <div className={cx('banner-btn')}>
                             <Button
                                 primary

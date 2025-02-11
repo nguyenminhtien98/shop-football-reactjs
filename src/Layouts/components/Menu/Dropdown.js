@@ -32,13 +32,13 @@ const Dropdown = ({ submenus, dropdown, setDropdown, depthLevel, parent_slug, pa
                             </div>
                         </div>
                         <div className={cx('menu-sub-main')}>
-                            {submenus.map((submenu) => (
-                                <MenuSubList title={submenu.name} key={submenu.id}>
-                                    {submenu.subMenu.map((submenu) => (
+                            {submenus.map((submenu, index) => (
+                                <MenuSubList title={submenu.name} key={index}>
+                                    {submenu.subMenu.map((submenu, index) => (
                                         <MenuSubLink
                                             to={`/product-list/${submenu.slug}`}
                                             title={submenu.name}
-                                            key={submenu.id}
+                                            key={index}
                                             onClick={() => setDropdown(!dropdown)}
                                         />
                                     ))}
