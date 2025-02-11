@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowLeft, faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -9,12 +9,15 @@ import ProductView from '~/Layouts/components/ProductView';
 import ProductCardItem from '~/components/ProductCard/ProductCardItem';
 import styles from './ProductDetails.module.scss';
 import * as ProductSevice from '../../services/ProductService';
-import { useQuery } from '@tanstack/react-query';
+import Loading from '~/components/Loading';
 
 const cx = classNames.bind(styles);
 
 function ProductDetails() {
     const params = useParams();
+    const [isLoading, setIsloading] = useState(false);
+    const [productDetail, setProductDetail] = useState(null);
+    const [productRelatedData, setProductRelatedData] = useState([]);
 
     const SampleNextArrow = (props) => {
         const { onClick } = props;
@@ -61,23 +64,40 @@ function ProductDetails() {
         ],
     };
 
-    // call api category
-    const fetchProduct = async () => {
-        const res = await ProductSevice.getProductDetail(params.slug, params.id);
-        return res;
+    const fetchProductRelated = async (value) => {
+        setIsloading(true);
+        try {
+            const data = await ProductSevice.getProductBy(value);
+            setProductRelatedData(data?.data);
+            setIsloading(false);
+        } catch (error) {
+            setIsloading(false);
+        }
     };
-    const { data: Product } = useQuery({ queryKey: ['Product'], queryFn: fetchProduct, retry: 3, retryDelay: 1000 });
 
-    const fetchProductRelated = async () => {
-        const res = await ProductSevice.getProductBy(Product?.data.parent_slug);
-        return res;
+    const fetchProductData = async (slug, id) => {
+        setIsloading(true);
+        try {
+            const data = await ProductSevice.getProductDetail(slug, id);
+            setProductDetail(data?.data);
+            setIsloading(false);
+        } catch (error) {
+            setIsloading(false);
+        }
+        return null;
     };
-    const { data: productRelated } = useQuery({
-        queryKey: ['productRelated'],
-        queryFn: fetchProductRelated,
-        retry: 3,
-        retryDelay: 1000,
-    });
+
+    useEffect(() => {
+        if (params.id && !productDetail) {
+            fetchProductData(params.slug, params.id);
+        }
+    }, [params]);
+
+    useEffect(() => {
+        if (params.id && productDetail) {
+            fetchProductRelated(productDetail?.parent_slug);
+        }
+    }, [params, productDetail]);
 
     const renderRelatedProducts = () => {
         return (
@@ -88,8 +108,8 @@ function ProductDetails() {
                 <div className={cx('related-products__slider')}>
                     <Slider {...settings}>
                         {/* eslint-disable-next-line array-callback-return */}
-                        {productRelated?.data.map((item) => {
-                            if (Product?.data._id !== item._id) {
+                        {productRelatedData?.map((item) => {
+                            if (productDetail?._id !== item._id) {
                                 return (
                                     <ProductCardItem
                                         key={item.id}
@@ -111,19 +131,20 @@ function ProductDetails() {
         );
     };
 
-    useEffect(() => {
-        fetchProduct();
-        fetchProductRelated();
-    }, [params.id]);
-
     return (
-        <Helmet title={Product?.data.name}>
+        <Helmet title={productDetail?.name}>
             <div className={cx('detail-product-page')}>
-                <ProductView
-                    product={Product?.data}
-                    category={Product?.data.parent}
-                    children={renderRelatedProducts()}
-                />
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    productDetail?.length !== 0 && (
+                        <ProductView
+                            product={productDetail && productDetail}
+                            category={productDetail && productDetail?.parent}
+                            children={renderRelatedProducts()}
+                        />
+                    )
+                )}
             </div>
         </Helmet>
     );
