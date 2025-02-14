@@ -16,6 +16,7 @@ import styles from './ProductList.module.scss';
 import * as ProductSevice from '../../services/ProductService';
 import * as CategorySevice from '../../services/CategoryService';
 import { useQuery } from '@tanstack/react-query';
+import Loading from '~/components/Loading';
 
 const cx = classNames.bind(styles);
 
@@ -25,8 +26,10 @@ const ProductList = () => {
     const isTables = 880;
     const windowSize = useWindowSize();
     const { isShowing, toggle } = useModal();
+    const [productsFilter, setIsProductsFilter] = useState([]);
     const [products, setProducts] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const productsPerPage = 12;
     const pagesVisited = pageNumber * productsPerPage;
     const pageCount = Math.ceil(products.length / productsPerPage);
@@ -43,12 +46,18 @@ const ProductList = () => {
 
     // call api product
     const fetchProductType = async (value) => {
+        setIsLoading(true);
         const res = await ProductSevice.getProductBy(value);
         if (res?.status === 'OK') {
-            setProducts(res?.data);
+            // setProducts(res?.data);
+            setIsProductsFilter(res?.data);
+            setIsLoading(false);
         } else {
         }
     };
+
+    console.log('productsFilter', productsFilter);
+    console.log('products', products);
 
     const thisCategory = () => {
         if (params?.slug === 'ao-bong-da' || params?.slug === 'giay' || params?.slug === 'phu-kien') {
@@ -65,10 +74,14 @@ const ProductList = () => {
     };
 
     useEffect(() => {
+        setProducts(productsFilter);
+    }, [productsFilter]);
+
+    useEffect(() => {
         if (params?.slug) {
             fetchProductType(params?.slug);
         }
-    }, [params?.slug]);
+    }, [params]);
     const renderProducts = products?.slice(pagesVisited, pagesVisited + productsPerPage).map((item) => {
         return (
             <ProductCardItem
@@ -94,67 +107,71 @@ const ProductList = () => {
     return (
         <Helmet title={thisCategory()}>
             <div className={cx('products-list_page')}>
-                <div className={cx('container')}>
-                    <div className={cx('top')}>
-                        <Breadcrumbs title={thisCategory()} />
-                        <div className={cx('top-title-filter')}>
-                            <div className={cx('top-title')}>
-                                <h4>
-                                    {thisCategory()}
-                                    <span>[{products.length}]</span>
-                                </h4>
-                            </div>
-                            <div className={cx('top-filter')} id="filter">
-                                {windowSize.width < isTables ? (
-                                    <button className={cx('btn-filter_mobile')} onClick={toggle}>
-                                        <FontAwesomeIcon icon={faSlidersH} className={cx('icon-filter')} />
-                                    </button>
-                                ) : (
-                                    <Button
-                                        className={cx('filter')}
-                                        outline
-                                        large
-                                        rightIcon={<FontAwesomeIcon icon={faSlidersH} />}
-                                        onClick={toggle}
-                                    >
-                                        Lọc Sản Phẩm
-                                    </Button>
-                                )}
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <div className={cx('container')}>
+                        <div className={cx('top')}>
+                            <Breadcrumbs title={thisCategory()} />
+                            <div className={cx('top-title-filter')}>
+                                <div className={cx('top-title')}>
+                                    <h4>
+                                        {thisCategory()}
+                                        <span>[{products.length}]</span>
+                                    </h4>
+                                </div>
+                                <div className={cx('top-filter')} id="filter">
+                                    {windowSize.width < isTables ? (
+                                        <button className={cx('btn-filter_mobile')} onClick={toggle}>
+                                            <FontAwesomeIcon icon={faSlidersH} className={cx('icon-filter')} />
+                                        </button>
+                                    ) : (
+                                        <Button
+                                            className={cx('filter')}
+                                            outline
+                                            large
+                                            rightIcon={<FontAwesomeIcon icon={faSlidersH} />}
+                                            onClick={toggle}
+                                        >
+                                            Lọc Sản Phẩm
+                                        </Button>
+                                    )}
 
-                                <Modal
-                                    isShowing={isShowing}
-                                    hide={toggle}
-                                    title={'Lọc Sản Phẩm'}
-                                    className="right"
-                                    fullWidth="full-width"
-                                >
-                                    <ProductFilters
-                                        data={products}
-                                        setProducts={setProducts}
-                                        categoryTitle={thisCategory()}
-                                    />
-                                </Modal>
+                                    <Modal
+                                        isShowing={isShowing}
+                                        hide={toggle}
+                                        title={'Lọc Sản Phẩm'}
+                                        className="right"
+                                        fullWidth="full-width"
+                                    >
+                                        <ProductFilters
+                                            data={productsFilter}
+                                            setProducts={setProducts}
+                                            categoryTitle={thisCategory()}
+                                        />
+                                    </Modal>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('main')}>
+                            <div className="row no-gutters">
+                                {renderProducts}
+                                <ReactPaginate
+                                    previousLabel={'Previous'}
+                                    nextLabel={'Next'}
+                                    pageCount={pageCount}
+                                    onPageChange={handleChangePage}
+                                    containerClassName={cx('pagination-btns')}
+                                    previousClassName={cx('previous-btn')}
+                                    nextClassName={cx('next-btn')}
+                                    pageClassName={cx('page-btn')}
+                                    disabledClassName={cx('disabled')}
+                                    activeClassName={cx('active')}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div className={cx('main')}>
-                        <div className="row no-gutters">
-                            {renderProducts}
-                            <ReactPaginate
-                                previousLabel={'Previous'}
-                                nextLabel={'Next'}
-                                pageCount={pageCount}
-                                onPageChange={handleChangePage}
-                                containerClassName={cx('pagination-btns')}
-                                previousClassName={cx('previous-btn')}
-                                nextClassName={cx('next-btn')}
-                                pageClassName={cx('page-btn')}
-                                disabledClassName={cx('disabled')}
-                                activeClassName={cx('active')}
-                            />
-                        </div>
-                    </div>
-                </div>
+                )}
             </div>
         </Helmet>
     );

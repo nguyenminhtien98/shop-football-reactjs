@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import numberWithCommas from '~/utils/numberWithCommas';
 import styles from './ProductCard.module.scss';
 import { WishlistsIcon } from '../Icons';
+import LoadingCartProduct from '../Loading/LoadingCartProduct';
 
 const cx = classNames.bind(styles);
 
-function ProductCardItem({ className, fullHeight, to, avata, title, price, sale, New, custom_card, key }) {
+function ProductCardItem({ className, fullHeight, to, avata, title, price, sale, New, custom_card, key, Loading }) {
     const classes = cx('item', {
         custom_card,
         [className]: className,
@@ -27,7 +28,9 @@ function ProductCardItem({ className, fullHeight, to, avata, title, price, sale,
         }
     };
 
-    return (
+    return Loading ? (
+        <LoadingCartProduct />
+    ) : (
         <div className={classes} key={key}>
             <div className={cx('images_price')}>
                 <Link to={to}>
@@ -77,6 +80,7 @@ ProductCardItem.prototype = {
     avata: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
+    Loading: PropTypes.bool.isRequired,
 };
 
 export default ProductCardItem;

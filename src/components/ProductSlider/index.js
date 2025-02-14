@@ -18,6 +18,7 @@ const cx = classNames.bind(styles);
 
 function ProductSlider({ title, thisCategory, className, widthFull, hiddenScrollCategory }) {
     const [itemProduct, setItemProduct] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
 
     // custom btn next, prev
     const SampleNextArrow = (props) => {
@@ -85,7 +86,9 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
     };
 
     const fetchProduct = async () => {
+        setIsLoading(true)
         const res = await ProductSevice.getAllProduct();
+        setIsLoading(false)
         return res;
     };
     const { data: product } = useQuery({ queryKey: ['product'], queryFn: fetchProduct, retry: 3, retryDelay: 1000 });
@@ -155,6 +158,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                                             price={item.price}
                                             sale={item.sale}
                                             New={item.new}
+                                            Loading={isLoading}
                                         />
                                     </LazyLoad>
                                 );

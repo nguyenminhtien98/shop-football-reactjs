@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faExchange, faHeart, faLongArrowRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faExchange, faLongArrowRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -68,6 +68,8 @@ function SideBar({ category, product }) {
         if (check()) {
             dispatch(
                 addItem({
+                    name: product.name,
+                    avata: product.image[0],
                     slug: product.slug,
                     size: size,
                     quantity: quantity,

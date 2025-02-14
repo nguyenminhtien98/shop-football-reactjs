@@ -9,11 +9,13 @@ import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
 import * as ProductSevice from '../../../services/ProductService';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import LoadingCartProduct from '~/components/Loading/LoadingCartProduct';
 
 const cx = classNames.bind(styles);
 
 function TrenDing({ title }) {
+    const [isLoading, setIsLoading] = useState(false);
     const SampleNextArrow = (props) => {
         const { onClick } = props;
         return (
@@ -68,7 +70,9 @@ function TrenDing({ title }) {
     };
 
     const fetchProductTrending = async () => {
+        setIsLoading(true);
         const res = await ProductSevice.getProductBy('trending');
+        setIsLoading(false);
         return res;
     };
     const { data: product } = useQuery({
@@ -94,21 +98,25 @@ function TrenDing({ title }) {
                         {product?.data.map((item) => {
                             return (
                                 <LazyLoad key={item._id}>
-                                    <div className={cx('item')}>
-                                        <Link to={`product-details/${item.slug}-${item._id}`}>
-                                            <div className={cx('media')}>
-                                                <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
-                                                    <source src={`../../storys/${item.story}`} type="video/mp4" />
-                                                </video>
-                                            </div>
-                                            <div className={cx('name')}>
-                                                <h4>{item.name}</h4>
-                                            </div>
-                                            <div className={cx('summary')}>
-                                                <p>{item.description_story}</p>
-                                            </div>
-                                        </Link>
-                                    </div>
+                                    {isLoading ? (
+                                        <LoadingCartProduct />
+                                    ) : (
+                                        <div className={cx('item')}>
+                                            <Link to={`product-details/${item.slug}-${item._id}`}>
+                                                <div className={cx('media')}>
+                                                    <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
+                                                        <source src={`../../storys/${item.story}`} type="video/mp4" />
+                                                    </video>
+                                                </div>
+                                                <div className={cx('name')}>
+                                                    <h4>{item.name}</h4>
+                                                </div>
+                                                <div className={cx('summary')}>
+                                                    <p>{item.description_story}</p>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    )}
                                 </LazyLoad>
                             );
                         })}

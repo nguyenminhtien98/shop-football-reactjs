@@ -7,7 +7,6 @@ import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import Helmet from '~/components/Helmet';
 import CartItemsOrder from '~/components/CartItemsOrder';
-import { getCartItemsDetail } from '~/assets/FakeData/productData';
 import CartEmpty from '~/components/CartEmpty';
 import useLocationForm from '~/hooks/useLocationForm';
 import Button from '~/components/Button';
@@ -16,7 +15,6 @@ import StepsOrder from '~/components/StepsOrder';
 import StepItem from '~/components/StepsOrder/StepItem';
 import CartSummary from '~/components/CartSummary';
 import Accordion from '~/components/Accordion';
-
 import styles from './CheckOut.module.scss';
 import fire from '~/FireBase/fire';
 import { useMutationHooks } from '~/hooks/useMutationHooks';
@@ -29,7 +27,7 @@ function CheckOut() {
     const navigate = useNavigate();
     // cartitem
     const cartItems = useSelector((state) => state.cartItems.value);
-    const [cartProducts, setcartProducts] = useState(getCartItemsDetail(cartItems));
+    const [cartProducts, setcartProducts] = useState(cartItems);
     const [totalPrice, settotalPrice] = useState(0);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -52,7 +50,7 @@ function CheckOut() {
     const { isSuccess } = mutation;
 
     useEffect(() => {
-        setcartProducts(getCartItemsDetail(cartItems));
+        setcartProducts(cartItems);
         settotalPrice(cartItems.reduce((total, item) => total + Number(item.quantity) * Number(item.price), 0));
     }, [cartItems]);
 
@@ -345,11 +343,11 @@ function CheckOut() {
                                                     return (
                                                         <CartItemsOrder
                                                             key={item.id}
-                                                            avata={item.product.avata}
-                                                            name={item.product.name}
+                                                            avata={item.avata}
+                                                            name={item.name}
                                                             size={item.size}
                                                             quantity={item.quantity}
-                                                            price={item.product.price}
+                                                            price={item.price}
                                                         />
                                                     );
                                                 })}

@@ -9,11 +9,13 @@ import Button from '~/components/Button';
 import styles from './HomeSlider.module.scss';
 import * as FeaturedService from '../../../services/FeaturedService';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import LoadingHeroSlide from '~/components/Loading/LoadingHeroSlide';
 
 const cx = classNames.bind(styles);
 
 function HomeSlider() {
+    const [isLoading, setIsLoading] = useState(false);
     const settings = {
         infinite: true,
         dots: false,
@@ -28,7 +30,9 @@ function HomeSlider() {
 
     // call api FeaturedHome
     const fetchFeaturedHome = async () => {
+        setIsLoading(true);
         const res = await FeaturedService.getFeaturedHome();
+        setIsLoading(false);
         return res;
     };
     const { data: FeaturedHomeData } = useQuery({
@@ -106,12 +110,16 @@ function HomeSlider() {
 
     return (
         <div className={cx('home-slider')}>
-            <div className="row sm-gutter">
-                <div className={cx('home-slider_left')}>
-                    <Slider {...settings}>{renderSliderItem()}</Slider>
+            {isLoading ? (
+                <LoadingHeroSlide />
+            ) : (
+                <div className="row sm-gutter">
+                    <div className={cx('home-slider_left')}>
+                        <Slider {...settings}>{renderSliderItem()}</Slider>
+                    </div>
+                    <div className={cx('home-slider_right')}>{renderBestNewProductsItem()}</div>
                 </div>
-                <div className={cx('home-slider_right')}>{renderBestNewProductsItem()}</div>
-            </div>
+            )}
         </div>
     );
 }
