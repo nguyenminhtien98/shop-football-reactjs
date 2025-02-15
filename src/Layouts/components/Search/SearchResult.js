@@ -12,7 +12,7 @@ function SearchResult({ data, setShowResult }) {
             <Link to={`/product-details/${data.slug}`} onClick={() => setShowResult(false)}>
                 <img
                     className={cx('avatar-product')}
-                    src={`../../images/images-product/${data.avata}`}
+                    src={`../../images/images-product/${data?.image[0]}`}
                     alt={data.name}
                 />
                 <div className={cx('info-product')}>

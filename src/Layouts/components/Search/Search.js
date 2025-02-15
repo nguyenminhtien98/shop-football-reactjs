@@ -3,14 +3,14 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
-
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import SearchResult from './SearchResult';
 import { Link } from 'react-router-dom';
 import useDebounce from '~/hooks/useDebounce';
-import { productData } from '~/assets/FakeData/productData';
+import * as ProductSevice from '../../../services/ProductService';
 
 import styles from './Search.module.scss';
+import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
@@ -22,16 +22,32 @@ function Search() {
     const debounced = useDebounce(searchValue, 500);
 
     const inputRef = useRef();
+    const refSearch = useRef();
+
+    const fetchProductSearch = async (search) => {
+        const res = await ProductSevice.getAllProduct(search);
+        if (search?.length > 0) {
+            setSearchResult(res?.data);
+        }
+        return res;
+    };
+
+    const { data: productSearch } = useQuery({
+        queryKey: ['productSearch'],
+        queryFn: fetchProductSearch,
+        retry: 3,
+        retryDelay: 1000,
+    });
 
     useEffect(() => {
         if (!debounced.trim()) {
             setSearchResult([]);
             return;
         }
-        const data = productData.filter((value) => {
-            return value.name.toLowerCase().includes(debounced.toLowerCase());
-        });
-        setSearchResult(data);
+        if (refSearch.current) {
+            fetchProductSearch(debounced);
+        }
+        refSearch.current = true;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounced]);
 
@@ -58,7 +74,7 @@ function Search() {
                             <h4 className={cx('search-title')}>Sản Phẩm</h4>
                             <ul className={cx('product-list')}>
                                 {searchResult.slice(0, 5).map((result) => (
-                                    <SearchResult key={result.id} data={result} setShowResult={setShowResult} />
+                                    <SearchResult key={result._id} data={result} setShowResult={setShowResult} />
                                 ))}
                             </ul>
                             <Link

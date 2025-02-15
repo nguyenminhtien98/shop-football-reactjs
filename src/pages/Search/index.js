@@ -4,17 +4,16 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import ReactPaginate from 'react-paginate';
-
 import Helmet from '~/components/Helmet';
 import ProductCardItem from '~/components/ProductCard/ProductCardItem';
 import useModal from '~/hooks/useModal';
 import useWindowSize from '~/hooks/useWindowSize';
 import Breadcrumbs from '~/components/Breadcrumbs';
 import Button from '~/components/Button';
-import { productData } from '~/assets/FakeData/productData';
 import ProductFilters from '../ProductList/ProductFilters';
 import Modal from '~/components/Modal';
 import styles from '../ProductList/ProductList.module.scss';
+import * as ProductSevice from '../../services/ProductService';
 
 const cx = classNames.bind(styles);
 
@@ -28,15 +27,24 @@ function Search() {
     // modal
     const { isShowing, toggle } = useModal();
 
-    useEffect(() => {
-        setProducts(productList);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params]);
+    const [productsFilter, setIsProductsFilter] = useState([]);
+    const [products, setProducts] = useState([]);
 
-    const productList = productData.filter((value) => {
-        return value.name.toLowerCase().includes(params.slug.toLowerCase());
-    });
-    const [products, setProducts] = useState(productList);
+    const fetchProductSearch = async (search) => {
+        const res = await ProductSevice.getAllProduct(search);
+        if (search?.length > 0) {
+            setIsProductsFilter(res?.data);
+        }
+        return res;
+    };
+
+    useEffect(() => {
+        setProducts(productsFilter);
+    }, [productsFilter]);
+
+    useEffect(() => {
+        fetchProductSearch(params.slug);
+    }, [params]);
 
     // productPagination
     const [pageNumber, setPageNumber] = useState(0);
@@ -48,22 +56,19 @@ function Search() {
             <ProductCardItem
                 className="l-3 m-4 c-6"
                 custom_card
-                key={item.id}
-                to={`/product-details/${item.slug}`}
+                key={item._id}
+                to={`/product-details/${item?.slug}-${item?._id}`}
                 fullHeight
-                avata={item.avata}
-                avataHover={item.avata_hover}
-                title={item.name}
-                category={item.giai_bong_da}
-                price={item.price}
-                sale_price={item.sale_price}
-                sale={item.sale}
-                New={item.new}
+                avata={item?.image}
+                title={item?.name}
+                price={item?.price}
+                sale={item?.sale}
+                New={item?.new}
             />
         );
     });
 
-    const pageCount = Math.ceil(products.length / productsPerPage);
+    const pageCount = Math.ceil(products?.length / productsPerPage);
 
     const handleChangePage = ({ selected }) => {
         setPageNumber(selected);
@@ -101,7 +106,7 @@ function Search() {
 
                                 <Modal isShowing={isShowing} hide={toggle} title={'Lọc Sản Phẩm'}>
                                     <ProductFilters
-                                        data={productList}
+                                        data={productsFilter}
                                         setProducts={setProducts}
                                         categoryTitle={'search'}
                                     />
