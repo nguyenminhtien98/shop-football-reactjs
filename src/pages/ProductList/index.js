@@ -49,15 +49,11 @@ const ProductList = () => {
         setIsLoading(true);
         const res = await ProductSevice.getProductBy(value);
         if (res?.status === 'OK') {
-            // setProducts(res?.data);
             setIsProductsFilter(res?.data);
             setIsLoading(false);
         } else {
         }
     };
-
-    console.log('productsFilter', productsFilter);
-    console.log('products', products);
 
     const thisCategory = () => {
         if (params?.slug === 'ao-bong-da' || params?.slug === 'giay' || params?.slug === 'phu-kien') {

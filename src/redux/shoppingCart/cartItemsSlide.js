@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const items = localStorage.getItem('cartItems') != null ? JSON.parse(localStorage.getItem('cartItems')) : [];
+const items = localStorage.getItem('cartItems') !== null ? JSON.parse(localStorage.getItem('cartItems')) : [];
 
 const initialState = { value: items };
 
@@ -57,6 +57,10 @@ export const cartItemsSlice = createSlice({
             state.value = delItem(state.value, item);
             localStorage.setItem('cartItems', JSON.stringify(sortItems(state.value)));
         },
+        clearCartItems: (state, action) => {
+            state.value = [];
+            localStorage.setItem('cartItems', JSON.stringify(state.value));
+        },
     },
 });
 
@@ -66,6 +70,6 @@ const delItem = (arr, item) => arr.filter((e) => e.slug !== item.slug || e.size 
 
 const sortItems = (arr) => arr.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
 
-export const { addItem, updateItem, removeItem } = cartItemsSlice.actions;
+export const { addItem, updateItem, removeItem, clearCartItems } = cartItemsSlice.actions;
 
 export default cartItemsSlice.reducer;

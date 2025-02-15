@@ -74,6 +74,7 @@ function SideBar({ category, product }) {
                     size: size,
                     quantity: quantity,
                     price: product.sale > 0 ? product?.price * (product?.sale / 100) : product.price,
+                    _idProduct: product._id
                 }),
             );
             toggle();

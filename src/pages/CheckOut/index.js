@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Helmet from '~/components/Helmet';
 import CartItemsOrder from '~/components/CartItemsOrder';
 import CartEmpty from '~/components/CartEmpty';
@@ -19,12 +19,13 @@ import styles from './CheckOut.module.scss';
 import fire from '~/FireBase/fire';
 import { useMutationHooks } from '~/hooks/useMutationHooks';
 import * as OrderSevice from '../../services/OrderService';
+import { clearCartItems } from '~/redux/shoppingCart/cartItemsSlide';
 
 const cx = classNames.bind(styles);
 
 function CheckOut() {
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     // cartitem
     const cartItems = useSelector((state) => state.cartItems.value);
     const [cartProducts, setcartProducts] = useState(cartItems);
@@ -47,7 +48,6 @@ function CheckOut() {
     const ma_don_hang = random_number;
     //call api creat Order
     const mutation = useMutationHooks((data) => OrderSevice.creatOrder(data));
-    const { isSuccess } = mutation;
 
     useEffect(() => {
         setcartProducts(cartItems);
@@ -89,8 +89,9 @@ function CheckOut() {
             alert('Phương thức Thanh toán chuyển khoản chưa hoạt động. Vui lòng chọn Thanh toán khi giao hàng (COD)!');
         }
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            localStorage.removeItem('cartItems');
-            navigate(`/thank-you/${orders.ma_don_hang}`)
+            setcartProducts(cartItems);
+            dispatch(clearCartItems());
+            navigate(`/thank-you/${orders.ma_don_hang}`);
         }
     };
 

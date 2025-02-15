@@ -77,8 +77,8 @@ function Header() {
                             </Link>
                             <Link className={cx('right-menu__icon', 'bag')} to={config.routes.cart}>
                                 <BagShoppingIcon className={cx('icon-item')} />
-                                {cartItems && cartItems.length > 0 ? (
-                                    <span className={cx('cart-count')}>{cartItems.length}</span>
+                                {cartItems && cartItems?.length > 0 ? (
+                                    <span className={cx('cart-count')}>{cartItems?.length}</span>
                                 ) : (
                                     ''
                                 )}
