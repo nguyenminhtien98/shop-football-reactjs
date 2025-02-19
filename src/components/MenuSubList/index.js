@@ -7,11 +7,11 @@ import './menu.scss';
 
 const cx = classNames.bind(styles);
 
-function MenuSubList({ children, to, title, className, key }) {
+function MenuSubList({ children, to, title, className }) {
     const renderTitle = () => {
         if (!!to) {
             return (
-                <Link className={cx('all-search-result')} to={to} key={key}>
+                <Link className={cx('all-search-result')} to={to} >
                     {title}
                 </Link>
             );
@@ -22,21 +22,20 @@ function MenuSubList({ children, to, title, className, key }) {
 
     return (
         <div className={cx('menu-sub-item', className)}>
-            <div className={cx('menu-sub-title')} key={key}>
+            <div className={cx('menu-sub-title')} >
                 {renderTitle()}
             </div>
-            <div className={cx('menu-sub-list_link')} key={key}>
+            <div className={cx('menu-sub-list_link')} >
                 {children}
             </div>
         </div>
     );
 }
 
-MenuSubList.prototype = {
+MenuSubList.propTypes = {
     children: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
     to: PropTypes.string,
-    key: PropTypes.number,
     className: PropTypes.string,
 };
 

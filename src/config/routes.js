@@ -14,6 +14,7 @@ const routes = {
     sizeChart: '/size-chart',
     news: '/news',
     wishlists: '/wishlists',
+    notFound: '*'
 };
 
 export default routes;

@@ -1,11 +1,9 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { helpDataTop } from '~/assets/FakeData/help_data';
 import Accordion from '~/components/Accordion';
-import fire from '~/FireBase/fire';
 import styles from './Help.module.scss';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -13,17 +11,11 @@ function Help() {
     const navigate = useNavigate();
 
     const handleToLogin = () => {
-        navigate('/account-login');
+        navigate('/account');
     };
 
-    //lấy email nếu người ngưf dờui fu ndgdax đăng nhập
-    const [currentUser, setCurrentUser] = useState();
-
-    useEffect(() => {
-        fire.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
-    }, []);
+    // lấy thông tin user khi đã đăng nhập
+    const user = useSelector((state) => state.user);
 
     return (
         <div className={cx('help-page')}>
@@ -54,7 +46,7 @@ function Help() {
                                         trạng thái giao hàng hoặc sắp xếp việc đổi hoặc trả hàng.
                                     </p>
                                 </div>
-                                {!currentUser && (
+                                {user && !user?.access_token && (
                                     <button className={cx('teaser-btn')} onClick={handleToLogin}>
                                         <p>Đăng Nhập</p>
                                     </button>

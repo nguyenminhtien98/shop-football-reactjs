@@ -16,7 +16,6 @@ import StepItem from '~/components/StepsOrder/StepItem';
 import CartSummary from '~/components/CartSummary';
 import Accordion from '~/components/Accordion';
 import styles from './CheckOut.module.scss';
-import fire from '~/FireBase/fire';
 import { useMutationHooks } from '~/hooks/useMutationHooks';
 import * as OrderSevice from '../../services/OrderService';
 import { clearCartItems } from '~/redux/shoppingCart/cartItemsSlide';
@@ -83,16 +82,9 @@ function CheckOut() {
     };
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         setIsSubmit(true);
         setFormErrors(validate(orders));
-        if (orders.payment_methods !== deliveryMethod) {
-            alert('Phương thức Thanh toán chuyển khoản chưa hoạt động. Vui lòng chọn Thanh toán khi giao hàng (COD)!');
-        }
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            setcartProducts(cartItems);
-            dispatch(clearCartItems());
-            navigate(`/thank-you/${orders.ma_don_hang}`);
-        }
     };
 
     const fullName = `${orders.lastname} ${orders.firstname}`;
@@ -101,7 +93,7 @@ function CheckOut() {
     }, ${orders.city && orders.city.label}`;
 
     useEffect(() => {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        if (isSubmit && Object.keys(formErrors).length === 0) {
             mutation.mutate({
                 orderCode: orders.ma_don_hang,
                 orderItems: cartProducts,
@@ -113,8 +105,9 @@ function CheckOut() {
                 orderDate: date_time,
                 note: orders.note,
             });
+            dispatch(clearCartItems());
+            navigate(`/thank-you/${orders.ma_don_hang}`);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formErrors]);
 
     // validate from
@@ -149,17 +142,11 @@ function CheckOut() {
 
     // đến trang login
     const goToLogin = () => {
-        navigate('/account-login');
+        navigate('/account');
     };
 
-    //lấy email nếu người ngưf dờui fu ndgdax đăng nhập
-    const [currentUser, setCurrentUser] = useState();
-
-    useEffect(() => {
-        fire.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
-    }, []);
+    // lấy thông tin user khi đã đăng nhập
+    const user = useSelector((state) => state.user);
 
     return (
         <Helmet title="Thanh Toán">
@@ -180,8 +167,7 @@ function CheckOut() {
                                 <div className={cx('left', 'l-8', 'c-12')}>
                                     <div className={cx('title')}>
                                         <h2>Thông Tin Giao Hàng</h2>
-
-                                        {!currentUser && (
+                                        {user && !user.access_token && (
                                             <Button
                                                 className={cx('checkout')}
                                                 large

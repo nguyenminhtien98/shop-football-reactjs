@@ -8,7 +8,6 @@ import SearchResult from './SearchResult';
 import { Link } from 'react-router-dom';
 import useDebounce from '~/hooks/useDebounce';
 import * as ProductSevice from '../../../services/ProductService';
-
 import styles from './Search.module.scss';
 import { useQuery } from '@tanstack/react-query';
 

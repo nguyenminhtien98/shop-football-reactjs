@@ -15,7 +15,9 @@ const cx = classNames.bind(styles);
 
 function ProductDetails() {
     const params = useParams();
-    const [isLoading, setIsloading] = useState(false);
+    const [parentSlug, setParentSlug] = useState(null);
+    const [isProductLoading, setIsProductLoading] = useState(false);
+    const [isRelatedLoading, setIsRelatedLoading] = useState(false);
     const [productDetail, setProductDetail] = useState(null);
     const [productRelatedData, setProductRelatedData] = useState([]);
 
@@ -64,40 +66,42 @@ function ProductDetails() {
         ],
     };
 
-    const fetchProductRelated = async (value) => {
-        setIsloading(true);
-        try {
-            const data = await ProductSevice.getProductBy(value);
-            setProductRelatedData(data?.data);
-            setIsloading(false);
-        } catch (error) {
-            setIsloading(false);
-        }
-    };
-
-    const fetchProductData = async (slug, id) => {
-        setIsloading(true);
-        try {
-            const data = await ProductSevice.getProductDetail(slug, id);
-            setProductDetail(data?.data);
-            setIsloading(false);
-        } catch (error) {
-            setIsloading(false);
-        }
-        return null;
-    };
-
     useEffect(() => {
-        if (params.id && !productDetail) {
-            fetchProductData(params.slug, params.id);
-        }
+        if (!params.id) return;
+
+        const fetchData = async () => {
+            setIsProductLoading(true);
+            try {
+                const data = await ProductSevice.getProductDetail(params.slug, params.id);
+                setProductDetail(data?.data || null);
+                setParentSlug(data?.data?.parent_slug || null);
+            } catch (error) {
+                console.error('Error fetching product data', error);
+            } finally {
+                setIsProductLoading(false);
+            }
+        };
+
+        fetchData();
     }, [params]);
 
     useEffect(() => {
-        if (params.id && productDetail) {
-            fetchProductRelated(productDetail?.parent_slug);
-        }
-    }, [params, productDetail]);
+        if (!parentSlug) return;
+
+        const fetchRelated = async () => {
+            setIsRelatedLoading(true);
+            try {
+                const data = await ProductSevice.getProductBy(parentSlug);
+                setProductRelatedData(data?.data || []);
+            } catch (error) {
+                console.error('Error fetching related products', error);
+            } finally {
+                setIsRelatedLoading(false);
+            }
+        };
+
+        fetchRelated();
+    }, [parentSlug]);
 
     const renderRelatedProducts = () => {
         return (
@@ -112,9 +116,9 @@ function ProductDetails() {
                             if (productDetail?._id !== item._id) {
                                 return (
                                     <ProductCardItem
-                                        key={item.id}
+                                        key={item._id}
                                         className="l-12"
-                                        to={`/product-details/${item.slug}`}
+                                        to={`/product-details/${item.slug}-${item._id}`}
                                         avata={item.image}
                                         title={item.name}
                                         category={item.giai_bong_da}
@@ -134,14 +138,14 @@ function ProductDetails() {
     return (
         <Helmet title={productDetail?.name}>
             <div className={cx('detail-product-page')}>
-                {isLoading ? (
+                {isProductLoading ? (
                     <Loading />
                 ) : (
-                    productDetail?.length !== 0 && (
+                    productDetail && (
                         <ProductView
                             product={productDetail && productDetail}
                             category={productDetail && productDetail?.parent}
-                            children={renderRelatedProducts()}
+                            children={isRelatedLoading ? <Loading /> : renderRelatedProducts()}
                         />
                     )
                 )}

@@ -6,6 +6,7 @@ import TrenDing from '~/Layouts/components/TrenDing';
 import Category from '~/Layouts/components/Category';
 
 function Home() {
+
     return (
         <Helmet title="Home">
             <div className="home-page">

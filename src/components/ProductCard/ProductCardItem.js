@@ -8,7 +8,7 @@ import LoadingCartProduct from '../Loading/LoadingCartProduct';
 
 const cx = classNames.bind(styles);
 
-function ProductCardItem({ className, fullHeight, to, avata, title, price, sale, New, custom_card, key, Loading }) {
+function ProductCardItem({ className, fullHeight, to, avata, title, price, sale, New, custom_card, Loading }) {
     const classes = cx('item', {
         custom_card,
         [className]: className,
@@ -31,20 +31,18 @@ function ProductCardItem({ className, fullHeight, to, avata, title, price, sale,
     return Loading ? (
         <LoadingCartProduct />
     ) : (
-        <div className={classes} key={key}>
+        <div className={classes}>
             <div className={cx('images_price')}>
                 <Link to={to}>
                     <img
                         className={cx('avata', { fullHeight })}
                         src={`../../images/images-product/${avata ? avata[0] : ''}`}
                         alt={title}
-                        key={key}
                     />
                     <img
                         className={cx('avata-hover', { fullHeight })}
                         src={`../../images/images-product/${avata ? avata[1] : ''}`}
                         alt={title}
-                        key={key}
                     />
                     <div className={cx('price')}>{renderPrice()}</div>
                 </Link>

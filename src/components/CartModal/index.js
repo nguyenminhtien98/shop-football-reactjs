@@ -51,7 +51,7 @@ function CartModal({ product, size, quantity }) {
                     <p>
                         Tổng Giá Trị Sản Phẩm:{' '}
                         <span>
-                            <p>{numberWithCommas(totalPrice)}₫</p>
+                            {numberWithCommas(totalPrice)}₫
                         </span>
                     </p>
                     <p>

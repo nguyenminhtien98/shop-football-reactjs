@@ -1,25 +1,21 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
-
 import { MENU_ITEMS } from '~/assets/FakeData/menu_data';
 import styles from './MenuMobile.module.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import fire from '~/FireBase/fire';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UserService from '~/services/UserService';
+import { resetUser } from '~/redux/User/userSlide';
 
 const cx = classNames.bind(styles);
 
 function MenuMobile({ handleClose, isOpen, setIsOpen }) {
+    const dispatch = useDispatch();
+
     // lấy thông tin user khi đã đăng nhập
-
-    const [currentUser, setCurrentUser] = useState();
-
-    useEffect(() => {
-        fire.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
-    }, []);
+    const user = useSelector((state) => state.user);
 
     const handleCloseMenu = () => {
         setIsOpen(!isOpen);
@@ -27,8 +23,10 @@ function MenuMobile({ handleClose, isOpen, setIsOpen }) {
     };
 
     // đăng xuất
-    const handleLogOut = () => {
-        fire.auth().signOut();
+    const handleLogOut = async () => {
+        await UserService.logOutUser();
+        localStorage.removeItem('access_token');
+        dispatch(resetUser());
     };
 
     // logic menu
@@ -115,9 +113,9 @@ function MenuMobile({ handleClose, isOpen, setIsOpen }) {
                     <Link to="/order-tracker" className={cx('menu-item')} onClick={handleCloseMenu}>
                         theo dõi đơn hàng
                     </Link>
-                    {currentUser ? (
+                    {user && user?.access_token ? (
                         <>
-                            <p className={cx('menu-item', 'logged')}>{currentUser.email}</p>
+                            <p className={cx('menu-item', 'logged')}>{user?.name}</p>
                             <p onClick={handleLogOut} className={cx('menu-item')}>
                                 đăng xuất
                             </p>

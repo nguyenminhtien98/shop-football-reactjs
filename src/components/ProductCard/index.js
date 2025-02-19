@@ -51,11 +51,10 @@ function ProductCard({ item, thisCategory }) {
                         if (Val.giai_bong_da === thisCategory) {
                             return (
                                 <ProductCardItem
-                                    key={Val.id}
+                                    key={Val._id}
                                     className={cx('full')}
                                     to={`/product-details/${Val.slug}`}
                                     avata={Val.avata}
-                                    avataHover={Val.avata_hover}
                                     title={Val.name}
                                     category={Val.giai_bong_da}
                                     price={Val.price}
@@ -66,11 +65,10 @@ function ProductCard({ item, thisCategory }) {
                     } else {
                         return (
                             <ProductCardItem
-                                key={Val.id}
+                                key={Val._id}
                                 className={cx('full')}
                                 to={`/product-details/${Val.slug}`}
                                 avata={Val.avata}
-                                avataHover={Val.avata_hover}
                                 title={Val.name}
                                 category={Val.giai_bong_da}
                                 price={Val.price}

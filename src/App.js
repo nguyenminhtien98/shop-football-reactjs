@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '~/routes';
 import { DefaultLayout } from './Layouts';
 import { Fragment, useEffect } from 'react';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { ToastProvider } from './contexts/ToastProvider';
 import { isJsonString } from './utils/isJsonString';
 import { jwtDecode } from 'jwt-decode';
@@ -15,7 +13,7 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const { decoded, storageData } = handleDecoded;
+        const { decoded, storageData } = handleDecoded();
         if (decoded?.id) {
             handleGetDetailUser(decoded?.id, storageData);
         }
@@ -37,7 +35,7 @@ function App() {
             const { decoded } = handleDecoded();
             if (decoded?.exp < currentTime.getTime() / 1000) {
                 const data = await UserSevice.refreshToken();
-                console.log('data', data);
+                localStorage.setItem('access_token', JSON.stringify(data?.access_token));
                 config.headers['token'] = `Bearer ${data?.access_token}`;
             }
             return config;

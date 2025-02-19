@@ -83,7 +83,7 @@ const ProductList = () => {
             <ProductCardItem
                 className="l-3 m-4 c-6"
                 custom_card
-                key={item.id}
+                key={item._id}
                 to={`/product-details/${item.slug}-${item._id}`}
                 fullHeight
                 avata={item.image}
@@ -143,7 +143,7 @@ const ProductList = () => {
                                         <ProductFilters
                                             data={productsFilter}
                                             setProducts={setProducts}
-                                            categoryTitle={thisCategory()}
+                                            categoryTitle={thisCategory() || ''}
                                         />
                                     </Modal>
                                 </div>

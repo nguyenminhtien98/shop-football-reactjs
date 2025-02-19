@@ -1,17 +1,19 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { WishlistsIcon, BagShoppingIcon } from '~/components/Icons';
 import useScrollingUp from '~/hooks/useScrollingUp';
 import Menu from '../../Menu';
 import config from '~/config';
-import fire from '~/FireBase/fire';
 import Search from '../../Search';
 import styles from './HeaderDesktop.module.scss';
+import * as UserService from '~/services/UserService'
+import { resetUser } from '~/redux/User/userSlide';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const dispatch = useDispatch()
     // cart count
     const cartItems = useSelector((state) => state.cartItems.value);
 
@@ -19,8 +21,10 @@ function Header() {
     const user = useSelector((state) => state.user);
 
     // đăng xuất
-    const handleLogOut = () => {
-        fire.auth().signOut();
+    const handleLogOut = async () => {
+        await UserService.logOutUser()
+        localStorage.removeItem("access_token")
+        dispatch(resetUser())
     };
 
     // fixed menu khi scroll up

@@ -11,6 +11,7 @@ import ThankYou from '~/pages/ThankYou';
 import AccountLogin from '~/pages/AccountLogin';
 import Search from '~/pages/Search';
 import ComingSoon from '~/components/ComingSoon';
+import NotFound from '~/pages/NotFound';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -28,6 +29,7 @@ const publicRoutes = [
     { path: config.routes.sizeChart, component: ComingSoon },
     { path: config.routes.news, component: ComingSoon },
     { path: config.routes.wishlists, component: ComingSoon },
+    { path: config.routes.notFound, component: NotFound },
 ];
 
 const privateRoutes = [];

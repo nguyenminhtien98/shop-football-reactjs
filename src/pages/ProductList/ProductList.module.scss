@@ -1,5 +1,8 @@
 @import '../../components/GlobalStyles/mixins';
 
+.products-list_page {
+    min-height: 100vh;
+}
 .products-list_page,
 .search-page {
     .container {

@@ -1,6 +1,6 @@
 @import '../../components/GlobalStyles/mixins';
-
 .detail-product-page {
+    min-height: 100vh;
     .related-products__header {
         margin-bottom: 15px;
         h4 {

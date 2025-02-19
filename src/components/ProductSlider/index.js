@@ -102,12 +102,13 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
         ),
     ];
 
-    const filterItem = (curcat) => {
+    const filterItem = (curcat="all") => {
         const newItem = product?.data.filter((newVal) => {
             return newVal.parent === curcat;
         });
         if (curcat === 'all') {
-            setItemProduct(product?.data);
+            setItemProduct([...product?.data]);
+            console.log("product?.data", product?.data)
         } else {
             setItemProduct(newItem);
         }
@@ -129,7 +130,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
     useEffect(() => {
         fetchProduct();
         setItemProduct(product?.data);
-    }, [product?.data]);
+    }, [product?.data ]);
 
     return (
         <div className={cx('products-slider', className)}>
@@ -143,7 +144,7 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                     {hiddenScrollCategory ? '' : renderScrollCategory()}
                 </header>
                 <div className={cx('main')}>
-                    <Slider {...settings}>
+                    <Slider key={itemProduct?.length} {...settings}>
                         {itemProduct?.map((item) => {
                             if (thisCategory ? item.category === thisCategory || item.parent === thisCategory : '') {
                                 return (

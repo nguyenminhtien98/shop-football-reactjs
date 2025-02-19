@@ -74,7 +74,7 @@ function HomeSlider() {
                                 <Button
                                     white
                                     large
-                                    to={`product-details/${slideData.slug}`}
+                                    to={`product-details/${slideData.link}`}
                                     rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
                                 >
                                     Mua ngay
@@ -94,7 +94,7 @@ function HomeSlider() {
             if (!items.slide) {
                 return (
                     <div className={cx(items.code)} key={items._id}>
-                        <Link to={`/product-list/${items.slug}`}>
+                        <Link to={`/product-list/${items.link}`}>
                             <img className={cx('slider-image')} src={items.image} alt={items.name} />
                             <div className={cx('slider-content')}>
                                 <div className={cx('slider-title')}>

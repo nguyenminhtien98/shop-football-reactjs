@@ -43,7 +43,7 @@ function Banner() {
                                     <Button
                                         primary
                                         large
-                                        to={`product-details/${banner?.data.slug}`}
+                                        to={`product-details/${banner?.data.link}`}
                                         rightIcon={<FontAwesomeIcon icon={faLongArrowRight} />}
                                     >
                                         Mua ngay

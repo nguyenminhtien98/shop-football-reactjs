@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { category } from '~/assets/FakeData/category';
 import { sizeData } from '~/assets/FakeData/sizeData';
 import CheckBox from '~/components/CheckBox';
-
+import PropTypes from 'prop-types';
 import styles from './ProductList.module.scss';
 import { useParams } from 'react-router-dom';
 
@@ -21,120 +21,93 @@ function ProductFilters({ data, setProducts, categoryTitle }) {
     };
 
     const [filter, setFilter] = useState(initFilter);
+
     const filterSelect = (type, checked, item) => {
-        if (checked) {
-            switch (type) {
-                case 'CATEGORY':
-                    setFilter({ ...filter, category: [...filter.category, item.category_slug] });
-                    break;
-                case 'SIZE':
-                    setFilter({ ...filter, size: [...filter.size, item.size] });
-                    break;
-                default:
+        setFilter((prevFilter) => {
+            const updatedFilter = { ...prevFilter };
+
+            if (checked) {
+                if (type === 'CATEGORY') {
+                    updatedFilter.category = [...prevFilter.category, item.category_slug];
+                } else if (type === 'SIZE') {
+                    updatedFilter.size = [...prevFilter.size, item.size];
+                }
+            } else {
+                if (type === 'CATEGORY') {
+                    updatedFilter.category = prevFilter.category.filter((e) => e !== item.category_slug);
+                } else if (type === 'SIZE') {
+                    updatedFilter.size = prevFilter.size.filter((e) => e !== item.size);
+                }
             }
-        } else {
-            switch (type) {
-                case 'CATEGORY':
-                    const newCategory = filter.category.filter((e) => e !== item.category_slug);
-                    setFilter({ ...filter, category: newCategory });
-                    break;
-                case 'SIZE':
-                    const newSize = filter.size.filter((e) => e !== item.size);
-                    setFilter({ ...filter, size: newSize });
-                    break;
-                default:
-            }
-        }
+            return updatedFilter;
+        });
     };
 
     const updateProducts = useCallback(() => {
         let temp = data;
+
         if (filter.category.length > 0) {
             temp = temp.filter(
                 (e) =>
                     filter.category.includes(e.parent_slug) ||
                     filter.category.includes(e.clb) ||
-                    filter.category.includes(e.category),
+                    filter.category.includes(e.category)
             );
         }
 
         if (filter.size.length > 0) {
-            temp = temp.filter((e) => {
-                const check = e.size.find((size) => filter.size.includes(size));
-                return check;
-            });
+            temp = temp.filter((e) => e.size.some((size) => filter.size.includes(size)));
         }
+
         setProducts(temp);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter, data]);
+    }, [filter, data, setProducts]);
 
     useEffect(() => {
         updateProducts();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter]);
+    }, [filter, updateProducts]);
 
     const renderCategory = () => {
-        // eslint-disable-next-line array-callback-return
-        return category.map((item) => {
-            if (item.parent === params.slug) {
-                return (
-                    <CheckBox
-                        key={item.id}
-                        label={item.name}
-                        onChange={(input) => filterSelect('CATEGORY', input.checked, item)}
-                        checked={filter.category.includes(item.category_slug)}
-                    />
-                );
-            }
-        });
+        return category
+            .filter((item) => item.parent === params.slug)
+            .map((item) => (
+                <CheckBox
+                    key={item.id}
+                    label={item.name}
+                    onChange={(input) => filterSelect('CATEGORY', input.checked, item)}
+                    checked={filter.category.includes(item.category_slug)}
+                />
+            ));
     };
 
     const renderSize = () => {
-        // eslint-disable-next-line array-callback-return
-        return sizeData.map((item, index) => {
-            if (
-                params.slug === 'giay' ||
-                params.slug === 'giay-adidas' ||
-                params.slug === 'giay-nike' ||
-                params.slug === 'giay-puma'
-            ) {
-                if (item.parent === 'giay') {
-                    return (
-                        <CheckBox
-                            key={index}
-                            label={item.name}
-                            onChange={(input) => filterSelect('SIZE', input.checked, item)}
-                            checked={filter.size.includes(item.size)}
-                        />
-                    );
-                }
-            } else {
-                if (item.parent === 'all') {
-                    return (
-                        <CheckBox
-                            key={index}
-                            label={item.name}
-                            onChange={(input) => filterSelect('SIZE', input.checked, item)}
-                            checked={filter.size.includes(item.size)}
-                        />
-                    );
-                }
-            }
-        });
+        return sizeData
+            .filter((item) =>
+                ['giay', 'giay-adidas', 'giay-nike', 'giay-puma'].includes(params.slug)
+                    ? item.parent === 'giay'
+                    : item.parent === 'all'
+            )
+            .map((item, index) => (
+                <CheckBox
+                    key={index}
+                    label={item.name}
+                    onChange={(input) => filterSelect('SIZE', input.checked, item)}
+                    checked={filter.size.includes(item.size)}
+                />
+            ));
     };
 
     return (
         <>
-            {categoryTitle.search(/Đội Tuyển/) !== -1 ||
-            categoryTitle.search(/Giày Adidas/) !== -1 ||
-            categoryTitle.search(/Giày Puma/) !== -1 ||
-            categoryTitle.search(/Giày Nike/) !== -1 ||
-            categoryTitle.search(/Tất/) !== -1 ||
-            categoryTitle.search(/Bảo Vệ/) !== -1 ||
-            categoryTitle.search(/Găng Tay/) !== -1 ||
-            categoryTitle.search(/search/) !== -1 ? (
-                ''
-            ) : (
+            {[
+                'Đội Tuyển',
+                'Giày Adidas',
+                'Giày Puma',
+                'Giày Nike',
+                'Tất',
+                'Bảo Vệ',
+                'Găng Tay',
+                'search',
+            ].some((keyword) => categoryTitle.includes(keyword)) ? null : (
                 <div className={cx('filter-item')}>
                     <div className={cx('title')}>
                         {categoryTitle}
@@ -158,5 +131,11 @@ function ProductFilters({ data, setProducts, categoryTitle }) {
         </>
     );
 }
+
+ProductFilters.propTypes = {
+    data: PropTypes.array.isRequired,
+    setProducts: PropTypes.func.isRequired,
+    categoryTitle: PropTypes.string.isRequired,
+};
 
 export default ProductFilters;
