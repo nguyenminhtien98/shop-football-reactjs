@@ -108,7 +108,6 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
         });
         if (curcat === 'all') {
             setItemProduct([...product?.data]);
-            console.log("product?.data", product?.data)
         } else {
             setItemProduct(newItem);
         }

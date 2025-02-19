@@ -11,9 +11,6 @@ function LocationForm({ children }) {
 
     const { cityOptions, districtOptions, wardOptions, selectedCity, selectedDistrict, selectedWard } = state;
 
-    console.log(selectedCity);
-    console.log(selectedDistrict);
-
     return (
         <div className={cx('location-form')}>
             <Select
