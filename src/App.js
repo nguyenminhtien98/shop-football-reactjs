@@ -7,7 +7,7 @@ import { isJsonString } from './utils/isJsonString';
 import { jwtDecode } from 'jwt-decode';
 import * as UserSevice from './services/UserService';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '~/redux/User/userSlide';
+import { resetUser, updateUser } from '~/redux/User/userSlide';
 
 function App() {
     const dispatch = useDispatch();
@@ -33,10 +33,17 @@ function App() {
         async (config) => {
             const currentTime = new Date();
             const { decoded } = handleDecoded();
+            let storageRefreshToken = localStorage.getItem('refresh_token')
+            const refreshToken = JSON.parse(storageRefreshToken)
+            const decodedRefreshToken = jwtDecode(refreshToken)
             if (decoded?.exp < currentTime.getTime() / 1000) {
-                const data = await UserSevice.refreshToken();
-                localStorage.setItem('access_token', JSON.stringify(data?.access_token));
-                config.headers['token'] = `Bearer ${data?.access_token}`;
+                if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+                    const data = await UserSevice.refreshToken(refreshToken);
+                    localStorage.setItem('access_token', JSON.stringify(data?.access_token));
+                    config.headers['token'] = `Bearer ${data?.access_token}`;
+                } else {
+                    dispatch(resetUser())
+                }
             }
             return config;
         },
@@ -46,8 +53,10 @@ function App() {
     );
 
     const handleGetDetailUser = async (id, token) => {
+        let storageRefreshToken = localStorage.getItem('refresh_token')
+        const refreshToken = JSON.parse(storageRefreshToken)
         const res = await UserSevice.getDetailsUser(id, token);
-        dispatch(updateUser({ ...res?.data, access_token: token }));
+        dispatch(updateUser({ ...res?.data, access_token: token, refreshToken: refreshToken }));
     };
 
     return (

@@ -14,7 +14,6 @@ function AccountLogin() {
         window.scrollTo(0, 0);
     }, []);
 
-    const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');

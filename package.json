@@ -70,5 +70,5 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:3001"
+    "proxy": "https://back-end-ecommerce-lcud.onrender.com"
 }
