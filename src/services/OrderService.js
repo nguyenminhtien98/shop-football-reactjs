@@ -9,5 +9,6 @@ export const creatOrder = async(data) => {
 
 export const getDetailOrder = async(orderCode) => {
     const res = await axios.get(`${process.env.REACT_APP_API_URL}/order/get-detail/${orderCode}`);
+    //
     return res.data;
 };
