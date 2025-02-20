@@ -21,16 +21,13 @@ export const getDetailsUser = async (id, access_token) => {
     return res.data;
 };
 
-export const refreshToken = async (refreshToken) => {
+export const refreshToken = async () => {
     const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/user/refresh-token`,
         {},
         {
-            withCredentials: true,
-            headers: {
-                token: `Bearer ${refreshToken}`,
-            },
-        },
+            withCredentials: true, // Quan trọng để gửi cookie refreshToken
+        }
     );
     return res.data;
 };
