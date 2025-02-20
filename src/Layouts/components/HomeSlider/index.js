@@ -94,7 +94,7 @@ function HomeSlider() {
             if (!items.slide) {
                 return (
                     <div className={cx(items.code)} key={items._id}>
-                        <Link to={`/product-list/${items.link}`}>
+                        <Link to={`/product-list/${items.slug}`}>
                             <img className={cx('slider-image')} src={items.image} alt={items.name} />
                             <div className={cx('slider-content')}>
                                 <div className={cx('slider-title')}>

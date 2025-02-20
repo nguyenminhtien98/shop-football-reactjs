@@ -29,20 +29,21 @@ function Login(props) {
     };
 
     useEffect(() => {
-        if (isSuccess && data?.status === 'OK') {
-            toast.success('Đăng nhập thành công');
+        if (isSuccess && data?.status === "OK" && data?.access_token) {
+            toast.success("Đăng nhập thành công");
             clearErrors();
-            navigate('/');
-            localStorage.setItem('access_token', JSON.stringify(data?.access_token));
-            localStorage.setItem('refresh_token', JSON.stringify(data?.refresh_token));
-            if (data?.access_token) {
-                const decoded = jwtDecode(data?.access_token);
-                if (decoded?.id) {
-                    handleGetDetailUser(decoded?.id, data?.access_token);
-                }
+            navigate("/");
+    
+            localStorage.setItem("access_token", JSON.stringify(data?.access_token));
+            localStorage.setItem("refresh_token", JSON.stringify(data?.refresh_token));
+    
+            const decoded = jwtDecode(data?.access_token);
+            if (decoded?.id) {
+                handleGetDetailUser(decoded?.id, data?.access_token);
             }
         }
-    }, [isSuccess]);
+    }, [isSuccess, data]);
+
 
     const handleGetDetailUser = async (id, token) => {
         const storage = localStorage.getItem('refresh_token')

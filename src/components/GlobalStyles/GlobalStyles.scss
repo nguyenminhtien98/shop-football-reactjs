@@ -380,3 +380,15 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
     background-color: var(--black);
 }
+
+.Toastify__toast-container {
+    z-index: 9999 !important;
+}
+
+.Toastify__toast {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: white !important;
+}
+.Toastify__toast-body {
+    z-index: 10000 !important;
+}

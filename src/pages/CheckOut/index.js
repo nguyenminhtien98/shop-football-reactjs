@@ -94,21 +94,32 @@ function CheckOut() {
 
     useEffect(() => {
         if (isSubmit && Object.keys(formErrors).length === 0) {
-            mutation.mutate({
-                orderCode: orders.ma_don_hang,
-                orderItems: cartProducts,
-                name: fullName,
-                phone: orders.phone,
-                shippingAddress: Address,
-                paymentMethod: deliveryMethod,
-                totalPrice: totalPrice,
-                orderDate: date_time,
-                note: orders.note,
-            });
-            dispatch(clearCartItems());
-            navigate(`/thank-you/${orders.ma_don_hang}`);
+            mutation.mutate(
+                {
+                    orderCode: orders.ma_don_hang,
+                    orderItems: cartProducts,
+                    name: fullName,
+                    phone: orders.phone,
+                    shippingAddress: Address,
+                    paymentMethod: deliveryMethod,
+                    totalPrice: totalPrice,
+                    orderDate: date_time,
+                    note: orders.note,
+                },
+                {
+                    onSuccess: (data) => {
+                        navigate(`/thank-you/${orders.ma_don_hang}`);
+                        dispatch(clearCartItems());
+                        setIsSubmit(false);
+                    },
+                    onError: (error) => {
+                        console.error('Lỗi khi đặt hàng:', error);
+                        setIsSubmit(false);
+                    },
+                },
+            );
         }
-    }, [formErrors]);
+    }, [isSubmit, formErrors]);
 
     // validate from
     const validate = (values) => {
