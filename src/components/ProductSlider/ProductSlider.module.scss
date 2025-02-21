@@ -90,3 +90,10 @@
         padding: 25px 0;
     }
 }
+
+.products-slider {
+    min-height: 439.5px;
+    @include mobile {
+        min-height: 398.5px;
+    }
+}

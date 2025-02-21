@@ -28,9 +28,11 @@ function ProductCardItem({ className, fullHeight, to, avata, title, price, sale,
         }
     };
 
-    return Loading ? (
-        <LoadingCartProduct />
-    ) : (
+    if (Loading) {
+        return <LoadingCartProduct />;
+    }
+
+    return (
         <div className={classes}>
             <div className={cx('images_price')}>
                 <Link to={to}>

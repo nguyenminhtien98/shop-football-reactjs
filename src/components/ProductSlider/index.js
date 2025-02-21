@@ -11,14 +11,11 @@ import Buttons from './Buttons';
 import styles from './ProductSlider.module.scss';
 import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
-import * as ProductSevice from '../../services/ProductService';
-import { useQuery } from '@tanstack/react-query';
 
 const cx = classNames.bind(styles);
 
-function ProductSlider({ title, thisCategory, className, widthFull, hiddenScrollCategory }) {
-    const [itemProduct, setItemProduct] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
+function ProductSlider({ productData, title, thisCategory, className, widthFull, hiddenScrollCategory, Loading }) {
+    const [products, setProducts] = useState(productData);
 
     // custom btn next, prev
     const SampleNextArrow = (props) => {
@@ -85,51 +82,33 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
         ],
     };
 
-    const fetchProduct = async () => {
-        setIsLoading(true)
-        const res = await ProductSevice.getAllProduct();
-        setIsLoading(false)
-        return res;
-    };
-    const { data: product } = useQuery({ queryKey: ['product'], queryFn: fetchProduct, retry: 3, retryDelay: 1000 });
-    const menuItems = [
-        ...new Set(
-            product?.data.map((Val) => {
-                if (Val.category === thisCategory) {
-                    return Val.parent;
-                }
-            }),
-        ),
-    ];
+    const menuItems = [...new Set(productData?.map((item) => item.parent))];
 
-    const filterItem = (curcat="all") => {
-        const newItem = product?.data.filter((newVal) => {
+    const filterItem = (curcat = 'all') => {
+        const newItem = productData?.filter((newVal) => {
             return newVal.parent === curcat;
         });
         if (curcat === 'all') {
-            setItemProduct([...product?.data]);
+            setProducts([...productData]);
         } else {
-            setItemProduct(newItem);
+            setProducts(newItem);
         }
     };
 
     // renderScrollCategory
     const renderScrollCategory = () => {
-        if (thisCategory) {
-            return (
-                <div className={cx('scroll-category')}>
-                    <ul className={cx('category-list')}>
-                        <Buttons filterItem={filterItem} menuItems={menuItems} />
-                    </ul>
-                </div>
-            );
-        }
+        return (
+            <div className={cx('scroll-category')}>
+                <ul className={cx('category-list')}>
+                    <Buttons filterItem={filterItem} menuItems={menuItems} />
+                </ul>
+            </div>
+        );
     };
 
     useEffect(() => {
-        fetchProduct();
-        setItemProduct(product?.data);
-    }, [product?.data ]);
+        setProducts(productData);
+    }, [productData]);
 
     return (
         <div className={cx('products-slider', className)}>
@@ -137,32 +116,30 @@ function ProductSlider({ title, thisCategory, className, widthFull, hiddenScroll
                 <header className={cx('header')}>
                     <div className={cx('title')}>
                         <h4>
-                            <Link to={`/product-list/${thisCategory}`}>{title}</Link>
+                            <Link to={`/product-list/${products[1]?.category}`}>{title}</Link>
                         </h4>
                     </div>
                     {hiddenScrollCategory ? '' : renderScrollCategory()}
                 </header>
                 <div className={cx('main')}>
-                    <Slider key={itemProduct?.length} {...settings}>
-                        {itemProduct?.map((item) => {
-                            if (thisCategory ? item.category === thisCategory || item.parent === thisCategory : '') {
-                                return (
-                                    <LazyLoad key={item._id}>
-                                        <ProductCardItem
-                                            key={item._id}
-                                            className="mgl-4"
-                                            to={`/product-details/${item.slug}-${item._id}`}
-                                            avata={item?.image}
-                                            title={item.name}
-                                            category={item.category}
-                                            price={item.price}
-                                            sale={item.sale}
-                                            New={item.new}
-                                            Loading={isLoading}
-                                        />
-                                    </LazyLoad>
-                                );
-                            }
+                    <Slider key={products?.length} {...settings}>
+                        {products?.map((item) => {
+                            return (
+                                <LazyLoad key={item._id}>
+                                    <ProductCardItem
+                                        key={item._id}
+                                        className="mgl-4"
+                                        to={`/product-details/${item.slug}-${item._id}`}
+                                        avata={item?.image}
+                                        title={item.name}
+                                        category={item.category}
+                                        price={item.price}
+                                        sale={item.sale}
+                                        New={item.new}
+                                        Loading={Loading}
+                                    />
+                                </LazyLoad>
+                            );
                         })}
                     </Slider>
                 </div>
