@@ -91,6 +91,11 @@
     }
 }
 
+.loading-container {
+    display: flex;
+    gap: 6px;
+}
+
 .products-slider {
     min-height: 439.5px;
     @include mobile {

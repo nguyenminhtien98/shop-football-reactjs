@@ -11,6 +11,7 @@ import Buttons from './Buttons';
 import styles from './ProductSlider.module.scss';
 import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
+import LoadingCartProduct from '../Loading/LoadingCartProduct';
 
 const cx = classNames.bind(styles);
 
@@ -122,26 +123,36 @@ function ProductSlider({ productData, title, thisCategory, className, widthFull,
                     {hiddenScrollCategory ? '' : renderScrollCategory()}
                 </header>
                 <div className={cx('main')}>
-                    <Slider key={products?.length} {...settings}>
-                        {products?.map((item) => {
-                            return (
-                                <LazyLoad key={item._id}>
-                                    <ProductCardItem
-                                        key={item._id}
-                                        className="mgl-4"
-                                        to={`/product-details/${item.slug}-${item._id}`}
-                                        avata={item?.image}
-                                        title={item.name}
-                                        category={item.category}
-                                        price={item.price}
-                                        sale={item.sale}
-                                        New={item.new}
-                                        Loading={Loading}
-                                    />
-                                </LazyLoad>
-                            );
-                        })}
-                    </Slider>
+                    {Loading ? (
+                        <div className={cx('loading-container')}>
+                            <LoadingCartProduct />
+                            <LoadingCartProduct />
+                            <LoadingCartProduct />
+                            <LoadingCartProduct />
+                            <LoadingCartProduct />
+                        </div>
+                    ) : (
+                        <Slider key={products?.length} {...settings}>
+                            {products?.map((item) => {
+                                return (
+                                    <LazyLoad key={item._id}>
+                                        <ProductCardItem
+                                            key={item._id}
+                                            className="mgl-4"
+                                            to={`/product-details/${item.slug}-${item._id}`}
+                                            avata={item?.image}
+                                            title={item.name}
+                                            category={item.category}
+                                            price={item.price}
+                                            sale={item.sale}
+                                            New={item.new}
+                                            // Loading={Loading}
+                                        />
+                                    </LazyLoad>
+                                );
+                            })}
+                        </Slider>
+                    )}
                 </div>
             </div>
         </div>
