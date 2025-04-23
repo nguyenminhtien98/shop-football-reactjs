@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import axios from 'axios';
 
-const socket = io(process.env.REACT_APP_API_URL); // Kết nối đến backend
+const socket = io(process.env.REACT_SOCKET_API_URL); // Kết nối đến backend
 
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
