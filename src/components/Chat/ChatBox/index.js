@@ -121,7 +121,7 @@ function ChatBox({ onClose }) {
     // Effect: thiết lập socket khi có chatId
     useEffect(() => {
         if (!chatId) return;
-        socketRef.current = io('http://localhost:3001');
+        socketRef.current = io(process.env.REACT_APP_API_URL);
         socketRef.current.emit('joinRoom', chatId);
         socketRef.current.on('receive-message', (msg) => {
             setMessages((prev) => [...prev, msg]);
