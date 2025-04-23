@@ -9,11 +9,13 @@ import Search from '../../Search';
 import styles from './HeaderDesktop.module.scss';
 import * as UserService from '~/services/UserService'
 import { resetUser } from '~/redux/User/userSlide';
+import { useAdminPage } from '~/contexts/AdminPageContext';
 
 const cx = classNames.bind(styles);
 
 function Header() {
     const dispatch = useDispatch()
+    const { setShowAdminPage } = useAdminPage();
     // cart count
     const cartItems = useSelector((state) => state.cartItems.value);
 
@@ -67,6 +69,11 @@ function Header() {
                                     đăng nhập
                                 </Link>
                             </>
+                        )}
+                        {user && user?.isAdmin && (
+                            <p onClick={() => setShowAdminPage(true)} className={cx('action-item')}>
+                                admin messages
+                            </p>
                         )}
                     </div>
                     <div className={cx('header-bottom-desktop')}>

@@ -1,0 +1,165 @@
+.chatbox-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+.chatbox {
+    width: 350px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chatbox-header {
+    background-color: #000;
+    color: #fff;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chatbox-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chatbox-messages {
+    padding: 10px;
+    height: 250px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatbox-message {
+    max-width: 75%;
+    padding: 8px 12px;
+    border-radius: 18px;
+    font-size: 14px;
+}
+
+.chatbox-message.normal {
+    align-self: flex-end;
+    background-color: #000;
+    color: #fff;
+    border-bottom-right-radius: 0;
+}
+
+.chatbox-message.admin {
+    align-self: flex-start;
+    background-color: #e4e4e4;
+    color: #000;
+    border-bottom-left-radius: 0;
+}
+
+.chatbox-suggest {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.chatbox-suggest-btn {
+    padding: 6px 10px;
+    background-color: #f2f2f2;
+    border-radius: 16px;
+    border: none;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.chatbox-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+
+    /* Ẩn scroll bar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.chatbox-messages::-webkit-scrollbar {
+    display: none;
+}
+
+.chatbox-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+
+    input {
+        flex: 1;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-right: 8px;
+    }
+
+    button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #000;
+        color: #fff;
+        cursor: pointer;
+    }
+    button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+}
+
+
+.merge-options {
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+
+.merge-actions {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+    user-select: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.merge-actions::-webkit-scrollbar {
+    display: none;
+}
+
+.question {
+    flex: 0 0 auto;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.question:hover {
+    background-color: #e0e0e0;
+}

@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}

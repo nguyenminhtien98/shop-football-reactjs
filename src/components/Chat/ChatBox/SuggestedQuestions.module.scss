@@ -1,0 +1,29 @@
+.suggested {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+    user-select: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.suggested::-webkit-scrollbar {
+    display: none;
+}
+
+.question {
+    flex: 0 0 auto;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.question:hover {
+    background-color: #e0e0e0;
+}

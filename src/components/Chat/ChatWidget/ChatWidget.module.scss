@@ -1,0 +1,38 @@
+.chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+
+    .notificationBadge {
+        position: absolute;
+        top: -5px;
+        right: 0px;
+        background-color: #eb5757ed;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #fff;
+    }
+}
+
+.chat-bubble {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    font-size: 22px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

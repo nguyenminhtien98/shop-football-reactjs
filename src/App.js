@@ -6,11 +6,16 @@ import { ToastProvider } from './contexts/ToastProvider';
 import { isJsonString } from './utils/isJsonString';
 import { jwtDecode } from 'jwt-decode';
 import * as UserSevice from './services/UserService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetUser, updateUser } from '~/redux/User/userSlide';
+import ChatWidget from './components/Chat/ChatWidget';
+import AdminChatBox from './components/Chat/AdminChatBox';
+import { AdminPageProvider, useAdminPage } from './contexts/AdminPageContext';
 
-function App() {
+function AppContent() {
     const dispatch = useDispatch();
+    const { showAdminPage } = useAdminPage();
+    const user = useSelector((state) => state.user);
 
     useEffect(() => {
         const { decoded, storageData } = handleDecoded();
@@ -33,40 +38,41 @@ function App() {
         async (config) => {
             const currentTime = new Date();
             const { decoded } = handleDecoded();
-            let storageRefreshToken = localStorage.getItem('refresh_token')
-            const refreshToken = JSON.parse(storageRefreshToken)
-            const decodedRefreshToken = jwtDecode(refreshToken)
+            let storageRefreshToken = localStorage.getItem('refresh_token');
+            const refreshToken = JSON.parse(storageRefreshToken);
+            const decodedRefreshToken = jwtDecode(refreshToken);
             if (decoded?.exp < currentTime.getTime() / 1000) {
                 if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
                     const data = await UserSevice.refreshToken(refreshToken);
                     localStorage.setItem('access_token', JSON.stringify(data?.access_token));
                     config.headers['token'] = `Bearer ${data?.access_token}`;
                 } else {
-                    dispatch(resetUser())
+                    dispatch(resetUser());
                 }
             }
             return config;
         },
         function (error) {
             return Promise.reject(error);
-        },
+        }
     );
 
     const handleGetDetailUser = async (id, token) => {
-        let storageRefreshToken = localStorage.getItem('refresh_token')
-        const refreshToken = JSON.parse(storageRefreshToken)
+        let storageRefreshToken = localStorage.getItem('refresh_token');
+        const refreshToken = JSON.parse(storageRefreshToken);
         const res = await UserSevice.getDetailsUser(id, token);
         dispatch(updateUser({ ...res?.data, access_token: token, refreshToken: refreshToken }));
     };
 
     return (
-        <ToastProvider>
-            <Router>
-                <div className="App">
+        <div className="App">
+            {user?.isAdmin && showAdminPage ? (
+                <AdminChatBox />
+            ) : (
+                <>
                     <Routes>
                         {publicRoutes.map((route, index) => {
                             const Page = route.component;
-
                             let Layout = DefaultLayout;
 
                             if (route.layout) {
@@ -88,8 +94,21 @@ function App() {
                             );
                         })}
                     </Routes>
-                </div>
-            </Router>
+                    <ChatWidget />
+                </>
+            )}
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <ToastProvider>
+            <AdminPageProvider>
+                <Router>
+                    <AppContent />
+                </Router>
+            </AdminPageProvider>
         </ToastProvider>
     );
 }
