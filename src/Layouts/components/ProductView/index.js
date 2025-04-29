@@ -70,7 +70,7 @@ function ProductView({ product, category, children }) {
                                 if (index > 1) {
                                     return (
                                         <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')} key={index}>
-                                            <img src={`../../images/images-product/${image}`} alt={product.name} />
+                                            <img src={image} alt={product.name} />
                                         </div>
                                     );
                                 }
@@ -103,12 +103,12 @@ function ProductView({ product, category, children }) {
                             <div className={cx('images-slider')}>
                                 <Slider {...settings}>
                                     <img
-                                        src={`../../images/images-product/${product && product?.image[0]}`}
+                                        src={product && product?.image[0]}
                                         alt={product && product?._id}
                                         key={product && product?._id}
                                     />
                                     <img
-                                        src={`../../images/images-product/${product && product?.image[1]}`}
+                                        src={product && product?.image[1]}
                                         alt=""
                                         width="100"
                                         height="50"
@@ -117,7 +117,7 @@ function ProductView({ product, category, children }) {
                                         product.image.map((image, index) => {
                                             return (
                                                 <img
-                                                    src={`../../images/images-product/${image}`}
+                                                    src={image}
                                                     alt={product.name}
                                                     key={index}
                                                 />
@@ -135,7 +135,7 @@ function ProductView({ product, category, children }) {
                                 <div className="row sm-gutter">
                                     <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                         <img
-                                            src={`../../images/images-product/${product && product?.image[0]}`}
+                                            src={product && product?.image[0]}
                                             alt={product && product?.name}
                                         />
                                         {product && product.productNew && <div className={cx('badge', 'new')}>New</div>}
@@ -145,7 +145,7 @@ function ProductView({ product, category, children }) {
                                     </div>
                                     <div className={cx('gallery-view-item', 'col', 'l-6', 'm-6')}>
                                         <img
-                                            src={`../../images/images-product/${product && product?.image[1]}`}
+                                            src={product && product?.image[1]}
                                             alt={product && product.name}
                                         />
                                     </div>

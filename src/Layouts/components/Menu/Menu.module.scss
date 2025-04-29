@@ -15,7 +15,8 @@
     border-bottom: 2px solid transparent;
     line-height: 48px;
 
-    &:hover {
+    &:hover,
+    &.active {
         border-bottom: 2px solid black;
     }
 }

@@ -37,7 +37,7 @@ function Category() {
                             return (
                                 <Link to={`product-list/${item.slug}`} className={cx('item')} key={item._id}>
                                     <div className={cx('image')}>
-                                        <img src={`../../images/images-category/${item.image}`} alt={item.name} />
+                                        <img src={item.image} alt={item.name} />
                                     </div>
                                     <div className={cx('title')}>
                                         <p>{item.name}</p>

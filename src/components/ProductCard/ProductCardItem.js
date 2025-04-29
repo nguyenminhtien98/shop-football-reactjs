@@ -38,12 +38,12 @@ function ProductCardItem({ className, fullHeight, to, avata, title, price, sale,
                 <Link to={to}>
                     <img
                         className={cx('avata', { fullHeight })}
-                        src={`../../images/images-product/${avata ? avata[0] : ''}`}
+                        src={avata ? avata[0] : ''}
                         alt={title}
                     />
                     <img
                         className={cx('avata-hover', { fullHeight })}
-                        src={`../../images/images-product/${avata ? avata[1] : ''}`}
+                        src={avata ? avata[1] : ''}
                         alt={title}
                     />
                     <div className={cx('price')}>{renderPrice()}</div>

@@ -93,15 +93,15 @@ function TrenDing({ title }) {
                     <h3 className={cx('title')}>{title}</h3>
                 </header>
                 <div className={cx('main')}>
-                    <Slider {...settings}>
-                        {/* eslint-disable-next-line array-callback-return */}
-                        {product?.data.map((item) => {
-                            return (
-                                <LazyLoad key={item._id}>
-                                    {isLoading ? (
-                                        <LoadingCartProduct />
-                                    ) : (
-                                        <div className={cx('item')}>
+                    {isLoading ? (
+                        <LoadingCartProduct />
+                    ) : (
+                        <Slider {...settings}>
+                            {/* eslint-disable-next-line array-callback-return */}
+                            {product?.data.map((item, idx) => {
+                                if (idx < 5) {
+                                    return (
+                                        <div key={item._id} className={cx('item')}>
                                             <Link to={`product-details/${item.slug}-${item._id}`}>
                                                 <div className={cx('media')}>
                                                     <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
@@ -116,11 +116,33 @@ function TrenDing({ title }) {
                                                 </div>
                                             </Link>
                                         </div>
-                                    )}
-                                </LazyLoad>
-                            );
-                        })}
-                    </Slider>
+                                    )
+                                } else {
+                                    return (
+                                        <LazyLoad key={item._id}>
+
+                                            <div className={cx('item')}>
+                                                <Link to={`product-details/${item.slug}-${item._id}`}>
+                                                    <div className={cx('media')}>
+                                                        <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
+                                                            <source src={`../../storys/${item.story}`} type="video/mp4" />
+                                                        </video>
+                                                    </div>
+                                                    <div className={cx('name')}>
+                                                        <h4>{item.name}</h4>
+                                                    </div>
+                                                    <div className={cx('summary')}>
+                                                        <p>{item.description_story}</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+
+                                        </LazyLoad>
+                                    );
+                                }
+                            })}
+                        </Slider>
+                    )}
                 </div>
             </div>
         </div>

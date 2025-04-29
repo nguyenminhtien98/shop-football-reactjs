@@ -40,7 +40,7 @@ const MenuItems = ({ items, depthLevel }) => {
             {items.subMenu ? (
                 <>
                     <Link
-                        className={cx('menu-link')}
+                        className={cx('menu-link', { active: dropdown })}
                         to={`/product-list/${items.slug}`}
                         aria-haspopup="menu"
                         aria-expanded={dropdown ? 'true' : 'false'}

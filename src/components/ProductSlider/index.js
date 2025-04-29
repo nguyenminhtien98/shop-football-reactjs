@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Slider from 'react-slick';
@@ -133,9 +132,9 @@ function ProductSlider({ productData, title, thisCategory, className, widthFull,
                         </div>
                     ) : (
                         <Slider key={products?.length} {...settings}>
-                            {products?.map((item) => {
-                                return (
-                                    <LazyLoad key={item._id}>
+                            {products?.map((item, idx) => {
+                                if (idx < 5) {
+                                    return (
                                         <ProductCardItem
                                             key={item._id}
                                             className="mgl-4"
@@ -146,10 +145,25 @@ function ProductSlider({ productData, title, thisCategory, className, widthFull,
                                             price={item.price}
                                             sale={item.sale}
                                             New={item.new}
-                                            // Loading={Loading}
                                         />
-                                    </LazyLoad>
-                                );
+                                    )
+                                } else {
+                                    return (
+                                        <LazyLoad key={item._id}>
+                                            <ProductCardItem
+                                                key={item._id}
+                                                className="mgl-4"
+                                                to={`/product-details/${item.slug}-${item._id}`}
+                                                avata={item?.image}
+                                                title={item.name}
+                                                category={item.category}
+                                                price={item.price}
+                                                sale={item.sale}
+                                                New={item.new}
+                                            />
+                                        </LazyLoad>
+                                    )
+                                }
                             })}
                         </Slider>
                     )}
