@@ -105,7 +105,7 @@ function TrenDing({ title }) {
                                             <Link to={`product-details/${item.slug}-${item._id}`}>
                                                 <div className={cx('media')}>
                                                     <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
-                                                        <source src={`../../storys/${item.story}`} type="video/mp4" />
+                                                        <source src={item.story} type="video/mp4" />
                                                     </video>
                                                 </div>
                                                 <div className={cx('name')}>
@@ -125,7 +125,7 @@ function TrenDing({ title }) {
                                                 <Link to={`product-details/${item.slug}-${item._id}`}>
                                                     <div className={cx('media')}>
                                                         <video autoPlay="autoPlay" loop="loop" muted id={item._id}>
-                                                            <source src={`../../storys/${item.story}`} type="video/mp4" />
+                                                            <source src={item.story} type="video/mp4" />
                                                         </video>
                                                     </div>
                                                     <div className={cx('name')}>

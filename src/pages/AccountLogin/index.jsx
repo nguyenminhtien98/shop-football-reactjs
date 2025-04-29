@@ -6,6 +6,7 @@ import Login from '~/components/Login';
 import styles from './Login.module.scss';
 import { ToastContainer } from 'react-toastify';
 import SignUp from '~/components/SignUp';
+import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -13,11 +14,18 @@ function AccountLogin() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
+    const location = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [hasAccount, setHasAccount] = useState(false);
+    const initialTab = location.state?.tab || 'login';
+    const [hasAccount, setHasAccount] = useState(initialTab);
+
+    useEffect(() => {
+        if (location.state && location.state.tab) {
+          setHasAccount(location.state.tab);
+        }
+      }, [location.state]);
 
     const clearInputs = () => {
         setEmail('');
@@ -33,7 +41,7 @@ function AccountLogin() {
             <div className={cx('container')}>
                 <div className="row">
                     <div className={cx('l-6', 'c-12', 'login')}>
-                        {!hasAccount ? (
+                        {hasAccount === "login" ? (
                             <div>
                                 <div className={cx('title')}>
                                     <h2>Đăng Nhập</h2>

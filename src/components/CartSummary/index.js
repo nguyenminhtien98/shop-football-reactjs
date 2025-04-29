@@ -29,7 +29,7 @@ function CartSummary({ children, className, totalPrice, quantity }) {
                 <p className={cx('payment-method-label')}>Phương Thức Thanh Toán Được Chấp Nhận</p>
                 <img
                     className={cx('payment-method-image')}
-                    src="../../images/payment-method.png"
+                    src="https://res.cloudinary.com/dmlsrqzdl/image/upload/v1745946069/payment-method_ekr8bb.png"
                     alt="payment-method"
                 />
             </div>

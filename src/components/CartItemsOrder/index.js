@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 function CartItemsOrder({ className, avata, name, size, quantity, price }) {
     return (
         <div className={cx('cart-item', className)}>
-            <img className={cx('product-image')} src={`../../images/images-product/${avata}`} alt={name} />
+            <img className={cx('product-image')} src={avata} alt={name} />
             <div className={cx('product-info')}>
                 <p className={cx('product-name')}>{name}</p>
                 <p className={cx('product-size')}>

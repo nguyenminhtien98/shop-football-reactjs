@@ -177,9 +177,9 @@ function SideBar({ category, product }) {
                                     <div className={cx('overlay')} onClick={handleCloseSizeChart}></div>
                                     <div className={cx('size-chart-modal__main')}>
                                         {product?.category === 'giay' ? (
-                                            <img src="../../images/size-giay.png" alt="size-chart" />
+                                            <img src="https://res.cloudinary.com/dmlsrqzdl/image/upload/v1745946140/size-giay_we6wvn.jpg" alt="size-chart" />
                                         ) : (
-                                            <img src="../../images/size-chart.png" alt="size-chart" />
+                                            <img src="https://res.cloudinary.com/dmlsrqzdl/image/upload/v1745946139/size-chart_ybaety.png" alt="size-chart" />
                                         )}
                                     </div>
                                 </div>

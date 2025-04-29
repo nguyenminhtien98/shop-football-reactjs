@@ -37,7 +37,7 @@ function SignUp(props) {
     useEffect(() => {
         if (isSuccess && data?.status === 'OK') {
             toast.success('Đăng ký tài khoản thành công');
-            setHasAccount(false);
+            setHasAccount("login");
             clearErrors();
             clearInputs();
         }
@@ -69,7 +69,7 @@ function SignUp(props) {
                     Đăng Ký
                 </Button>
                 <p>
-                    Bạn đã có tài khoản ? <span onClick={() => setHasAccount(!hasAccount)}> Đăng Nhập </span>
+                    Bạn đã có tài khoản ? <span onClick={() => setHasAccount("login")}> Đăng Nhập </span>
                 </p>
             </div>
         </section>

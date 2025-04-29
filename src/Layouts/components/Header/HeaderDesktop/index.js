@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { WishlistsIcon, BagShoppingIcon } from '~/components/Icons';
 import useScrollingUp from '~/hooks/useScrollingUp';
 import Menu from '../../Menu';
@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 
 function Header() {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const { setShowAdminPage } = useAdminPage();
     // cart count
     const cartItems = useSelector((state) => state.cartItems.value);
@@ -31,6 +32,14 @@ function Header() {
 
     // fixed menu khi scroll up
     const isScrollingUp = useScrollingUp();
+
+    const handleSignUp = () => {
+        navigate('/account', { state: { tab: 'signup' } });
+      };
+    
+      const handleLogin = () => {
+        navigate('/account', { state: { tab: 'login' } });
+      };
 
     return (
         <header className={cx('wrapper')}>
@@ -62,12 +71,15 @@ function Header() {
                             </>
                         ) : (
                             <>
-                                <Link to="/account" className={cx('action-item')}>
+                                {/* <Link to="/account" state={{ tab: 'signup' }} className={cx('action-item')}>
                                     đăng ký
-                                </Link>
-                                <Link to="/account" className={cx('action-item')}>
+                                </Link> */}
+                                <button className={cx('action-item')} onClick={handleSignUp}>đăng ký</button>
+                                <button className={cx('action-item')} onClick={handleLogin}>đăng nhập</button>
+                                
+                                {/* <Link to="/account" state={{ tab: 'login' }} className={cx('action-item')}>
                                     đăng nhập
-                                </Link>
+                                </Link> */}
                             </>
                         )}
                         {user && user?.isAdmin && (

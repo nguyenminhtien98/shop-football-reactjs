@@ -23,7 +23,7 @@ function CartModal({ product, size, quantity }) {
     return (
         <div className={cx('row', 'mobile')}>
             <div className={cx('cart-modal-item', 'cart-info-product')}>
-                <img src={`../../images/images-product/${product.image[0]}`} alt={product.name} />
+                <img src={product.image[0]} alt={product.name} />
                 <div className={cx('cart-item-info')}>
                     <div className={cx('cart-item-name')}>
                         <h3>{product.name}</h3>

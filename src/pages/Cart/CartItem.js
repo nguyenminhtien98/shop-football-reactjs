@@ -38,7 +38,7 @@ function CartItem(props) {
     return (
         <div className={cx('cart-item', props.className)}>
             <div className={cx('cart-item_avata', 'l-3', 'm-3', 'c-4')}>
-                <img src={`../../images/images-product/${item.avata}`} alt={item.name} />
+                <img src={item.avata} alt={item.name} />
             </div>
             <div className={cx('cart-item_info', 'l-9', 'm-9', 'c-8')}>
                 <div className={cx('info-product', 'l-10', 'm-10')}>

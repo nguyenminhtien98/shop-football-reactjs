@@ -77,7 +77,7 @@ function Login(props) {
                     Đăng Nhập
                 </Button>
                 <p>
-                    Bạn chưa có tài khoản ? <span onClick={() => setHasAccount(!hasAccount)}> Đăng Ký </span>
+                    Bạn chưa có tài khoản ? <span onClick={() => setHasAccount("signup")}> Đăng Ký </span>
                 </p>
             </div>
         </section>
