@@ -19,7 +19,7 @@ function ChatWidget() {
     useEffect(() => {
         const chatId = localStorage.getItem("chatId");
         if (!chatId) return;
-        socketRef.current = io(process.env.REACT_APP_API_URL);
+        socketRef.current = io(process.env.REACT_APP_API_URL_SOCKET);
         socketRef.current.emit('joinRoom', chatId);
         socketRef.current.on('receive-message', (msg) => {
             if (!isOpen && msg.sender === "admin") {

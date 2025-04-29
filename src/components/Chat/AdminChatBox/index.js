@@ -50,7 +50,7 @@ function AdminChat() {
     useEffect(() => {
         if (!selectedChatId) return;
 
-        socketRef.current = io(process.env.REACT_APP_API_URL);
+        socketRef.current = io(process.env.REACT_APP_API_URL_SOCKET);
 
         socketRef.current.emit('joinRoom', selectedChatId);
 
